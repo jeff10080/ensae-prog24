@@ -125,6 +125,3 @@ class Grid():
                 initial_state[i_line] = line_state
             grid = Grid(m, n, initial_state)
         return grid
-
-g = Grid(2,3,[[]])
-
