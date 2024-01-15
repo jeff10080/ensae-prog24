@@ -58,7 +58,11 @@ class Grid():
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+
+        for i in range(self.m):
+            for j in range(self.n):
+                if self.state != i*n + j+1: # Number in sorted grid square (i,j) = i*n + j+1
+                    return False
 
     def swap(self, cell1, cell2):
         """
