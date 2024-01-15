@@ -61,7 +61,7 @@ class Grid():
 
         for i in range(self.m):
             for j in range(self.n):
-                if self.state != i*self.n + j+1: # Number in sorted grid square (i,j) = i*n + j+1
+                if self.state[i][j] != i*self.n + j+1: # Number in sorted grid square (i,j) = i*n + j+1
                     return False
         return True
     
