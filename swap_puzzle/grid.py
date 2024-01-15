@@ -92,8 +92,8 @@ class Grid():
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
         # TODO: implement this function (and remove the line "raise NotImplementedError").
-        for i in range (len(cell_pair_list)):
-            self.swap(cell_pair_list[i])
+        for swap_call in range (cell_pair_list):
+            self.swap(swap_call)
         
 
     @classmethod
