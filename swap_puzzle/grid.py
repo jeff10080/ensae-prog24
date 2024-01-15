@@ -37,7 +37,10 @@ class Grid():
         if not initial_state:
             initial_state = [list(range(i*n+1, (i+1)*n+1)) for i in range(m)]            
         self.state = initial_state
-
+    
+    def copy(self):
+        return Grid(self.m,self.n,self.state.copy())
+        
     def __str__(self): 
         """
         Prints the state of the grid as text.
