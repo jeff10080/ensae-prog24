@@ -4,9 +4,10 @@ class Solver(Grid):
     """
     A solver class, to be implemented.
     """
-    def __init__(self,m,n):
+    def __init__(self,m,n,state):
         self.m = m
         self.n = n
+        self.state = state
     
 
     def get_solution(self):
