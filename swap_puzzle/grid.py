@@ -1,3 +1,4 @@
+import copy
 """
 This is the grid module. It contains the Grid class and its associated methods.
 """
@@ -39,7 +40,7 @@ class Grid():
         self.state = initial_state
     
     def copy(self):
-        return Grid(self.m,self.n,self.state[:])
+        return Grid(self.m,self.n,copy.deepcopy(self.state)) #ne marchait pas avec copy
     
     def __str__(self): 
         """
