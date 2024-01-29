@@ -47,7 +47,7 @@ class Solver():
             for j in range(self.n):
                 swapseq = fetch(self,i,j)
                 solution += swapseq
-                self.state.swap_seq(g,swapseq)
+                self.state.swap_seq(self.state,swapseq)
         return solution
 
         self.state = state_copy
