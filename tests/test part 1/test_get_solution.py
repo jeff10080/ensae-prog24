@@ -15,8 +15,8 @@ class Test_GetSolutions(unittest.TestCase):
         swap_sol = s.get_solution()
         grid_sol = grid.copy()
         print (swap_sol)
-        grid_sol.swap_seq(swap_sol)
         print(grid_sol)
+        grid_sol.swap_seq(swap_sol)
         self.assertEqual(grid_sol.is_sorted(), True) 
 
 if __name__ == '__main__':
