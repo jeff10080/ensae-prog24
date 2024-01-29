@@ -1,10 +1,12 @@
 from grid import Grid
 
-class Solver(): 
+class Solver(Grid): 
     """
     A solver class, to be implemented.
     """
-    
+    def __init__(self,m,n):
+        self.m = m
+        self.n = n
     
 
     def get_solution(self):
