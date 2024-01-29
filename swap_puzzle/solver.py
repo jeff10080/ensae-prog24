@@ -6,7 +6,7 @@ class Solver():
     """
     def __init__(self,g): # g = grid to solve
         self.g = g
-        self.state = g.state()
+        self.state = g.state
         self.m = g.m
         self.n = g.n
     
@@ -46,9 +46,10 @@ class Solver():
         solution = []
         for i in range(self.m):
             for j in range(self.n):
+                print(self)
                 swapseq = self.fetch(i,j)
                 solution += swapseq
-                self.swap_seq(swapseq)
+                self.g.swap_seq(swapseq)
         return solution
 
 
