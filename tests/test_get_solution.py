@@ -9,8 +9,9 @@ from solver import Solver
 class Test_GetSolutions(unittest.TestCase):
     def test_grid1(self):
         grid = Grid.grid_from_file("input/grid3.in")
+        s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
-        swap_sol = Solver.get_solution(grid)
+        swap_sol = s.get_solution()
         grid_sol = grid.copy()
         grid_sol.swap_seq(swap_sol)
         self.assertEqual(grid_sol.is_sorted(), True)
