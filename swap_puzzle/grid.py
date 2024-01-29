@@ -39,7 +39,7 @@ class Grid():
         self.state = initial_state
     
     def copy(self):
-        return Grid(self.m,self.n,self.state.copy())
+        return Grid(self.m,self.n,self.state[:])
     
     def __str__(self): 
         """
