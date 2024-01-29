@@ -1,7 +1,7 @@
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
-
+from collections import deque
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 
@@ -99,8 +99,8 @@ class Graph:
         """ 
    
         deja_vu =[]
-        a_visiter = [(src,[src])]
-        while dst not in deja_vu:
+        a_visiter = deque([(src,[src])])
+        while dst not in deja_vu and a_visiter != deque():
             u,chemin = a_visiter.popleft()
             for v in self.graph[u]:
                 if v not in deja_vu:
