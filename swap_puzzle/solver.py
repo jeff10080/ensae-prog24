@@ -5,31 +5,29 @@ class Solver():
     A solver class, to be implemented.
     """
     def __init__(self,g): # g = grid to solve
-        self.g = g
-        self.state = g.state
+        self.g = g.copy()
+        self.state = self.g.state
         self.m = g.m
         self.n = g.n
     
-    def move_seq(self,i1,i2,j1,j2):
-        swap_h,swap_v = [],[]
-        if j2-j1>0:
-            for y in range(j1,j2):
-                swap_h.append((i1,y),(i1,y + 1))
-            #swp_h = [((i1,y),(i1,y + 1)) for y in range(j1,j2)]
-        if j2-j1<0:
-            for y in range(j1,j2,-1):
-                swap_h.append((i1,y),(i1,y - 1))
-            #swp_h = [((i1,y),(i1,y - 1)) for y in range(j1,j2,-1)]
-        if i2-i1>0:
-            for x in range(i1,i2):
-                swap_v.append((x,j2,),(x + 1,j2))
-            #swp_v = [((x,j2),(x + 1,j2)) for x in range(i1,i2)]
-        if i2-i1<0:
-            for x in range(i1,i2,-1):
-                swap_v.append((x,j2),(x - 1,j2))
-            #swp_v = [((x,j2),(x - 1,j2)) for x in range(i1,i2,-1)]
+    def move_seq(self, i1, i2, j1, j2):
+        swap_h, swap_v = [], []
+
+        if j2 - j1 > 0:
+            swap_h.extend(((i1, y), (i1, y + 1)) for y in range(j1, j2))
+
+        if j2 - j1 < 0:
+            swap_h.extend(((i1, y), (i1, y - 1)) for y in range(j1, j2, -1))
+
+        if i2 - i1 > 0:
+            swap_v.extend(((x, j2), (x + 1, j2)) for x in range(i1, i2))
+
+        if i2 - i1 < 0:
+            swap_v.extend(((x, j2), (x - 1, j2)) for x in range(i1, i2, -1))
+
         swap_seq = swap_h + swap_v
         return swap_seq
+
     
     def find(self,i2,j2):
         a = i2*self.n + j2 +1
@@ -52,12 +50,18 @@ class Solver():
         solution = []
         for i in range(self.m):
             for j in range(self.n):
-                print(self.state)
-                swapseq = self.fetch(i,j)
+                print(self)  # Print the state of the solver
+                swapseq = self.fetch(i, j)
                 print(swapseq)
                 solution += swapseq
-                self.swap_seq(swapseq)
+                self.g.swap_seq(swapseq)
+
+                # Check if the grid is sorted
+                if self.g.is_sorted():
+                    print(self.state)
+                    return solution  # Stop if the grid is sorted
         return solution
+
 
 
         
