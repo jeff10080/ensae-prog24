@@ -6,12 +6,14 @@ import unittest
 from grid import Grid
 from solver import Solver
 
-class Test_IsSorted(unittest.TestCase):
+class Test_GetSolutions(unittest.TestCase):
     def test_grid1(self):
         grid = Grid.grid_from_file("input/grid3.in")
         self.assertEqual(grid.is_sorted(), False)
-        sol = Solver.get_solution(grid)
-        self.assertEqual(sol.is_sorted(), True)
+        swap_sol = Solver.get_solution(grid)
+        grid_sol = grid.copy()
+        grid_sol.swap_seq(swap_sol)
+        self.assertEqual(grid_sol.is_sorted(), True)
 
 if __name__ == '__main__':
     unittest.main()
