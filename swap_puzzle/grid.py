@@ -40,7 +40,7 @@ class Grid():
     
     def copy(self):
         return Grid(self.m,self.n,self.state.copy())
-        
+    
     def __str__(self): 
         """
         Prints the state of the grid as text.
