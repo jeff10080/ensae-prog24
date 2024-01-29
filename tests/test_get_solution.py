@@ -12,9 +12,10 @@ class Test_GetSolutions(unittest.TestCase):
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
         swap_sol = s.get_solution()
-        grid_sol = grid.copy()
-        grid_sol.swap_seq(swap_sol)
-        self.assertEqual(grid_sol.is_sorted(), True)
+        grid = grid.copy()
+        grid.swap_seq(swap_sol)
+        print(grid)
+        self.assertEqual(grid.is_sorted(), True)
 
 if __name__ == '__main__':
     unittest.main()
