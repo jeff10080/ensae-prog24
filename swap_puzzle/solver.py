@@ -14,19 +14,19 @@ class Solver():
         swap_h,swap_v = [],[]
         if j2-j1>0:
             for y in range(j1,j2):
-                swap_h.append([[i1,y],[i1,y + 1]])
+                swap_h.append((i1,y),(i1,y + 1))
             #swp_h = [((i1,y),(i1,y + 1)) for y in range(j1,j2)]
         if j2-j1<0:
             for y in range(j1,j2,-1):
-                swap_h.append([[i1,y],[i1,y - 1]])
+                swap_h.append((i1,y),(i1,y - 1))
             #swp_h = [((i1,y),(i1,y - 1)) for y in range(j1,j2,-1)]
         if i2-i1>0:
             for x in range(i1,i2):
-                swap_v.append([[x,j2],[x + 1,j2]])
+                swap_v.append((x,j2,),(x + 1,j2))
             #swp_v = [((x,j2),(x + 1,j2)) for x in range(i1,i2)]
         if i2-i1<0:
             for x in range(i1,i2,-1):
-                swap_v.append([[x,j2],[x - 1,j2]])
+                swap_v.append((x,j2),(x - 1,j2))
             #swp_v = [((x,j2),(x - 1,j2)) for x in range(i1,i2,-1)]
         swap_seq = swap_h + swap_v
         return swap_seq
@@ -39,8 +39,6 @@ class Solver():
                     return i1,j1
     
     def fetch(self,i2,j2):
-        if self.state[i2][j2] == i2*self.n + j2 +1:
-            pass
         i1,j1 = self.find(i2,j2)
         print(i1,j1)
         return self.move_seq(i1,i2,j1,j2) 
@@ -58,10 +56,8 @@ class Solver():
                 swapseq = self.fetch(i,j)
                 print(swapseq)
                 solution += swapseq
-                self.g.swap_seq(swapseq)
+                self.swap_seq(swapseq)
         return solution
 
 
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        # NOTE: you can add other methods and subclasses as much as necessary. The only thing imposed is the format of the solution returned.
-        raise NotImplementedError
+        
