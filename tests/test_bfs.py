@@ -6,11 +6,10 @@ import unittest
 from graph import Graph
 
 class Test_bfs(unittest.TestCase):
-    def test_grid1(self):
-        grid = Graph.grid_from_file("input/grid3.in")
-        self.assertEqual(grid.is_sorted(), False)
-        sol = Solver.get_solution(grid)
-        self.assertEqual(sol.is_sorted(), True)
+    def test_graph2(self):
+        graph = Graph.graph_from_file("input/graph2.in")
+        self.assertEqual(graph.bfs(9,16), [9, 7, 17, 10, 12, 16])
+        self.assertEqual(graph.bfs(9,11), None)
 
 if __name__ == '__main__':
     unittest.main()
