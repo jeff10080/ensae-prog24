@@ -9,13 +9,10 @@ from solver import Solver
 class Test_GetSolutions(unittest.TestCase):
     def test_grid1(self):
         grid = Grid.grid_from_file("input/grid3.in")
+        grid_sol = grid.copy()
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
-        print (s)
-        swap_sol = s.get_solution()
-        grid_sol = grid.copy()
-        print (swap_sol)
-        print(grid_sol)
+        swap_sol = s.get_solution(grid)
         grid_sol.swap_seq(swap_sol)
         self.assertEqual(grid_sol.is_sorted(), True) 
 
