@@ -1,22 +1,19 @@
 from grid import Grid
 
-class Solver(Grid): 
+class Solver(): 
     """
     A solver class, to be implemented.
     """
-    def __init__(self,m,n,state):
-        self.m = m
-        self.n = n
-        self.state = state
+    def __init__(self,g): # g = grid to solve
+        self.state = g.state[:]
     
-
     def get_solution(self):
         """
         Solves the grid and returns the sequence of swaps at the format 
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
         """
         
-        state_copy = self.state.copy()
+        # state_copy = self.state.copy()
         
         def move_seq(self,i1,i2,j1,j2):
             swap_h,swap_v = [],[]
@@ -48,7 +45,9 @@ class Solver(Grid):
         solution = []
         for i in range(self.m):
             for j in range(self.n):
-                solution += fetch(self,i,j)
+                swapseq = fetch(self,i,j)
+                solution += swapseq
+                self.state.swap_seq(g,swapseq)
         return solution
 
         self.state = state_copy
