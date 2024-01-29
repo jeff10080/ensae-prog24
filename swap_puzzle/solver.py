@@ -52,8 +52,3 @@ class Solver():
         # TODO: implement this function (and remove the line "raise NotImplementedError").
         # NOTE: you can add other methods and subclasses as much as necessary. The only thing imposed is the format of the solution returned.
         raise NotImplementedError
-
-class Solver_bfs(Solver):
-     def __init__(self,state):
-          self.state = state
-    
