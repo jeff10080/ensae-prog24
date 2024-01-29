@@ -27,7 +27,7 @@ class Solver():
         a = i2*self.n + j2 +1
         for i1 in range(self.m):
             for j1 in range(self.n):
-                if self.state[i1][j1] == a:
+                if self.g.state[i1][j1] == a:
                     return i1,j1
     
     def fetch(self,i2,j2):
