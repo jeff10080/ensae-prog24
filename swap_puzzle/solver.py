@@ -13,13 +13,21 @@ class Solver():
     def move_seq(self,i1,i2,j1,j2):
         swap_h,swap_v = [],[]
         if j2-j1>0:
-            swp_h = [((i1,y),(i1,y + 1)) for y in range(j1,j2)]
+            for y in range(j1,j2):
+                swap_h.append([[i1,y],[i1,y + 1]])
+            #swp_h = [((i1,y),(i1,y + 1)) for y in range(j1,j2)]
         if j2-j1<0:
-            swp_h = [((i1,y),(i1,y - 1)) for y in range(j1,j2,-1)]
+            for y in range(j1,j2,-1):
+                swap_h.append([[i1,y],[i1,y - 1]])
+            #swp_h = [((i1,y),(i1,y - 1)) for y in range(j1,j2,-1)]
         if i2-i1>0:
-            swp_v = [((x,j2),(x + 1,j2)) for x in range(i1,i2)]
+            for x in range(i1,i2):
+                swap_v.append([[x,j2],[x + 1,j2]])
+            #swp_v = [((x,j2),(x + 1,j2)) for x in range(i1,i2)]
         if i2-i1<0:
-            swp_v = [((x,j2),(x - 1,j2)) for x in range(i1,i2,-1)]
+            for x in range(i1,i2,-1):
+                swap_v.append([[x,j2],[x - 1,j2]])
+            #swp_v = [((x,j2),(x - 1,j2)) for x in range(i1,i2,-1)]
         swap_seq = swap_h + swap_v
         return swap_seq
     
@@ -34,8 +42,8 @@ class Solver():
         if self.state[i2][j2] == i2*self.n + j2 +1:
             pass
         i1,j1 = self.find(i2,j2)
-        swap_seq = self.move_seq(i1,i2,j1,j2)
-        return swap_seq
+        print(i1,j1)
+        return self.move_seq(i1,i2,j1,j2) 
     
     def get_solution(self):
         """
@@ -46,8 +54,9 @@ class Solver():
         solution = []
         for i in range(self.m):
             for j in range(self.n):
-                print(self)
+                print(self.state)
                 swapseq = self.fetch(i,j)
+                print(swapseq)
                 solution += swapseq
                 self.g.swap_seq(swapseq)
         return solution
