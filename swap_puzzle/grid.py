@@ -4,6 +4,8 @@ This is the grid module. It contains the Grid class and its associated methods.
 """
 import pygame
 import random
+import sys
+
 
 class Grid():
     """
@@ -20,24 +22,55 @@ class Grid():
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
-    def __init__(self, m, n, initial_state = []):
+    def __init__(self, m, n, initial_state=None):
         """
         Initializes the grid.
 
-        Parameters: 
+        Parameters:
         -----------
         m: int
-            Number of lines in the grid
+            The number of rows in the grid
         n: int
-            Number of columns in the grid
+            The number of columns in the grid
         initial_state: list[list[int]]
-            The intiail state of the grid. Default is empty (then the grid is created sorted).
+            The initial state of the grid. Default is empty (then the grid is created sorted).
         """
+        
+
         self.m = m
         self.n = n
         if not initial_state:
-            initial_state = [list(range(i*n+1, (i+1)*n+1)) for i in range(m)]            
+            initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
         self.state = initial_state
+        '''
+
+        pygame.init()
+
+        self.width =  (self.n) * 50
+        self.height = (self.m ) * 50
+
+        screen = pygame.display.set_mode((self.width, self.height))
+
+        for i in range(self.m):
+            for j in range(self.n):
+                pygame.draw.rect(screen, (255, 255, 255), (i * 50, j * 50, 50, 50))
+                font = pygame.font.Font(None, 36)
+                text = font.render(str(self.state[i][j]), True, (0, 0, 0))
+                text_rect = text.get_rect(center=(j * 50 + 25, i * 50 + 25))
+                screen.blit(text, text_rect)
+
+        pygame.display.update()
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+        '''
+
+
+   
+
     
     def copy(self):
         return Grid(self.m,self.n,copy.deepcopy(self.state)) #ne marchait pas avec copy
@@ -97,17 +130,6 @@ class Grid():
 
         for swap_call in cell_pair_list:
             self.swap(swap_call[0],swap_call[1])
-    
-    def affichage(self):
-        pygame.draw.rect(screen, 255, (x, y, 700, 1000))
-        pygame.init()
-        screen = pygame.display.set_mode((640, 480))
-
-        # Représentation des cases
-        for x in range(0, 640, 100):
-            for y in range(0, 480, 100):
-                affichage(x, y, 100, 100, (0, 0, 255))
-
         
 
     @classmethod
