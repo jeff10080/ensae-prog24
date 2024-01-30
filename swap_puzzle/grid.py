@@ -35,6 +35,7 @@ class Grid():
         initial_state: list[list[int]]
             The initial state of the grid. Default is empty (then the grid is created sorted).
         """
+
         
 
         self.m = m
@@ -42,22 +43,31 @@ class Grid():
         if not initial_state:
             initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
         self.state = initial_state
-        '''
 
+    
+
+    def display(self):
         pygame.init()
 
-        self.width =  (self.n) * 50
-        self.height = (self.m ) * 50
+        width = self.n * 50
+        height = self.m * 50
 
-        screen = pygame.display.set_mode((self.width, self.height))
+        screen = pygame.display.set_mode((width, height + 50))  # Ajout de l'espace pour le bouton
 
         for i in range(self.m):
             for j in range(self.n):
-                pygame.draw.rect(screen, (255, 255, 255), (i * 50, j * 50, 50, 50))
+                pygame.draw.rect(screen, (255, 255, 255), (j * 50, i * 50, 50, 50))
                 font = pygame.font.Font(None, 36)
                 text = font.render(str(self.state[i][j]), True, (0, 0, 0))
                 text_rect = text.get_rect(center=(j * 50 + 25, i * 50 + 25))
                 screen.blit(text, text_rect)
+
+        # Dessiner le bouton Quitter
+        pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 50))  # Rectangle rouge pour le bouton Quitter
+        font = pygame.font.Font(None, 36)
+        text = font.render("Quitter", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(width // 2, height + 25))
+        screen.blit(text, text_rect)
 
         pygame.display.update()
 
@@ -65,8 +75,13 @@ class Grid():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
-                    sys.exit()
-        '''
+                    return
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    # Vérifier si le clic de la souris est dans le rectangle du bouton Quitter
+                    if 0 < event.pos[0] < width and height < event.pos[1] < height + 50:
+                        pygame.quit()
+                        return
 
 
    
