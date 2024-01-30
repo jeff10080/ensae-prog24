@@ -2,7 +2,7 @@ import copy
 """
 This is the grid module. It contains the Grid class and its associated methods.
 """
-
+import pygame
 import random
 
 class Grid():
@@ -97,6 +97,17 @@ class Grid():
 
         for swap_call in cell_pair_list:
             self.swap(swap_call[0],swap_call[1])
+    
+    def affichage(self):
+        pygame.draw.rect(screen, 255, (x, y, 700, 1000))
+        pygame.init()
+        screen = pygame.display.set_mode((640, 480))
+
+        # Représentation des cases
+        for x in range(0, 640, 100):
+            for y in range(0, 480, 100):
+                affichage(x, y, 100, 100, (0, 0, 255))
+
         
 
     @classmethod
