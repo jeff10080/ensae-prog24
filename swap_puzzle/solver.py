@@ -38,7 +38,6 @@ class Solver():
     
     def fetch(self,i2,j2):
         i1,j1 = self.find(i2,j2)
-        print(i1,j1)
         return self.move_seq(i1,i2,j1,j2) 
     
     def get_solution(self,g):
