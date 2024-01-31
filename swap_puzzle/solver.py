@@ -1,4 +1,5 @@
 from grid import Grid
+from graph import Graph
 
 class Solver(): 
     """
@@ -41,6 +42,24 @@ class Solver():
         return self.move_seq(i1,i2,j1,j2) 
     
     def get_solution(self,g):
+        """
+        Solves the grid and returns the sequence of swaps at the format 
+        [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
+        """
+        
+        solution = []
+        for i in range(self.m):
+            for j in range(self.n):
+                swapseq = self.fetch(i, j)
+                solution += swapseq
+                self.g.swap_seq(swapseq)
+
+                # Check if the grid is sorted
+                if self.g.is_sorted():
+                    return solution  # Stop if the grid is sorted
+        return solution
+    
+    def get_solution_bfs(self,g):
         """
         Solves the grid and returns the sequence of swaps at the format 
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
