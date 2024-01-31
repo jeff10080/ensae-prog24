@@ -65,6 +65,7 @@ class Solver():
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
         """
         
+        
         solution = []
         for i in range(self.m):
             for j in range(self.n):
