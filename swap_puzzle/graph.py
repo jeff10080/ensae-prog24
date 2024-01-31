@@ -1,6 +1,7 @@
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
+from grid import Grid
 from collections import deque
 class Graph:
     """
@@ -80,6 +81,11 @@ class Graph:
         self.graph[node2].append(node1)
         self.nb_edges += 1
         self.edges.append((node1, node2))
+    
+    def grid_graph():
+        
+        return
+
 
     def bfs(self, src, dst): 
         """
