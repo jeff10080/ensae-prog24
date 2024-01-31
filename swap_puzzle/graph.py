@@ -82,10 +82,41 @@ class Graph:
         self.nb_edges += 1
         self.edges.append((node1, node2))
     
-    def grid_graph():
-        
-        return
+    def construct_swap_puzzle_graph(self, initial_grid):
+        """
+        Constructs the graph representing all possible states of the swap puzzle.
 
+        Parameters:
+        -----------
+        initial_grid: Grid
+            An instance of the Grid class representing the initial state of the puzzle.
+        """
+        if not self.graph:
+            self.graph[initial_grid.__hash__()] = []
+            self.nb_nodes += 1
+            self.nodes.append(initial_grid.__hash__())
+
+        queue = deque([initial_grid])
+
+        while queue:
+            current_grid = queue.popleft()
+            current_node = current_grid.__hash__()
+
+            for i in range(current_grid.m):
+                for j in range(current_grid.n):
+                    for ni, nj in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+                        if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
+                            new_grid = current_grid.copy()
+                            new_grid.swap((i, j), (ni, nj))
+
+                            new_node = new_grid.__hash__()
+                            if new_node not in self.graph:
+                                self.graph[new_node] = []
+                                self.nb_nodes += 1
+                                self.nodes.append(new_node)
+                                queue.append(new_grid)
+
+                            self.add_edge(current_node, new_node)
 
     def bfs(self, src, dst): 
         """
@@ -107,13 +138,13 @@ class Graph:
         deja_vu =[]
         a_visiter = deque([(src,[src])])
         while dst not in deja_vu and a_visiter != deque():
-            u,chemin = a_visiter.popleft()
+            u,path = a_visiter.popleft()
             for v in self.graph[u]:
                 if v not in deja_vu:
                     if v == dst:
-                        return chemin + [v]
+                        return path + [v]
                     else:
-                        a_visiter.append((v,chemin +[v]))
+                        a_visiter.append((v,path +[v]))
             deja_vu.append(u)
         return None
 
