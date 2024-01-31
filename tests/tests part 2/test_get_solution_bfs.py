@@ -12,7 +12,7 @@ class Test_GetSolutions(unittest.TestCase):
         grid_sol = grid.copy()
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
-        swap_sol = s.get_solution(grid)
+        swap_sol = s.get_solution_bfs(grid)
         grid_sol.swap_seq(swap_sol)
         self.assertEqual(grid_sol.is_sorted(), True) 
 
