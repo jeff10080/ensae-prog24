@@ -82,7 +82,7 @@ class Graph:
         self.nb_edges += 1
         self.edges.append((node1, node2))
     
-    def construct_swap_puzzle_graph(self, initial_grid):
+    def construct_grid_graph(self, initial_grid):
         """
         Constructs the graph representing all possible states of the swap puzzle.
 
