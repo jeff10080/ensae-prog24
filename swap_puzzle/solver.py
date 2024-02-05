@@ -67,7 +67,7 @@ class Solver():
         grid_sorted = Grid(self.m,self.n)
         G = Graph()
         G.construct_grid_graph(g)
-        dst_node = grid_sorted.__hash()
+        dst_node = grid_sorted.__hash__()
         return G.graph[dst_node]
 
 
