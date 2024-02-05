@@ -65,18 +65,7 @@ class Solver():
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
         """
         grid_sorted = Grid(self.m,self.n)
-        
-        
-        solution = []
-        for i in range(self.m):
-            for j in range(self.n):
-                swapseq = self.fetch(i, j)
-                solution += swapseq
-                self.g.swap_seq(swapseq)
-
-                # Check if the grid is sorted
-                if self.g.is_sorted():
-                    return solution  # Stop if the grid is sorted
+        graph = 
         return solution
 
 
