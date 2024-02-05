@@ -134,7 +134,7 @@ class Grid():
         """
         i1, j1 = cell1
         i2, j2 = cell2
-        if i1 < self.m and i2 < self.m and j2 < self.n and j1 < self.n and abs(j1-j2) <= 1 + abs(i1-i2) <= 1:
+        if i1 < self.m and i2 < self.m and j2 < self.n and j1 < self.n and abs(j1-j2)+ abs(i1-i2)  <= 1:
             self.state[i1][j1],self.state[i2][j2] = self.state[i2][j2],self.state[i1][j1]
 
     def swap_seq(self, cell_pair_list):
