@@ -65,8 +65,10 @@ class Solver():
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
         """
         grid_sorted = Grid(self.m,self.n)
-        graph = 
-        return solution
+        G = Graph()
+        G.construct_grid_graph(g)
+        dst_node = grid_sorted.__hash()
+        return G.graph[dst_node]
 
 
 
