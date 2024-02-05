@@ -111,7 +111,7 @@ class Graph:
 
                             new_node = new_grid.__hash__()
                             if new_node not in self.graph:
-                                self.graph[new_node] = []
+                                self.graph[new_node] = self.graph[current_node] + [(i, j), (ni, nj)]
                                 self.nb_nodes += 1
                                 self.nodes.append(new_node)
                                 queue.append(new_grid)
