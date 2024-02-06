@@ -32,12 +32,13 @@ class Graph:
         nodes: list, optional
             A list of nodes. Default is empty.
         """
-        self.nodes = nodes 
-        self.graph = dict([(n, []) for n in nodes])
+        self.nodes = nodes
+        self.graph = {n:[] for n in nodes}
         self.nb_nodes = len(nodes)
         self.nb_edges = 0
         self.edges = []
-        
+        self.vertices = dict()
+    
     def __str__(self):
         """
         Prints the graph as a list of neighbors for each node (one per line)
@@ -91,7 +92,7 @@ class Graph:
         initial_grid: Grid
             An instance of the Grid class representing the initial state of the puzzle.
         """
-        if not self.graph:
+        if len(self.graph) == 0:
             self.graph[initial_grid.__hash__()] = []
             self.nb_nodes += 1
             self.nodes.append(initial_grid.__hash__())
@@ -111,11 +112,12 @@ class Graph:
 
                             new_node = new_grid.__hash__()
                             if new_node not in self.graph:
-                                self.graph[new_node] = self.graph[current_node] + [(i, j), (ni, nj)]
+                                self.graph[new_node] = self.graph[current_node]
                                 self.nb_nodes += 1
                                 self.nodes.append(new_node)
                                 queue.append(new_grid)
-
+                                self.vertices[(current_node,new_node)] = (i,j),(ni,nj)
+                                self.vertices[(new_node,current_node)] = (i,j),(ni,nj)
                             self.add_edge(current_node, new_node)
 
     def bfs(self, src, dst): 
@@ -134,15 +136,20 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-   
+    
+        solution = []
         deja_vu =[]
         a_visiter = deque([(src,[src])])
         while dst not in deja_vu and a_visiter != deque():
             u,path = a_visiter.popleft()
-            for v in self.graph[u]:
+            neighbours = self.graph[u]
+            for v in neighbours:
                 if v not in deja_vu:
                     if v == dst:
-                        return path + [v]
+                        path = path + [v]
+                        for i in range(1,len(path)):
+                            solution.append(self.vertices[path[i-1],path[i]])
+                        return solution, path
                     else:
                         a_visiter.append((v,path +[v]))
             deja_vu.append(u)

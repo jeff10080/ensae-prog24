@@ -64,11 +64,11 @@ class Solver():
         Solves the grid and returns the sequence of swaps at the format 
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
         """
-        grid_sorted = Grid(self.m,self.n)
+        grid_sorted = Grid(g.m,g.n)
         G = Graph()
         G.construct_grid_graph(g)
-        dst_node = grid_sorted.__hash__()
-        return G.graph[dst_node]
+        src_node, dst_node = g, grid_sorted
+        return G.bfs(src_node,dst_node)
 
 
 

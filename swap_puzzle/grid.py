@@ -134,8 +134,9 @@ class Grid():
         """
         i1, j1 = cell1
         i2, j2 = cell2
-        if i1 < self.m and i2 < self.m and j2 < self.n and j1 < self.n and abs(j1-j2) and abs(i1-i2)  <= 1:
+        if i1 <= self.m and i2 <= self.m and j2 <= self.n and j1 <= self.n and abs(j1-j2) and abs(i1-i2)  <= 1:
             self.state[i1][j1],self.state[i2][j2] = self.state[i2][j2],self.state[i1][j1]
+        else : pass
 
     def swap_seq(self, cell_pair_list):
         """
@@ -149,8 +150,7 @@ class Grid():
         """
 
         for swap_call in cell_pair_list:
-            self.swap(swap_call[0],swap_call[1])
-        
+            self.swap(swap_call)
 
     @classmethod
     def grid_from_file(cls, file_name): 
