@@ -116,8 +116,8 @@ class Graph:
                                 self.nb_nodes += 1
                                 self.nodes.append(new_node)
                                 queue.append(new_grid)
-                                self.vertices[(current_node,new_node)] = (i,j),(ni,nj)
-                                self.vertices[(new_node,current_node)] = (i,j),(ni,nj)
+                            self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
+                            self.vertices[(new_node, current_node)] = (i,j),(ni,nj)
                             self.add_edge(current_node, new_node)
 
     def bfs(self, src, dst): 
@@ -136,7 +136,7 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-    
+
         solution = []
         deja_vu =[]
         a_visiter = deque([(src,[src])])
@@ -144,14 +144,14 @@ class Graph:
             u,path = a_visiter.popleft()
             neighbours = self.graph[u]
             for v in neighbours:
-                if v not in deja_vu:
+                if v not in deja_vu: 
                     if v == dst:
                         path = path + [v]
                         for i in range(1,len(path)):
                             solution.append(self.vertices[path[i-1],path[i]])
-                        return solution, path
-                    else:
-                        a_visiter.append((v,path +[v]))
+                    return solution
+                else:
+                    a_visiter.append((v,path +[v]))
             deja_vu.append(u)
         return None
 

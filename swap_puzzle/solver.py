@@ -67,8 +67,9 @@ class Solver():
         grid_sorted = Grid(g.m,g.n)
         G = Graph()
         G.construct_grid_graph(g)
-        src_node, dst_node = g, grid_sorted
-        return G.bfs(src_node,dst_node)
+        src_node, dst_node = g.__hash__(), grid_sorted.__hash__()
+        swap_sol = G.bfs(src_node,dst_node)
+        return swap_sol
 
 
 

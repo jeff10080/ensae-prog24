@@ -8,7 +8,7 @@ from solver import Solver
 
 class Test_GetSolutions(unittest.TestCase):
     def test_grid1(self):
-        grid = Grid.grid_from_file("input/grid1.in")
+        grid = Grid.grid_from_file("input/grid0.in")
         grid_sol = grid.copy()
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
