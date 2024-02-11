@@ -111,14 +111,13 @@ class Graph:
                             new_grid.swap((i, j), (ni, nj))
 
                             new_node = new_grid.__hash__()
+                            self.add_edge(current_node, new_node)
                             if new_node not in self.graph:
-                                self.graph[new_node] = self.graph[current_node]
                                 self.nb_nodes += 1
                                 self.nodes.append(new_node)
                                 queue.append(new_grid)
                             self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
-                            self.vertices[(new_node, current_node)] = (i,j),(ni,nj)
-                            self.add_edge(current_node, new_node)
+                            self.vertices[(new_node, current_node)] = (i,j),(ni,nj)   
 
     def bfs(self, src, dst): 
         """
@@ -139,9 +138,12 @@ class Graph:
 
         solution = []
         deja_vu =[]
-        a_visiter = deque([(src,[src])])
-        while dst not in deja_vu and a_visiter != deque():
-            u,path = a_visiter.popleft()
+        arbre = dict()
+        arbre[src] = [src]
+        a_visiter = deque([src])
+        while dst not in deja_vu and len(a_visiter) != 0:
+            u = a_visiter.popleft()
+            path = arbre[u]
             neighbours = self.graph[u]
             for v in neighbours:
                 if v not in deja_vu: 
@@ -151,7 +153,8 @@ class Graph:
                             solution.append(self.vertices[path[i-1],path[i]])
                     return solution
                 else:
-                    a_visiter.append((v,path +[v]))
+                    a_visiter.append(v)
+                    arbre[v].append(path+[v])
             deja_vu.append(u)
         return None
 

@@ -133,9 +133,14 @@ class Grid():
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
         i1, j1, i2, j2 = cell1[0], cell1[1], cell2[0], cell2[1]
-        if i1 < self.m and i2 < self.m and j2 < self.n and j1 < self.n and abs(j1-j2) + abs(i1-i2)  < 2:
+        if self.test_valid_swap(cell1,cell2):
             self.state[i1][j1],self.state[i2][j2] = self.state[i2][j2],self.state[i1][j1]
         else : pass
+
+    def test_valid_swap(self,cell1,cell2):
+        i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
+        return (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
+
 
     def swap_seq(self, cell_pair_list):
         """
@@ -150,7 +155,6 @@ class Grid():
 
         for swap_call in cell_pair_list:
             self.swap(swap_call[0], swap_call[1])
-            print(swap_call)
 
     @classmethod
     def grid_from_file(cls, file_name): 
