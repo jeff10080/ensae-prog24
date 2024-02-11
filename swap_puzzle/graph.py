@@ -92,9 +92,8 @@ class Graph:
             An instance of the Grid class representing the initial state of the puzzle.
         """
         if not self.graph:
-            self.graph[initial_grid.__hash__()] = []
-            self.nb_nodes += 1
-            self.nodes.append(initial_grid.__hash__())
+            initial_node = initial_grid.__hash__()
+            self.graph[initial_node] = []
 
         queue = deque([initial_grid])
 
@@ -104,14 +103,15 @@ class Graph:
 
             for i in range(current_grid.m):
                 for j in range(current_grid.n):
-                    for ni, nj in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+                    for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
                         if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
 
                             new_node = new_grid.__hash__()
+
                             if new_node not in self.graph:
-                                self.graph[new_node] = self.graph[current_node] + [(i, j), (ni, nj)]
+                                self.graph[new_node] = []
                                 self.nb_nodes += 1
                                 self.nodes.append(new_node)
                                 queue.append(new_grid)
