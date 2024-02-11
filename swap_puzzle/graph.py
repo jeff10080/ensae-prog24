@@ -82,23 +82,24 @@ class Graph:
         self.nb_edges += 1
         self.edges.append((node1, node2))
     
+
     def construct_grid_graph(self, initial_grid):
         """
-        Constructs the graph representing all possible states of the swap puzzle.
+        Construit le graphe représentant tous les états possibles du swap puzzle.
 
         Parameters:
         -----------
         initial_grid: Grid
-            An instance of the Grid class representing the initial state of the puzzle.
+            Une instance de la classe Grid représentant l'état initial du puzzle.
         """
         if not self.graph:
             initial_node = initial_grid.__hash__()
-            self.graph[initial_node] = []
+            self.graph[initial_node] = {"neighbors": [], "path": []}
 
-        queue = deque([initial_grid])
+        queue = deque([(initial_grid, [])])
 
         while queue:
-            current_grid = queue.popleft()
+            current_grid, current_path = queue.popleft()
             current_node = current_grid.__hash__()
 
             for i in range(current_grid.m):
@@ -111,12 +112,17 @@ class Graph:
                             new_node = new_grid.__hash__()
 
                             if new_node not in self.graph:
-                                self.graph[new_node] = []
-                                self.nb_nodes += 1
-                                self.nodes.append(new_node)
-                                queue.append(new_grid)
+                                self.graph[new_node] = {"neighbors": [], "path": []}
+                                queue.append((new_grid, current_path + [(current_node, new_node)]))
 
-                            self.add_edge(current_node, new_node)
+                            self.graph[current_node]["neighbors"].append(new_node)
+                            self.graph[new_node]["neighbors"].append(current_node)
+                            self.graph[current_node]["path"].append((current_node, new_node))
+                            self.graph[new_node]["path"].append((current_node, new_node))
+                            if new_grid.is_sorted():
+                                return self.graph[new_node]["path"] + [(current_node, new_node)]
+        return []
+
 
     def bfs(self, src, dst): 
         """
