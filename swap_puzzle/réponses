@@ -1,0 +1,5 @@
+Q3. Complexité : O(m²n²)
+
+Q7. 
+Nombre de noeuds : (m*n)! (nombre de permutations d'une liste de m*n éléments)
+Nombre d'arêtes : 
