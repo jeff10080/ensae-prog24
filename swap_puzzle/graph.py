@@ -82,25 +82,25 @@ class Graph:
         self.nb_edges += 1
         self.edges.append((node1, node2))
     
-
     def construct_grid_graph(self, initial_grid):
         """
-        Construit le graphe représentant tous les états possibles du swap puzzle.
+        Constructs the graph representing all possible states of the swap puzzle starting from the initial grid.
 
         Parameters:
         -----------
         initial_grid: Grid
-            Une instance de la classe Grid représentant l'état initial du puzzle.
+            An instance of the Grid class representing the initial state of the puzzle.
         """
         if not self.graph:
-            initial_node = initial_grid.__hash__()
-            self.graph[initial_node] = {"neighbors": [], "path": []}
+            initial_node = "Init"
+            self.graph[initial_node] = []
+            sorted_node= "Sorted"
+            self.graph[sorted_node] = []
 
-        queue = deque([(initial_grid, [])])
+        queue = deque([(initial_grid, initial_node)])
 
         while queue:
-            current_grid, current_path = queue.popleft()
-            current_node = current_grid.__hash__()
+            current_grid, current_node = queue.popleft()
 
             for i in range(current_grid.m):
                 for j in range(current_grid.n):
@@ -108,21 +108,11 @@ class Graph:
                         if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
-
-                            new_node = new_grid.__hash__()
-
+                            new_node = ((i, j), (ni, nj))
+                            self.add_edge(current_node, new_node)
                             if new_node not in self.graph:
-                                self.graph[new_node] = {"neighbors": [], "path": []}
-                                queue.append((new_grid, current_path + [(current_node, new_node)]))
-
-                            self.graph[current_node]["neighbors"].append(new_node)
-                            self.graph[new_node]["neighbors"].append(current_node)
-                            self.graph[current_node]["path"].append((current_node, new_node))
-                            self.graph[new_node]["path"].append((current_node, new_node))
-                            if new_grid.is_sorted():
-                                return self.graph[new_node]["path"] + [(current_node, new_node)]
-        return []
-
+                                queue.append((new_grid, new_node))
+        return self
 
     def bfs(self, src, dst): 
         """
@@ -140,7 +130,7 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-   
+    
         deja_vu =[]
         a_visiter = deque([(src,[src])])
         while dst not in deja_vu and a_visiter != deque():
