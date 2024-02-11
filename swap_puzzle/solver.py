@@ -65,11 +65,10 @@ class Solver():
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
         """
         graph= Graph()
-        g_start = g.__hash__
-        grid_sorted = Grid(self.m,self.n).__hash__
         graph.construct_grid_graph(g)
-        
-        return graph.construct_grid_graph(g)["path"]
+        a= graph.bfs("Init","Sorted")
+
+        return a
 
 
 
