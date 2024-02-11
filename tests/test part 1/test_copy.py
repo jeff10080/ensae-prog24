@@ -12,7 +12,7 @@ class Test_Copy(unittest.TestCase):
         grid2= grid.copy()
         grid.swap((3,0), (3,1))
         self.assertEqual(grid.state, [[1, 2], [3, 4], [5, 6], [7, 8]])
-        self.assertEqual(grid.state, [[1, 2], [3, 4], [5, 6], [8, 7]])
+        self.assertEqual(grid2.state, [[1, 2], [3, 4], [5, 6], [8, 7]])
 
 
 if __name__ == '__main__':
