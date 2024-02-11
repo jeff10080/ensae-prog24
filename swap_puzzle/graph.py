@@ -151,10 +151,10 @@ class Graph:
                         path = path + [v]
                         for i in range(1,len(path)):
                             solution.append(self.vertices[path[i-1],path[i]])
-                    return solution
+                        return solution
                 else:
                     a_visiter.append(v)
-                    arbre[v].append(path+[v])
+                    arbre[v] = path+[v]
             deja_vu.append(u)
         return None
 

@@ -11,6 +11,6 @@ class Test_Swap(unittest.TestCase):
         swaps = [[[0,0],[0,1]],[[0,0],[1,0]]]
         grid.swap_seq(swaps)
         self.assertEqual(grid.state, [[3, 1], [2, 4], [5, 6], [8, 7]])
-        
+    
 if __name__ == '__main__':
     unittest.main()

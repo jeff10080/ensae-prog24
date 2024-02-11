@@ -152,9 +152,12 @@ class Grid():
             List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """ 
-
-        for swap_call in cell_pair_list:
-            self.swap(swap_call[0], swap_call[1])
+        if len(cell_pair_list) < 2:
+            return None
+        for i in range(len(cell_pair_list)):
+            self.swap(cell_pair_list[i][0], cell_pair_list[i][1])
+        # for swap_call in cell_pair_list:
+        #     self.swap(swap_call[0], swap_call[1])
 
     @classmethod
     def grid_from_file(cls, file_name): 
