@@ -93,7 +93,7 @@ class Graph:
             An instance of the Grid class representing the initial state of the puzzle.
         """
         if len(self.graph) == 0:
-            self.graph[initial_grid.__hash__()] = []
+            self.graph[initial_grid] = []
             self.nb_nodes += 1
             self.nodes.append(initial_grid.__hash__())
 
