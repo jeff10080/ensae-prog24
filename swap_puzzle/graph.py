@@ -99,7 +99,7 @@ class Graph:
             self.nodes.append(initial_grid.__hash__())
 
 
-        queue = deque([(initial_grid, initial_node)])
+        queue = deque([(initial_grid)])
 
         while queue:
             current_grid = queue.popleft()
@@ -120,7 +120,7 @@ class Graph:
                             self.vertices[(new_node, current_node)] = (i,j),(ni,nj)   
 
 
-    def bfs2(self,src,dst):
+    def bfs(self,src,dst):
         """
         Finds a shortest path from src to dst by BFS.  
 
@@ -147,43 +147,6 @@ class Graph:
                     return path[u] + [v]
                 path[v] = path[u] + [v]
                 queue.append(v)
-            deja_vu.append(u)
-        return None
-
-
-
-    def bfs(self, src, dst): 
-        """
-        Finds a shortest path from src to dst by BFS.  
-
-        Parameters: 
-        -----------
-        src: NodeType
-            The source node.
-        dst: NodeType
-            The destination node.
-
-        Output: 
-        -------
-        path: list[NodeType] | None
-            The shortest path from src to dst. Returns None if dst is not reachable from src
-        """ 
-
-        deja_vu =[]
-        arbre = dict()
-        arbre[src] = [src]
-        a_visiter = deque([src])
-        while dst not in deja_vu and len(a_visiter) != 0:
-            u = a_visiter.popleft()
-            path = arbre[u]
-            neighbours = self.graph[u]
-            for v in neighbours:
-                if v not in deja_vu:
-                    if v == dst:
-                        return path + [v]
-                else:
-                    a_visiter.append(v)
-                    arbre[v] = path+[v]
             deja_vu.append(u)
         return None
 
