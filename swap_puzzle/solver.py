@@ -73,6 +73,21 @@ class Solver():
         for i in range(1,len(path)):
             solution.append(G.vertices[(path[i-1],path[i])])
         return solution
+    
+    def get_solution_bfs_2(self,g):
+        """
+        Solves the grid and returns the sequence of swaps at the format 
+        [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
+        """
+        grid_sorted = Grid(g.m,g.n)
+        G = Graph()
+        a = G.construct_grid_graph_bfs(g)
+        src_node, dst_node = g.__hash__(), grid_sorted.__hash__()
+        path = G.bfs(src_node,dst_node)
+        solution = []
+        for i in range(1,len(path)):
+            solution.append(G.vertices[(path[i-1],path[i])])
+        return solution
 
 
 
