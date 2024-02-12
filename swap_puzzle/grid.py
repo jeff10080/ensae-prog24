@@ -160,6 +160,26 @@ class Grid():
         # for swap_call in cell_pair_list:
         #     self.swap(swap_call[0], swap_call[1])
 
+
+    def find(self,i2,j2):
+        a = i2*self.n + j2 +1
+        for i1 in range(self.m):
+            for j1 in range(self.n):
+                if self.state[i1][j1] == a:
+                    return i1,j1
+    
+    def fetch(self,i2,j2):
+        i1,j1 = self.find(i2,j2)
+        return self.move_seq(i1,i2,j1,j2) 
+
+    def heuristique(self):
+        heur = 0
+        for i in range(self.m):
+            for j in range(self.n):
+                heur += len(self.fetch(self,i,j))
+        return heur/2
+
+
     @classmethod
     def grid_from_file(cls, file_name): 
         """
