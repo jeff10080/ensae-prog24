@@ -73,8 +73,3 @@ class Solver():
         for i in range(1,len(path)):
             solution.append(G.vertices[(path[i-1],path[i])])
         return solution
-        # return path
-
-
-
-        

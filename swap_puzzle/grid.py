@@ -88,7 +88,7 @@ class Grid():
         state_tuple = tuple(tuple(self.state[i]) for i in range(self.m))
         return state_tuple #hash ne marche que sur un tuple
     def __eq__(self, other):
-      return other and self.a == other.a and self.b == other.b
+       return other and self.m == other.m and self.n == other.n and self.state == other.state
 
 
     
@@ -122,7 +122,6 @@ class Grid():
                     return False
         return True
     
-    
     def swap(self, cell1, cell2):
         """
         Implements the swap operation between two cells. Raises an exception if the swap is not allowed.
@@ -135,11 +134,13 @@ class Grid():
         i1, j1, i2, j2 = cell1[0], cell1[1], cell2[0], cell2[1]
         if self.test_valid_swap(cell1,cell2):
             self.state[i1][j1],self.state[i2][j2] = self.state[i2][j2],self.state[i1][j1]
-        else : pass
+        else:
+            raise ValueError(f"Invalid swap: {cell1} and {cell2}")
 
     def test_valid_swap(self,cell1,cell2):
         i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
         return (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
+
 
 
     def swap_seq(self, cell_pair_list):

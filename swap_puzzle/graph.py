@@ -85,29 +85,32 @@ class Graph:
     
     def construct_grid_graph(self, initial_grid):
         """
-        Constructs the graph representing all possible states of the swap puzzle.
+        Constructs the graph representing all possible states of the swap puzzle starting from the initial grid.
 
         Parameters:
         -----------
         initial_grid: Grid
             An instance of the Grid class representing the initial state of the puzzle.
         """
+
         if len(self.graph) == 0:
             self.graph[initial_grid.__hash__()] = []
             self.nb_nodes = 1
             self.nodes.append(initial_grid.__hash__())
 
-        queue = deque([initial_grid])
+
+        queue = deque([(initial_grid, initial_node)])
 
         while queue:
             current_grid = queue.popleft()
             current_node = current_grid.__hash__()
             for i in range(current_grid.m):
                 for j in range(current_grid.n):
-                    for ni, nj in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
+                    for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
                         if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
+
                             new_node = new_grid.__hash__()
                             if new_node not in self.graph:
                                 queue.append(new_grid)
@@ -118,6 +121,21 @@ class Graph:
 
 
     def bfs2(self,src,dst):
+        """
+        Finds a shortest path from src to dst by BFS.  
+
+        Parameters: 
+        -----------
+        src: NodeType
+            The source node.
+        dst: NodeType
+            The destination node.
+
+        Output: 
+        -------
+        path: list[NodeType] | None
+            The shortest path from src to dst. Returns None if dst is not reachable from src
+        """ 
         deja_vu = []
         path = dict()
         path[src] = [src]
