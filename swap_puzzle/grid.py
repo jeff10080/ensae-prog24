@@ -86,7 +86,7 @@ class Grid():
 
     def __hash__(self):
         state_tuple = tuple(tuple(self.state[i]) for i in range(self.m))
-        return hash(state_tuple) #hash ne marche que sur un tuple
+        return state_tuple #hash ne marche que sur un tuple
     def __eq__(self, other):
        return other and self.m == other.m and self.n == other.n and self.state == other.state
 
