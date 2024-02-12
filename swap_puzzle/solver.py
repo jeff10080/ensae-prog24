@@ -66,6 +66,6 @@ class Solver():
         """
         graph= Graph()
         graph.construct_grid_graph(g)
-        source_node, destination_node = g.__hash__(), Grid(g.m,g.n).__hash__()
-        a= graph.bfs(source_node,destination_node)
+        a= graph.bfs("Init","Sorted")
+
         return a
