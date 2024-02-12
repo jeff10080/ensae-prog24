@@ -149,8 +149,45 @@ class Graph:
                 queue.append(v)
             deja_vu.append(u)
         return None
+    
+    def construct_grid_graph_bfs(self, initial_grid):
+        """
+        Constructs the graph representing all possible states of the swap puzzle starting from the initial grid.
+
+        Parameters:
+        -----------
+        initial_grid: Grid
+            An instance of the Grid class representing the initial state of the puzzle.
+        """
+
+        if len(self.graph) == 0:
+            self.graph[initial_grid.__hash__()] = []
+            self.nb_nodes = 1
+            self.nodes.append(initial_grid.__hash__())
+        sorted_node = Grid(initial_grid.m,initial_grid.n).__hash__()
 
 
+        queue = deque([(initial_grid)])
+
+        while queue:
+            current_grid = queue.popleft()
+            current_node = current_grid.__hash__()
+            for i in range(current_grid.m):
+                for j in range(current_grid.n):
+                    for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+                        if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
+                            new_grid = current_grid.copy()
+                            new_grid.swap((i, j), (ni, nj))
+
+                            new_node = new_grid.__hash__()
+                            if new_node not in self.graph:
+                                queue.append(new_grid)
+                            self.add_edge(current_node, new_node)
+                            # if (current_node,new_node) not in self.edges:
+                            self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
+                            self.vertices[(new_node, current_node)] = (i,j),(ni,nj)
+                            if new_node == sorted_node:
+                                return None
     @classmethod
     def graph_from_file(cls, file_name):
         """
