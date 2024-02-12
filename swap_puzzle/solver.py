@@ -68,8 +68,12 @@ class Solver():
         G = Graph()
         G.construct_grid_graph(g)
         src_node, dst_node = g.__hash__(), grid_sorted.__hash__()
-        swap_sol = G.bfs(src_node,dst_node)
-        return swap_sol
+        path = G.bfs2(src_node,dst_node)
+        solution = []
+        for i in range(1,len(path)):
+            solution.append(G.vertices[(path[i-1],path[i])])
+        return solution
+        # return path
 
 
 

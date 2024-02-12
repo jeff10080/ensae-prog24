@@ -94,7 +94,7 @@ class Graph:
         """
         if len(self.graph) == 0:
             self.graph[initial_grid.__hash__()] = []
-            self.nb_nodes += 1
+            self.nb_nodes = 1
             self.nodes.append(initial_grid.__hash__())
 
         queue = deque([initial_grid])
@@ -102,22 +102,37 @@ class Graph:
         while queue:
             current_grid = queue.popleft()
             current_node = current_grid.__hash__()
-
             for i in range(current_grid.m):
                 for j in range(current_grid.n):
                     for ni, nj in [(i-1, j), (i+1, j), (i, j-1), (i, j+1)]:
                         if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
-
                             new_node = new_grid.__hash__()
-                            self.add_edge(current_node, new_node)
                             if new_node not in self.graph:
-                                self.nb_nodes += 1
-                                self.nodes.append(new_node)
                                 queue.append(new_grid)
+                            self.add_edge(current_node, new_node)
+                            # if (current_node,new_node) not in self.edges:
                             self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
                             self.vertices[(new_node, current_node)] = (i,j),(ni,nj)   
+
+
+    def bfs2(self,src,dst):
+        deja_vu = []
+        path = dict()
+        path[src] = [src]
+        queue = deque([src])
+        while queue != deque():
+            u = queue.popleft()
+            for v in self.graph[u]:
+                if v == dst:
+                    return path[u] + [v]
+                path[v] = path[u] + [v]
+                queue.append(v)
+            deja_vu.append(u)
+        return None
+
+
 
     def bfs(self, src, dst): 
         """
@@ -136,7 +151,6 @@ class Graph:
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
 
-        solution = []
         deja_vu =[]
         arbre = dict()
         arbre[src] = [src]
@@ -146,12 +160,9 @@ class Graph:
             path = arbre[u]
             neighbours = self.graph[u]
             for v in neighbours:
-                if v not in deja_vu: 
+                if v not in deja_vu:
                     if v == dst:
-                        path = path + [v]
-                        for i in range(1,len(path)):
-                            solution.append(self.vertices[path[i-1],path[i]])
-                        return solution
+                        return path + [v]
                 else:
                     a_visiter.append(v)
                     arbre[v] = path+[v]
