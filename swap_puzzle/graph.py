@@ -92,10 +92,9 @@ class Graph:
             An instance of the Grid class representing the initial state of the puzzle.
         """
         if not self.graph:
-            initial_node = "Init"
+            initial_node = ()
             self.graph[initial_node] = []
-            sorted_node= "Sorted"
-            self.graph[sorted_node] = []
+            
 
         queue = deque([(initial_grid, initial_node)])
 
