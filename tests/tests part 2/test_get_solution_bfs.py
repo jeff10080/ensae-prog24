@@ -9,16 +9,16 @@ from graph import Graph
 
 class Test_GetSolutions(unittest.TestCase):
     def test_grid1(self):
-        grid = Grid.grid_from_file("input/grid0.in")
-        grid_sol = grid.copy()
+        grid = Grid.grid_from_file("input/grid1.in")
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
         swap_sol = s.get_solution_bfs(grid)
         print(swap_sol)
         graph = Graph()
         graph.construct_grid_graph(grid)
-        print(graph.vertices)
+        # print(graph.vertices)
         grid.swap_seq(swap_sol)
+        # print(grid)
         self.assertEqual(grid.is_sorted(), True)
 
 

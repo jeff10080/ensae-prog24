@@ -88,7 +88,7 @@ class Grid():
         state_tuple = tuple(tuple(self.state[i]) for i in range(self.m))
         return state_tuple #hash ne marche que sur un tuple
     def __eq__(self, other):
-       return other and self.m == other.m and self.n == other.n and self.state == other.state
+       return self.m == other.m and self.n == other.n and self.state == other.state
 
 
     
@@ -153,13 +153,30 @@ class Grid():
             List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """ 
-        if len(cell_pair_list) < 2:
-            return None
+        if len(cell_pair_list) < 1:
+            raise ValueError(f"Invalid swap sequence")
         for i in range(len(cell_pair_list)):
             self.swap(cell_pair_list[i][0], cell_pair_list[i][1])
         # for swap_call in cell_pair_list:
         #     self.swap(swap_call[0], swap_call[1])
 
+    def move_seq(self, i1, i2, j1, j2):
+        swap_h, swap_v = [], []
+
+        if j2 - j1 > 0:
+            swap_h.extend(((i1, y), (i1, y + 1)) for y in range(j1, j2))
+
+        if j2 - j1 < 0:
+            swap_h.extend(((i1, y), (i1, y - 1)) for y in range(j1, j2, -1))
+
+        if i2 - i1 > 0:
+            swap_v.extend(((x, j2), (x + 1, j2)) for x in range(i1, i2))
+
+        if i2 - i1 < 0:
+            swap_v.extend(((x, j2), (x - 1, j2)) for x in range(i1, i2, -1))
+
+        swap_seq = swap_h + swap_v
+        return swap_seq
 
     def find(self,i2,j2):
         a = i2*self.n + j2 +1
