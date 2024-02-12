@@ -99,7 +99,7 @@ class Graph:
             self.nodes.append(initial_grid.__hash__())
 
 
-        queue = deque([(initial_grid, initial_node)])
+        queue = deque([(initial_grid, initial_grid.__hash__())])
 
         while queue:
             current_grid = queue.popleft()
