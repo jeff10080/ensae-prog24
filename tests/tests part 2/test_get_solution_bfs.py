@@ -5,6 +5,7 @@ sys.path.append("swap_puzzle/")
 import unittest 
 from grid import Grid
 from solver import Solver
+from graph import Graph
 
 class Test_GetSolutions(unittest.TestCase):
     def test_grid1(self):
@@ -14,8 +15,11 @@ class Test_GetSolutions(unittest.TestCase):
         self.assertEqual(grid.is_sorted(), False)
         swap_sol = s.get_solution_bfs(grid)
         print(swap_sol)
-        grid_sol.swap_seq(swap_sol)
-        self.assertEqual(grid_sol.is_sorted(), True) 
+        graph = Graph()
+        graph.construct_grid_graph(grid)
+        print(graph.vertices)
+        grid.swap_seq(swap_sol)
+        self.assertEqual(grid.is_sorted(), True)
 
 
 if __name__ == '__main__':

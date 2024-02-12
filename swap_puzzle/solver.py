@@ -64,9 +64,12 @@ class Solver():
         Solves the grid and returns the sequence of swaps at the format 
         [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...]. 
         """
-        graph= Graph()
-        graph.construct_grid_graph(g)
-        src_node, dst_node = g.__hash__(), Grid(g.m,g.n).__hash__()
-        a= graph.bfs(src_node,dst_node)
-
-        return a
+        grid_sorted = Grid(g.m,g.n)
+        G = Graph()
+        G.construct_grid_graph(g)
+        src_node, dst_node = g.__hash__(), grid_sorted.__hash__()
+        path = G.bfs2(src_node,dst_node)
+        solution = []
+        for i in range(1,len(path)):
+            solution.append(G.vertices[(path[i-1],path[i])])
+        return solution

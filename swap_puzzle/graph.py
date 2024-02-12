@@ -32,12 +32,13 @@ class Graph:
         nodes: list, optional
             A list of nodes. Default is empty.
         """
-        self.nodes = nodes 
-        self.graph = dict([(n, []) for n in nodes])
+        self.nodes = nodes
+        self.graph = {n:[] for n in nodes}
         self.nb_nodes = len(nodes)
         self.nb_edges = 0
         self.edges = []
-        
+        self.vertices = dict()
+    
     def __str__(self):
         """
         Prints the graph as a list of neighbors for each node (one per line)
@@ -91,27 +92,65 @@ class Graph:
         initial_grid: Grid
             An instance of the Grid class representing the initial state of the puzzle.
         """
-        if not self.graph:
-            initial_node = ()
-            self.graph[initial_node] = []
-            
+
+        if len(self.graph) == 0:
+            self.graph[initial_grid.__hash__()] = []
+            self.nb_nodes = 1
+            self.nodes.append(initial_grid.__hash__())
+
 
         queue = deque([(initial_grid, initial_node)])
 
         while queue:
-            current_grid, current_node = queue.popleft()
-
+            current_grid = queue.popleft()
+            current_node = current_grid.__hash__()
             for i in range(current_grid.m):
                 for j in range(current_grid.n):
                     for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
                         if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
-                            new_node = ((i, j), (ni, nj))
-                            self.add_edge(current_node, new_node)
+
+                            new_node = new_grid.__hash__()
                             if new_node not in self.graph:
-                                queue.append((new_grid, new_node))
-        return self
+                                queue.append(new_grid)
+                            self.add_edge(current_node, new_node)
+                            # if (current_node,new_node) not in self.edges:
+                            self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
+                            self.vertices[(new_node, current_node)] = (i,j),(ni,nj)   
+
+
+    def bfs2(self,src,dst):
+        """
+        Finds a shortest path from src to dst by BFS.  
+
+        Parameters: 
+        -----------
+        src: NodeType
+            The source node.
+        dst: NodeType
+            The destination node.
+
+        Output: 
+        -------
+        path: list[NodeType] | None
+            The shortest path from src to dst. Returns None if dst is not reachable from src
+        """ 
+        deja_vu = []
+        path = dict()
+        path[src] = [src]
+        queue = deque([src])
+        while queue != deque():
+            u = queue.popleft()
+            for v in self.graph[u]:
+                if v == dst:
+                    return path[u] + [v]
+                path[v] = path[u] + [v]
+                queue.append(v)
+            deja_vu.append(u)
+        return None
+
+
 
     def bfs(self, src, dst): 
         """
@@ -129,17 +168,22 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-    
+
         deja_vu =[]
-        a_visiter = deque([(src,[src])])
-        while dst not in deja_vu and a_visiter != deque():
-            u,path = a_visiter.popleft()
-            for v in self.graph[u]:
+        arbre = dict()
+        arbre[src] = [src]
+        a_visiter = deque([src])
+        while dst not in deja_vu and len(a_visiter) != 0:
+            u = a_visiter.popleft()
+            path = arbre[u]
+            neighbours = self.graph[u]
+            for v in neighbours:
                 if v not in deja_vu:
                     if v == dst:
                         return path + [v]
-                    else:
-                        a_visiter.append((v,path +[v]))
+                else:
+                    a_visiter.append(v)
+                    arbre[v] = path+[v]
             deja_vu.append(u)
         return None
 

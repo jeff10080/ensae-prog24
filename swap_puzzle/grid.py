@@ -131,13 +131,17 @@ class Grid():
         cell1, cell2: tuple[int]
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
-        i1, j1 = cell1
-        i2, j2 = cell2
-
-        if 0 <= i1 < self.m and 0 <= i2 < self.m and 0 <= j1 < self.n and 0 <= j2 < self.n and ((abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)):
-            self.state[i1][j1], self.state[i2][j2] = self.state[i2][j2], self.state[i1][j1]
+        i1, j1, i2, j2 = cell1[0], cell1[1], cell2[0], cell2[1]
+        if self.test_valid_swap(cell1,cell2):
+            self.state[i1][j1],self.state[i2][j2] = self.state[i2][j2],self.state[i1][j1]
         else:
             raise ValueError(f"Invalid swap: {cell1} and {cell2}")
+
+    def test_valid_swap(self,cell1,cell2):
+        i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
+        return (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
+
+
 
     def swap_seq(self, cell_pair_list):
         """
@@ -148,11 +152,13 @@ class Grid():
         cell_pair_list: list[tuple[tuple[int]]]
             List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
-        """
-
-        for swap_call in cell_pair_list:
-            self.swap(swap_call[0],swap_call[1])
-        
+        """ 
+        if len(cell_pair_list) < 2:
+            return None
+        for i in range(len(cell_pair_list)):
+            self.swap(cell_pair_list[i][0], cell_pair_list[i][1])
+        # for swap_call in cell_pair_list:
+        #     self.swap(swap_call[0], swap_call[1])
 
     @classmethod
     def grid_from_file(cls, file_name): 

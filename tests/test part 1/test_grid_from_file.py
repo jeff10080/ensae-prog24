@@ -11,7 +11,7 @@ class Test_GridLoading(unittest.TestCase):
         self.assertEqual(g.m, 4)
         self.assertEqual(g.n, 2)
         self.assertEqual(g.state, [[1, 2], [3, 4], [5, 6], [8, 7]])
-        g.display()
+        # g.display()
 
 if __name__ == '__main__':
     unittest.main()
