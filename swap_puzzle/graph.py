@@ -3,6 +3,7 @@ This is the graph module. It contains a minimalistic Graph class.
 """
 from grid import Grid
 from collections import deque
+import heapq
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 
@@ -38,6 +39,7 @@ class Graph:
         self.nb_edges = 0
         self.edges = []
         self.vertices = dict()
+        
     
     def __str__(self):
         """
@@ -188,6 +190,9 @@ class Graph:
                             self.vertices[(new_node, current_node)] = (i,j),(ni,nj)
                             if new_node == sorted_node:
                                 return None
+                            
+    def heuristic():
+        
     @classmethod
     def graph_from_file(cls, file_name):
         """
