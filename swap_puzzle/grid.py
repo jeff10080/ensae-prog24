@@ -177,24 +177,20 @@ class Grid():
 
         swap_seq = swap_h + swap_v
         return swap_seq
-
-    def find(self,i2,j2):
-        a = i2*self.n + j2 +1
-        for i1 in range(self.m):
-            for j1 in range(self.n):
-                if self.state[i1][j1] == a:
-                    return i1,j1
     
-    def fetch(self,i2,j2):
-        i1,j1 = self.find(i2,j2)
-        return self.move_seq(i1,i2,j1,j2) 
-
-    def heuristique(self):
-        heur = 0
+    
+    def heuristic(self):
+        heuristic = 0
+        pos_m,pos_n = 0,0
         for i in range(self.m):
-            for j in range(self.n):
-                heur += len(self.fetch(self,i,j))
-        return heur/2
+            for j in range (self.n):
+                pos_m,pos_n = i,j
+                dest_m, dest_n = (self.state[i][j]-1)// self.n, (self.state[i][j]-1) %self.n #parce qu'on commence à 1
+                print(dest_m,dest_n)
+                heuristic += abs(dest_m -pos_m) + abs(dest_n -pos_n)
+                print(heuristic)
+        return heuristic//2
+
 
 
     @classmethod
