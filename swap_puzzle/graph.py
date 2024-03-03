@@ -194,7 +194,18 @@ class Graph:
     #https://www.redblobgames.com/pathfinding/a-star/implementation.html                       
     
                 
-
+    def heuristic(self,node):
+        heuristic = 0
+        pos_m,pos_n = 0,0
+        m,n= len(node),len(node[0])
+        for i in range(m):
+            for j in range (n):
+                pos_m,pos_n = i,j
+                dest_m, dest_n = (node[i][j]-1)// n, (node[i][j]-1) %n #parce qu'on commence à 1
+                print(dest_m,dest_n)
+                heuristic += abs(dest_m -pos_m) + abs(dest_n -pos_n)
+                print(heuristic)
+        return heuristic//2
 
         
 
@@ -216,7 +227,7 @@ class Graph:
                 new_cost = cost_so_far[current] + 1  # Assuming each edge has a cost of 1
                 if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
                     cost_so_far[next_node] = new_cost
-                    priority = new_cost + heuristic(next_node, goal)
+                    priority = new_cost + self.heuristic(next_node)
                     heappush(heap, (priority, next_node))
                     came_from[next_node] = current
 
