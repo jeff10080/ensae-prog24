@@ -3,7 +3,7 @@ This is the graph module. It contains a minimalistic Graph class.
 """
 from grid import Grid
 from collections import deque
-import heapq
+from heapq import *
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 
@@ -191,7 +191,36 @@ class Graph:
                             if new_node == sorted_node:
                                 return None
                             
-    def heuristic():
+    #https://www.redblobgames.com/pathfinding/a-star/implementation.html                       
+    
+                
+
+
+        
+
+    def a_star(self, start, goal):
+        heap = []
+        heappush(heap, (0, start))
+        came_from = {}
+        cost_so_far = {}
+        came_from[start] = None
+        cost_so_far[start] = 0
+
+        while heap:
+            current_cost, current = heappop(heap)
+
+            if current == goal:
+                break
+
+            for next_node in self.graph[current]:
+                new_cost = cost_so_far[current] + 1  # Assuming each edge has a cost of 1
+                if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
+                    cost_so_far[next_node] = new_cost
+                    priority = new_cost + heuristic(next_node, goal)
+                    heappush(heap, (priority, next_node))
+                    came_from[next_node] = current
+
+        return came_from, cost_so_far
         
     @classmethod
     def graph_from_file(cls, file_name):
