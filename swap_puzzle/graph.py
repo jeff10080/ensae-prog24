@@ -122,36 +122,39 @@ class Graph:
                             self.vertices[(new_node, current_node)] = (i,j),(ni,nj)   
 
 
-    def bfs(self,src,dst):
+    def bfs(self, src, dst):
         """
-        Finds a shortest path from src to dst by BFS.  
+        Finds a shortest path from src to dst by BFS.
 
-        Parameters: 
+        Parameters:
         -----------
         src: NodeType
             The source node.
         dst: NodeType
             The destination node.
 
-        Output: 
+        Output:
         -------
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
-        """ 
+        """
         deja_vu = []
         path = dict()
         path[src] = [src]
         queue = deque([src])
-        while queue != deque():
+        while queue:
             u = queue.popleft()
             for v in self.graph[u]:
-                if v == dst:
-                    return path[u] + [v]
-                path[v] = path[u] + [v]
-                queue.append(v)
-            deja_vu.append(u)
+                if v not in deja_vu:
+                    if v == dst:
+                        return path[u] + [v]
+                    path[v] = path[u] + [v]
+                    queue.append(v)
+                    deja_vu.append(v)
         return None
-    
+
+
+
     def construct_grid_graph_bfs(self, initial_grid):
         """
         Constructs the graph representing all possible states of the swap puzzle starting from the initial grid.
