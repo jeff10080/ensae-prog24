@@ -221,7 +221,7 @@ class Graph:
             current_cost, current = heappop(heap)
 
             if current == goal:
-                break
+                return came_from, cost_so_far
 
             for next_node in self.graph[current]:
                 new_cost = cost_so_far[current] + 1  # Assuming each edge has a cost of 1
@@ -231,8 +231,11 @@ class Graph:
                     heappush(heap, (priority, next_node))
                     came_from[next_node] = current
 
-        return came_from, cost_so_far
+        raise ValueError('Goal cannot be reached.')
         
+        
+
+
     @classmethod
     def graph_from_file(cls, file_name):
         """
