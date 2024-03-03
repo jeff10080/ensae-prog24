@@ -230,6 +230,9 @@ class Graph:
                     priority = new_cost + self.heuristic(next_node)
                     heappush(heap, (priority, next_node))
                     came_from[next_node] = current
+                    
+        if current == goal:
+                return came_from, cost_so_far
 
         raise ValueError('Goal cannot be reached.')
         
