@@ -217,7 +217,7 @@ class Graph:
         cost_so_far[start] = 0
 
         while heap:
-            current_cost, current, path = heappop(heap)
+            current, path = heappop(heap)[1:]
 
             if current == goal:
                 return path 
@@ -262,8 +262,9 @@ class Graph:
         
 
         while heap:
-            current_cost,current_grid = heappop(heap)
+            current_grid = heappop(heap)[1]
             current_node = current_grid.__hash__()
+            new_cost = cost_so_far[current_node] + 1  # Assuming each edge has a cost of 1
             if current_node == sorted_node:
                 return None
             for i in range(current_grid.m):
@@ -279,7 +280,7 @@ class Graph:
                             self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
                             self.vertices[(new_node, current_node)] = (i,j),(ni,nj)
                             
-                            new_cost = cost_so_far[current_node] + 1  # Assuming each edge has a cost of 1
+                            
                             if new_node not in cost_so_far or new_cost < cost_so_far[new_node]:
                                 cost_so_far[new_node] = new_cost
                                 priority = new_cost + self.heuristic(new_node)
