@@ -3,16 +3,12 @@ import pygame
 
 class Game():
     def __init__(self,grid):
-        self.display = grid.display()
         self.m = grid.m
         self.n = grid.n
         self.state = grid.state
     
     def display(self):
         pygame.init()
-        screen = pygame.display.set_mode((1280, 853))
-        background_image = "Fond_libre_droit_Pixabay.jpg"
-        background = pygame.image.load(background_image).convert()
 
         width = self.n * 100
         height = self.m * 100
