@@ -44,8 +44,6 @@ class Grid():
             initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
         self.state = initial_state
 
-    
-
     def display(self):
         pygame.init()
 
@@ -82,6 +80,8 @@ class Grid():
                     if 0 < event.pos[0] < width and height < event.pos[1] < height + 100:
                         pygame.quit()
                         return
+
+    
 
 
     def __hash__(self):
