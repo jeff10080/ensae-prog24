@@ -213,9 +213,7 @@ class Graph:
     def a_star(self, start, goal):
         heap = []
         heappush(heap, (0, start, [start]))
-        came_from = {}
         cost_so_far = {}
-        came_from[start] = None
         cost_so_far[start] = 0
 
         while heap:
@@ -230,14 +228,64 @@ class Graph:
                     cost_so_far[next_node] = new_cost
                     priority = new_cost + self.heuristic(next_node)
                     heappush(heap, (priority, next_node,path + [next_node]))
-                    came_from[next_node] = current
+                    
                     
         if current == goal:
                 return path
 
         raise ValueError('Goal cannot be reached.')
         
+    def construct_a_star(self, initial_grid):
+        """
+        Constructs the graph representing all possible states of the swap puzzle starting from the initial grid.
+
+        Parameters:
+        -----------
+        initial_grid: Grid
+            An instance of the Grid class representing the initial state of the puzzle.
+        """
+
+        initial_node = initial_grid.__hash__()
+        sorted_node = Grid(initial_grid.m,initial_grid.n).__hash__()
+        if len(self.graph) == 0:
+            self.graph[initial_node] = []
+            self.nb_nodes = 1
+            self.nodes.append(initial_node)
         
+        
+
+
+        heap = []
+        heappush(heap, (0, initial_grid))
+        cost_so_far = {}
+        cost_so_far[initial_node] = 0
+        
+
+        while heap:
+            current_cost,current_grid = heappop(heap)
+            current_node = current_grid.__hash__()
+            if current_node == sorted_node:
+                return None
+            for i in range(current_grid.m):
+                for j in range(current_grid.n):
+                    for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+                        if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
+                            new_grid = current_grid.copy()
+                            new_grid.swap((i, j), (ni, nj))
+
+                            new_node = new_grid.__hash__()
+                            self.add_edge(current_node, new_node)
+                            # if (current_node,new_node) not in self.edges:
+                            self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
+                            self.vertices[(new_node, current_node)] = (i,j),(ni,nj)
+                            
+                            new_cost = cost_so_far[current_node] + 1  # Assuming each edge has a cost of 1
+                            if new_node not in cost_so_far or new_cost < cost_so_far[new_node]:
+                                cost_so_far[new_node] = new_cost
+                                priority = new_cost + self.heuristic(new_node)
+                                heappush(heap, (priority, new_grid))
+                                
+    
 
 
     @classmethod
