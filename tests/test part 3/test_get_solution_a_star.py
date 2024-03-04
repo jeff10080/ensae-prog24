@@ -14,10 +14,8 @@ class Test_GetSolutions(unittest.TestCase):
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
         swap_sol = s.get_solution_a_star(grid)
-        print(swap_sol)
         graph = Graph()
         graph.construct_a_star(grid)
-        print(graph.vertices)
         grid.swap_seq(swap_sol)
         self.assertEqual(grid.is_sorted(), True)
 
