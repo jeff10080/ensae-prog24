@@ -7,7 +7,7 @@ import unittest
 from graph import Graph
 from grid import Grid
 
-class Test_bfs(unittest.TestCase):
+class Test_a_star(unittest.TestCase):
     def test_a_star(self):
         grid= Grid.grid_from_file("input/grid1.in")
         initial_node = grid.__hash__()
