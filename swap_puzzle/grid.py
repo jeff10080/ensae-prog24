@@ -106,15 +106,33 @@ class Grid():
 
             pygame.display.flip()  # Mettre à jour l'affichage
             clock.tick(30)  # Limiter la vitesse de la boucle principale à 30 images par seconde
-        
-        if self.is_sorted():
-            font_win = pygame.font.Font(None, 150)
-            text_win = font_win.render("YOU WIN", True, (255, 255, 255))
-            text_rect_win = text_win.get_rect(center=(width // 2, height // 2))
-            screen.blit(text_win, text_rect_win)
-            pygame.display.flip() 
+            
         screen.fill((0, 0, 0))  # Effacer l'écran   
-        screen.fill((0, 0, 0))  # Effacer l'écran
+        if self.is_sorted():
+
+            # Créer une surface de l'écran complet
+            
+            font_win = pygame.font.Font(None, 300)
+            text_win = font_win.render("YOU WIN", True, (255, 255, 255))
+            
+            screen_info = pygame.display.Info()
+            screen_width, screen_height = screen_info.current_w, screen_info.current_h
+
+            # Create a new surface with dimensions based on the text size
+            screen = pygame.display.set_mode((text_win.get_width(), text_win.get_height()))
+
+            # Center the window on the screen
+            window_rect = screen.get_rect(center=(screen_width // 2, screen_height // 2))
+            text_rect = text_win.get_rect(center=window_rect.center)
+            
+            # Blit text onto the surface at the centered position
+            screen.blit(text_win, text_rect.topleft)
+
+            pygame.display.flip()
+
+            # Wait for a short moment for the player to see the "YOU WIN" message
+            pygame.time.delay(2000)
+        
 
         for i in range(self.m):
             for j in range(self.n):
@@ -126,7 +144,7 @@ class Grid():
                 screen.blit(text, text_rect)
                 if (i, j) in self.selected_cells:
                     pygame.draw.rect(screen, (255, 255, 0), cell_rect, 5) 
-        pygame.time.delay(2000)
+        
         pygame.quit()
 
     def __hash__(self):
