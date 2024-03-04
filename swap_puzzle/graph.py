@@ -214,28 +214,28 @@ class Graph:
 
     def a_star(self, start, goal):
         heap = []
-        heappush(heap, (0, start))
+        heappush(heap, (0, start, [start]))
         came_from = {}
         cost_so_far = {}
         came_from[start] = None
         cost_so_far[start] = 0
 
         while heap:
-            current_cost, current = heappop(heap)
+            current_cost, current, path = heappop(heap)
 
             if current == goal:
-                return came_from, cost_so_far
+                return path 
 
             for next_node in self.graph[current]:
                 new_cost = cost_so_far[current] + 1  # Assuming each edge has a cost of 1
                 if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
                     cost_so_far[next_node] = new_cost
                     priority = new_cost + self.heuristic(next_node)
-                    heappush(heap, (priority, next_node))
+                    heappush(heap, (priority, next_node,path + [next_node]))
                     came_from[next_node] = current
                     
         if current == goal:
-                return came_from, cost_so_far
+                return path
 
         raise ValueError('Goal cannot be reached.')
         
