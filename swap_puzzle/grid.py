@@ -89,6 +89,9 @@ class Grid():
         return state_tuple #hash ne marche que sur un tuple
     def __eq__(self, other):
        return self.m == other.m and self.n == other.n and self.state == other.state
+   
+    def __lt__(self,other): #quand le coût est égal pour 2 différentes grilles, on les trie par ordre croissant
+        return True
 
 
     
