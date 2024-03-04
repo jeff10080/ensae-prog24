@@ -217,20 +217,20 @@ class Graph:
         cost_so_far[start] = 0
 
         while heap:
-            current, path = heappop(heap)[1:]
+            current_node, path = heappop(heap)[1:]
 
-            if current == goal:
+            if current_node == goal:
                 return path 
 
-            for next_node in self.graph[current]:
-                new_cost = cost_so_far[current] + 1  # Assuming each edge has a cost of 1
-                if next_node not in cost_so_far or new_cost < cost_so_far[next_node]:
-                    cost_so_far[next_node] = new_cost
-                    priority = new_cost + self.heuristic(next_node)
-                    heappush(heap, (priority, next_node,path + [next_node]))
+            for new_node in self.graph[current_node]:
+                new_cost = cost_so_far[current_node] + 1  # Assuming each edge has a cost of 1
+                if new_node not in cost_so_far or new_cost < cost_so_far[new_node]:
+                    cost_so_far[new_node] = new_cost
+                    priority = new_cost + self.heuristic(new_node)
+                    heappush(heap, (priority, new_node,path + [new_node]))
                     
                     
-        if current == goal:
+        if current_node == goal:
                 return path
 
         raise ValueError('Goal cannot be reached.')
