@@ -205,9 +205,7 @@ class Graph:
             for j in range (n):
                 pos_m,pos_n = i,j
                 dest_m, dest_n = (node[i][j]-1)// n, (node[i][j]-1) %n #parce qu'on commence à 1
-                print(dest_m,dest_n)
                 heuristic += abs(dest_m -pos_m) + abs(dest_n -pos_n)
-                print(heuristic)
         return heuristic//2
 
         
