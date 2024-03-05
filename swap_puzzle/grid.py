@@ -114,19 +114,19 @@ class Grid():
             
             font_win = pygame.font.Font(None, 300)
             text_win = font_win.render("YOU WIN", True, (255, 255, 255))
+            text_width, text_height = text_win.get_width(), text_win.get_height()
+
             
             screen_info = pygame.display.Info()
             screen_width, screen_height = screen_info.current_w, screen_info.current_h
 
             # Create a new surface with dimensions based on the text size
-            screen = pygame.display.set_mode((text_win.get_width(), text_win.get_height()))
+            screen = pygame.display.set_mode(text_width, text_height)
 
             # Center the window on the screen
-            window_rect = screen.get_rect(center=(screen_width // 2, screen_height // 2))
-            text_rect = text_win.get_rect(center=window_rect.center)
-            
-            # Blit text onto the surface at the centered position
-            screen.blit(text_win, text_rect.topleft)
+            window_rect = screen.get_rect(center=(screen_width, screen_height))
+            text_rect_win = text_win.get_rect(center=window_rect.center)
+            screen.blit(text_win, text_rect_win)
 
             pygame.display.flip()
 
