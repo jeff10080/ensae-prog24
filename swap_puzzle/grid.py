@@ -121,10 +121,10 @@ class Grid():
             screen_width, screen_height = screen_info.current_w, screen_info.current_h
 
             # Create a new surface with dimensions based on the text size
-            screen = pygame.display.set_mode(text_width, text_height)
+            screen = pygame.display.set_mode((text_width, text_height))
 
             # Center the window on the screen
-            window_rect = screen.get_rect(center=(screen_width, screen_height))
+            window_rect = screen.get_rect(center=(text_width, text_height))
             text_rect_win = text_win.get_rect(center=window_rect.center)
             screen.blit(text_win, text_rect_win)
 
