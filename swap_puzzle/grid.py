@@ -2,8 +2,8 @@ import copy
 """
 This is the grid module. It contains the Grid class and its associated methods.
 """
-import pygame
-import random
+
+import random as rd
 import sys
 
 
@@ -22,7 +22,7 @@ class Grid():
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
-    def __init__(self, m, n, initial_state=None, barriers =[]):
+    def __init__(self, m, n, initial_state=None, barriers =[],random = False):
         """
         Initializes the grid.
 
@@ -42,10 +42,15 @@ class Grid():
         self.n = n
         if not initial_state:
             initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
+        if random:
+            initial_state= list(range(1,m*n+1))
+            rd.shuffle(initial_state)
+            initial_state = [[initial_state[i] for i in range(i * n , (i + 1) * n )]for i in range(m)]
+       
         self.state = initial_state
+    
         self.barriers = barriers
-        
-
+           
     
 
     
@@ -59,6 +64,7 @@ class Grid():
    
     def __lt__(self,other): #quand le coût est égal pour 2 différentes grilles, on les trie par ordre croissant
         return True
+    
 
 
     
