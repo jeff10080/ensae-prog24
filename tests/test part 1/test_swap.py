@@ -10,6 +10,7 @@ class Test_Swap(unittest.TestCase):
         grid = Grid.grid_from_file("input/grid1.in")
         grid.swap((3,0), (3,1))
         self.assertEqual(grid.state, [[1, 2], [3, 4], [5, 6], [7, 8]])
+        grid.swap((5,0), (5,1))
 
         
 if __name__ == '__main__':
