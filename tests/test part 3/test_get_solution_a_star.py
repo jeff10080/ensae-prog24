@@ -10,7 +10,6 @@ from graph import Graph
 class Test_GetSolutions(unittest.TestCase):
     def test_grid1(self):
         grid = Grid.grid_from_file("input/grid4.in")
-        grid_sol = grid.copy()
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
         swap_sol = s.get_solution_a_star(grid)
