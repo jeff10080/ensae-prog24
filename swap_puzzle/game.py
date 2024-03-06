@@ -1,6 +1,7 @@
 from grid import Grid
 import pygame
 
+
 class Game(Grid):
     def __init__(self,grid,barriers = []):
         self.m = grid.m
@@ -127,6 +128,31 @@ class Game(Grid):
       
         # Quit Pygame
         pygame.quit()
+    
+    def heuristic(self): #recodé pour ne pas avoir à recréer un graph
+        heuristic = 0
+        pos_m,pos_n = 0,0
+        m,n= len(self.state),len(self.state[0])
+        for i in range(m):
+            for j in range (n):
+                pos_m,pos_n = i,j
+                dest_m, dest_n = (self.state[i][j]-1)// n, (self.state[i][j]-1) %n #parce qu'on commence à 1
+                heuristic += abs(dest_m -pos_m) + abs(dest_n -pos_n)
+        return heuristic//2
+    
+    def __lt__(self,other):
+        return self.heuristic() < other.heuristic()
+    
+    def __le__(self,other):
+        return self.heuristic() <= other.heuristic()
+    
+    
+    
+        
+        
+        
+        
+    
     
         
         
