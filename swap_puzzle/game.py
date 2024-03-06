@@ -1,5 +1,6 @@
 from grid import Grid
 import pygame
+import sys
 
 
 class Game(Grid):
@@ -128,6 +129,44 @@ class Game(Grid):
       
         # Quit Pygame
         pygame.quit()
+
+    def choose_level(self):
+        pygame.init()
+
+        screen_info = pygame.display.Info()
+        screen_width, screen_height = screen_info.current_w, screen_info.current_h
+        screen = pygame.display.set_mode((screen_width, screen_height))
+        clock = pygame.time.Clock()
+        font = pygame.font.Font(None, 36)
+        input_text = ""
+
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        try:
+                            level = int(input_text)
+                            self.level_grid(level)
+                            return
+                        except ValueError:
+                            print("Invalid input. Please enter a valid integer.")
+                    elif event.key == pygame.K_BACKSPACE:
+                        input_text = input_text[:-1]
+                    else:
+                        input_text += event.unicode
+
+            screen.fill((255, 255, 255))
+            text_surface = font.render("Enter Level:", True, (0, 0, 0))
+            screen.blit(text_surface, (50, 50))
+            input_surface = font.render(input_text, True, (0, 0, 0))
+            pygame.draw.rect(screen, (0, 0, 0), (180, 50, 140, 30), 2)
+            screen.blit(input_surface, (185, 55))
+
+            pygame.display.flip()
+            clock.tick(30)
     
     
     
