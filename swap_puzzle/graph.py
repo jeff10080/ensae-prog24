@@ -4,6 +4,7 @@ This is the graph module. It contains a minimalistic Graph class.
 from grid import Grid
 from collections import deque
 from heapq import *
+import random
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 
@@ -285,6 +286,9 @@ class Graph:
                                 cost_so_far[new_node] = new_cost
                                 priority = new_cost + self.heuristic(new_node)
                                 heappush(heap, (priority, new_grid))
+    
+        
+                   
                                 
     
 
