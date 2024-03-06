@@ -22,12 +22,14 @@ class Grid():
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
-    def __init__(self, m, n, initial_state=None, barriers =[],random = False):
+    def __init__(self, m, n, initial_state=None, barriers =[]):
         """
         Initializes the grid.
 
         Parameters:
         -----------
+        
+        
         m: int
             The number of rows in the grid
         n: int
@@ -42,10 +44,6 @@ class Grid():
         self.n = n
         if not initial_state:
             initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
-        if random:
-            initial_state= list(range(1,m*n+1))
-            rd.shuffle(initial_state)
-            initial_state = [[initial_state[i] for i in range(i * n , (i + 1) * n )]for i in range(m)]
        
         self.state = initial_state
     
@@ -53,7 +51,12 @@ class Grid():
            
     
 
-    
+    def rand_grid(self):
+        state= list(range(1,(self.m)*(self.n)+1))
+        rd.shuffle(state)
+        self.state = [[state[i] for i in range(i * (self.n) , (i + 1) * (self.n) )]for i in range(self.m)]
+        return self
+        
 
 
     def __hash__(self):
@@ -115,7 +118,10 @@ class Grid():
 
     def test_valid_swap(self,cell1,cell2):
         i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
-        return (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1) and (cell1,cell2) not in self.barriers
+        cond1 = (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
+        cond2 = (cell1,cell2) not in self.barriers
+        cond3 = (0<=i1 <self.m) and (0<=i2 <self.m) and (0<=j1 <self.m) and (0<=j2 <self.m)
+        return cond1 and cond2 and cond3
     
     
     
@@ -166,10 +172,38 @@ class Grid():
             for j in range (self.n):
                 pos_m,pos_n = i,j
                 dest_m, dest_n = (self.state[i][j]-1)// self.n, (self.state[i][j]-1) %self.n #parce qu'on commence à 1
-                print(dest_m,dest_n)
                 heuristic += abs(dest_m -pos_m) + abs(dest_n -pos_n)
-                print(heuristic)
         return heuristic//2
+
+    
+    def compare_difficulty(self,other):
+        print(self.heuristic(),other.heuristic())
+        return self.heuristic() <= other.heuristic()
+    
+    def level_grid(self,lvl= 1):
+        i1, j1 = 1,1
+        i2, j2 =2,2
+        iteration =0
+        current_heuristic = 0
+        new_heuristic = 0
+        while current_heuristic <lvl  and iteration < 5000:
+            i1, j1 = rd.randint(0, self.m - 1), rd.randint(0, self.n - 1)
+            i2, j2 = rd.choice([i1-1, i1+1]), rd.choice([j1-1, j1+1])
+
+            # Ensure the swap is valid and not in barriers
+            while not self.test_valid_swap((i1,j1), (i2,j2)):
+                i1, j1 = rd.randint(0, self.m - 1), rd.randint(0, self.n - 1)
+                i2, j2 = rd.choice([i1-1, i1, i1+1]), rd.choice([j1-1,j1, j1+1])
+            
+            self.swap((i1,j1), (i2,j2))
+            new_heuristic = self.heuristic()
+            if current_heuristic <= new_heuristic:
+                current_heuristic = new_heuristic
+            else:
+                self.swap((i1,j1), (i2,j2)) #on revient en arrière car le swap était inutile
+                
+            iteration += 1
+        return self
 
 
 
