@@ -194,6 +194,10 @@ class Grid():
             while not self.test_valid_swap((i1,j1), (i2,j2)):
                 i1, j1 = rd.randint(0, self.m - 1), rd.randint(0, self.n - 1)
                 i2, j2 = rd.choice([i1-1, i1, i1+1]), rd.choice([j1-1,j1, j1+1])
+                
+                # Ensure i2 and j2 are within bounds
+                i2 = max(0, min(self.m - 1, i2))
+                j2 = max(0, min(self.n - 1, j2))
             
             self.swap((i1,j1), (i2,j2))
             new_heuristic = self.heuristic()
