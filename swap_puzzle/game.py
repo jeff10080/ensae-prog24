@@ -73,7 +73,7 @@ class Game(Grid):
 
             pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
             font = pygame.font.Font(None, 72)
-            text = font.render("Quitter", True, (255, 255, 255))
+            text = font.render("Leave", True, (255, 255, 255))
             text_rect = text.get_rect(center=(width // 2, height + 50))
             screen.blit(text, text_rect)
             
@@ -179,7 +179,7 @@ class Game(Grid):
                 screen.fill((0, 0, 0))
 
                 # Message "Enter Level:"
-                text_surface = font.render("Niveau de la Grille", None, (255, 255, 255))
+                text_surface = font.render("Grid Level", None, (255, 255, 255))
                 text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 4))
                 screen.blit(text_surface, text_rect)
 
@@ -191,13 +191,13 @@ class Game(Grid):
 
                 # Bouton "Submit"
                 pygame.draw.rect(screen, (0, 255, 0), submit_button_rect)
-                text = font.render("Valider", True, (255, 255, 255))
+                text = font.render("Submit", True, (255, 255, 255))
                 text_rect = text.get_rect(center=submit_button_rect.center)
                 screen.blit(text, text_rect)
 
                 # Bouton "Quitter"
                 pygame.draw.rect(screen, (255, 0, 0), quit_button_rect)
-                text = font.render("Quitter", True, (255, 255, 255))
+                text = font.render("Leave", True, (255, 255, 255))
                 text_rect = text.get_rect(center=quit_button_rect.center)
                 screen.blit(text, text_rect)
 
@@ -238,29 +238,49 @@ class Game(Grid):
         if swap_count == optimal_swap_count:
             text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 255, 255))
         elif swap_count <= optimal_swap_count +2:
-            text_surface = font.render(rd.choices(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 255, 255))
         elif swap_count > optimal_swap_count + 15:
-            text_surface = font.render(rd.choices(["...", "DISAPOINTING", "DO YOU KNOW THE RULES?", " LEFT THE CHAT..."]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["...", "DISAPOINTING", "YOU'RE KIDDING?", " LEFT THE CHAT..."]),  True, (255, 255, 255))
         else:
-            text_surface = font.render(rd.choices(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
             
           
 
         # Get the text size
         text_width, text_height = text_surface.get_size()
-
+        
         # Calculate the offset for centering
         screen_center = (screen_width // 2, screen_height // 2)
         offset_x = screen_center[0] - text_width // 2
         offset_y = screen_center[1] - text_height // 2
+        
+        # Define the font and text for the score information
+        font_small = pygame.font.SysFont("Arial", 50)
+        text_small = font_small.render(f"Votre score est de {swap_count}. Le meilleur score possible est de {optimal_swap_count}", True, (255, 255, 255))
+
+        # Get the text size for the small phrase
+        text_small_width, text_small_height = text_small.get_size()
+
+        # Calculate the offset for centering the small phrase
+        offset_x_small = screen_center[0] - text_small_width // 2
+        offset_y_small = offset_y + text_height + 20  # Adjusted for spacing
+
+        # Fill the screen with black
+        screen.fill((0, 0, 0))
+
+        
+
+        
         # Fill the screen with black
         screen.fill((0, 0, 0))
 
         # Blit the text to the screen
         screen.blit(text_surface, (offset_x, offset_y))
+        
+        screen.blit(text_small, (offset_x_small, offset_y_small))
           # Update the display
-        pygame.time.delay(2000) 
         pygame.display.flip()
+        pygame.time.delay(2000) 
 
         
         
@@ -273,7 +293,6 @@ class Game(Grid):
         height = self.m * 100
 
         screen = pygame.display.set_mode((width, height + 100))  # Ajout de l'espace pour le bouton
-        pygame.display.flip()
         
 
         for swap in swap_sol:
