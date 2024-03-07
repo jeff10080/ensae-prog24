@@ -3,6 +3,8 @@ import pygame
 import sys
 from solver import Solver
 import random as rd
+import threading
+
 
 
 class Game(Grid):
@@ -17,6 +19,8 @@ class Game(Grid):
     
 
     def display(self):
+        self.music_player()
+       
         level = self.choose_level()
         init_grid= self.copy()
         pygame.init()
@@ -101,6 +105,7 @@ class Game(Grid):
                 if (i, j) in self.selected_cells:
                     pygame.draw.rect(screen, (255, 255, 0), cell_rect, 5) 
         
+        
         pygame.quit()
     
 
@@ -132,9 +137,10 @@ class Game(Grid):
         # Blit the text to the screen
         screen.blit(text_surface, (offset_x, offset_y))
           # Update the display
-        pygame.display.update()
+        pygame.display.flip()
 
         pygame.time.delay(2000)
+        
       
         # Quit Pygame
         pygame.quit()
@@ -153,13 +159,15 @@ class Game(Grid):
         input_text = ""
         
         # Load the background image
-        background_image = pygame.image.load(r"C:\Users\avner\OneDrive\Documents\GitHub\input\Fond_libre_droit_Pixabay.jpg")  # Change this to the path of your image
+        background_image = pygame.image.load(r"C:\Users\avner\OneDrive\Documents\GitHub\input\Fond_libre_droit_Pixabay.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
+        play_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.8, screen_width // 2.5, font_size + 20)
 
         submit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 2, screen_width // 2.5, font_size + 20)
         quit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.6, screen_width // 2.5, font_size + 20)
+        running = True
 
-        while True:
+        while running == True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -182,11 +190,38 @@ class Game(Grid):
 
                 screen.fill((0, 0, 0))
                 screen.blit(background_image, (0, 0))
+                 # Bouton "Play"
+                pygame.draw.rect(screen, (0, 0, 255), play_button_rect)
+                text = font.render("Play", True, (255, 255, 255))
+                text_rect = text.get_rect(center=play_button_rect.center)
+                screen.blit(text, text_rect)
                 pygame.display.flip()
-                pygame.time.delay(2000)
+                if play_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    running = False
                 
-                screen.fill((0, 0, 0))
+        screen.fill((0, 0, 0))
+        running = True
+        while running == True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        try:
+                            level = int(input_text)
+                            self.level_grid(level)
+                            running = False
+                        except ValueError:
+                            print("Invalid input. Please enter a valid integer.")
+                    elif event.key == pygame.K_BACKSPACE:
+                        input_text = input_text[:-1]
+                    else:
+                        input_text += event.unicode
                 
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_click = pygame.mouse.get_pressed()
+
 
                 # Message "Enter Level:"
                 text_surface = font.render("Grid Level", None, (255, 255, 255))
@@ -210,6 +245,7 @@ class Game(Grid):
                 text = font.render("Leave", True, (255, 255, 255))
                 text_rect = text.get_rect(center=quit_button_rect.center)
                 screen.blit(text, text_rect)
+                screen.fill((0, 0, 0))
 
                 # Vérifier si le clic est dans le rectangle du bouton "Valider"
                 if submit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
@@ -222,11 +258,15 @@ class Game(Grid):
 
                 # Vérifier si le clic est dans le rectangle du bouton "Quitter"
                 elif quit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+    
                     pygame.quit()
                     sys.exit()
 
                 pygame.display.flip()
                 clock.tick(30)
+        pygame.quit()
+    
+   
 
     def BestSol(self,init_grid,swap_count):
         pygame.init()
@@ -291,10 +331,6 @@ class Game(Grid):
           # Update the display
         pygame.display.flip()
         pygame.time.delay(2000) 
-
-        
-        
-        
         
         pygame.quit()
         pygame.init()
@@ -349,40 +385,22 @@ class Game(Grid):
             text_rect = text.get_rect(center=(width // 2, height + 50))
             screen.blit(text, text_rect)
             
-                        
-
-            
             pygame.display.flip()
         pygame.time.delay(1000)
+        # Stop the sound
         
         pygame.quit()
         
         
-            
-            
-    
-            
-            
-            
+    def music_player(self):
+        sound_file_path = "C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\input\\phantom-116107.mp3"
+        pygame.mixer.init()
+        pygame.mixer.music.load(sound_file_path)
+        pygame.mixer.music.play()
+
+
+
 
         
-    
-        
-        
-        
-    
-    
-    
-    
-    
-        
-        
-        
-        
-    
-    
-        
-        
-        
-        
+       
         
