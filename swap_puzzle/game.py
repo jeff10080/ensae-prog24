@@ -2,6 +2,7 @@ from grid import Grid
 import pygame
 import sys
 from solver import Solver
+import random as rd
 
 
 class Game(Grid):
@@ -27,6 +28,7 @@ class Game(Grid):
         screen = pygame.display.set_mode((width, height + 100))  # Ajout de l'espace pour le bouton
 
         clock = pygame.time.Clock()  # Créer une horloge pour gérer la vitesse de la boucle principale
+        swap_count = 0
 
         running = True
         while running:
@@ -48,6 +50,7 @@ class Game(Grid):
                             elif self.test_valid_swap(clicked_cell, selected_cell):
                                 self.swap(clicked_cell, selected_cell)
                                 self.selected_cells = []
+                                swap_count += 1
                                 if self.is_sorted():
                                     print("YOU WIN")
                                     running = False
@@ -85,7 +88,7 @@ class Game(Grid):
             # Créer une surface avec les dimensions du texte "YOU WIN"
             self.Victory()
             pygame.time.delay(200)
-            self.BestSol(init_grid)
+            self.BestSol(init_grid,swap_count)
             
         for i in range(self.m):
             for j in range(self.n):
@@ -136,6 +139,8 @@ class Game(Grid):
         # Quit Pygame
         pygame.quit()
 
+    
+
     def choose_level(self):
         pygame.init()
 
@@ -143,8 +148,12 @@ class Game(Grid):
         screen_width, screen_height = screen_info.current_w, screen_info.current_h
         screen = pygame.display.set_mode((screen_width, screen_height))
         clock = pygame.time.Clock()
-        font = pygame.font.Font(None, 36)
+        font_size = screen_height // 15
+        font = pygame.font.SysFont("cambriamath", font_size)
         input_text = ""
+
+        submit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 2, screen_width // 2.5, font_size + 20)
+        quit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.6, screen_width // 2.5, font_size + 20)
 
         while True:
             for event in pygame.event.get():
@@ -164,22 +173,100 @@ class Game(Grid):
                     else:
                         input_text += event.unicode
 
-            screen.fill((255, 255, 255))
-            text_surface = font.render("Enter Level:", True, (0, 0, 0))
-            screen.blit(text_surface, (50, 50))
-            input_surface = font.render(input_text, True, (0, 0, 0))
-            pygame.draw.rect(screen, (0, 0, 0), (180, 50, 140, 30), 2)
-            screen.blit(input_surface, (185, 55))
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_click = pygame.mouse.get_pressed()
 
-            pygame.display.flip()
-            clock.tick(30)
-    
-    def BestSol(self,init_grid):
-        pygame.quit()
+                screen.fill((0, 0, 0))
+
+                # Message "Enter Level:"
+                text_surface = font.render("Niveau de la Grille", None, (255, 255, 255))
+                text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 4))
+                screen.blit(text_surface, text_rect)
+
+                # Champ de saisie
+                input_surface = font.render(input_text, True, (255, 255, 255))
+                input_rect = pygame.Rect((screen_width - screen_width // 3) // 2, screen_height // 3, screen_width // 3, font_size + 10)
+                pygame.draw.rect(screen, (255, 255, 255), input_rect, 2)
+                screen.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
+
+                # Bouton "Submit"
+                pygame.draw.rect(screen, (0, 255, 0), submit_button_rect)
+                text = font.render("Valider", True, (255, 255, 255))
+                text_rect = text.get_rect(center=submit_button_rect.center)
+                screen.blit(text, text_rect)
+
+                # Bouton "Quitter"
+                pygame.draw.rect(screen, (255, 0, 0), quit_button_rect)
+                text = font.render("Quitter", True, (255, 255, 255))
+                text_rect = text.get_rect(center=quit_button_rect.center)
+                screen.blit(text, text_rect)
+
+                # Vérifier si le clic est dans le rectangle du bouton "Valider"
+                if submit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    try:
+                        level = int(input_text)
+                        self.level_grid(level)
+                        return level
+                    except ValueError:
+                        print("Invalid input. Please enter a valid integer.")
+
+                # Vérifier si le clic est dans le rectangle du bouton "Quitter"
+                elif quit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    pygame.quit()
+                    sys.exit()
+
+                pygame.display.flip()
+                clock.tick(30)
+
+    def BestSol(self,init_grid,swap_count):
+        pygame.init()
+        
+        self.state =init_grid.state
         grid1 = Grid(self.m,self.n,init_grid.state)
         s = Solver(grid1)
         swap_sol = s.get_solution_a_star(init_grid)
+        optimal_swap_count = len(swap_sol)
         
+
+        # Set the screen size
+        screen_info = pygame.display.Info()
+        screen_width, screen_height = screen_info.current_w, screen_info.current_h
+        screen = pygame.display.set_mode((screen_width, screen_height))
+
+        # Define the font and text
+        font = pygame.font.SysFont("Arial", 150)
+        if swap_count == optimal_swap_count:
+            text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 255, 255))
+        elif swap_count <= optimal_swap_count +2:
+            text_surface = font.render(rd.choices(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 255, 255))
+        elif swap_count > optimal_swap_count + 15:
+            text_surface = font.render(rd.choices(["...", "DISAPOINTING", "DO YOU KNOW THE RULES?", " LEFT THE CHAT..."]),  True, (255, 255, 255))
+        else:
+            text_surface = font.render(rd.choices(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
+            
+          
+
+        # Get the text size
+        text_width, text_height = text_surface.get_size()
+
+        # Calculate the offset for centering
+        screen_center = (screen_width // 2, screen_height // 2)
+        offset_x = screen_center[0] - text_width // 2
+        offset_y = screen_center[1] - text_height // 2
+        # Fill the screen with black
+        screen.fill((0, 0, 0))
+
+        # Blit the text to the screen
+        screen.blit(text_surface, (offset_x, offset_y))
+          # Update the display
+        pygame.time.delay(2000) 
+        pygame.display.flip()
+
+        
+        
+        
+        
+        pygame.quit()
         pygame.init()
 
         width = self.n * 100
@@ -213,6 +300,7 @@ class Game(Grid):
             pygame.display.flip()
             pygame.time.delay(1000)
             
+            
             self.swap(swap[0],swap[1])
             for i in range(self.m):
                 for j in range(self.n):
@@ -239,6 +327,7 @@ class Game(Grid):
         pygame.time.delay(1000)
         
         pygame.quit()
+        
         
             
             
