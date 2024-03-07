@@ -1,6 +1,7 @@
 from grid import Grid
 import pygame
 import sys
+from solver import Solver
 
 
 class Game(Grid):
@@ -15,7 +16,10 @@ class Game(Grid):
     
 
     def display(self):
+        level = self.choose_level()
+        init_grid= self.copy()
         pygame.init()
+        
 
         width = self.n * 100
         height = self.m * 100
@@ -80,6 +84,8 @@ class Game(Grid):
         if self.is_sorted():
             # Créer une surface avec les dimensions du texte "YOU WIN"
             self.Victory()
+            pygame.time.delay(200)
+            self.BestSol(init_grid)
             
         for i in range(self.m):
             for j in range(self.n):
@@ -150,7 +156,7 @@ class Game(Grid):
                         try:
                             level = int(input_text)
                             self.level_grid(level)
-                            return
+                            return level
                         except ValueError:
                             print("Invalid input. Please enter a valid integer.")
                     elif event.key == pygame.K_BACKSPACE:
@@ -167,6 +173,85 @@ class Game(Grid):
 
             pygame.display.flip()
             clock.tick(30)
+    
+    def BestSol(self,init_grid):
+        pygame.quit()
+        grid1 = Grid(self.m,self.n,init_grid.state)
+        s = Solver(grid1)
+        swap_sol = s.get_solution_a_star(init_grid)
+        
+        pygame.init()
+
+        width = self.n * 100
+        height = self.m * 100
+
+        screen = pygame.display.set_mode((width, height + 100))  # Ajout de l'espace pour le bouton
+        pygame.display.flip()
+        
+
+        for swap in swap_sol:
+            self.selected_cells = [swap[0],swap[1]]
+            pygame.time.delay(1000)
+            
+            screen.fill((0, 0, 0))  # Effacer l'écran
+            for i in range(self.m):
+                for j in range(self.n):
+                    cell_rect = pygame.Rect(j * 100, i * 100, 100, 100)
+                    pygame.draw.rect(screen, (255, 255, 255), cell_rect)
+                    font = pygame.font.Font(None, 72)
+                    text = font.render(str(self.state[i][j]), True, (0, 0, 0))
+                    text_rect = text.get_rect(center=cell_rect.center)
+                    screen.blit(text, text_rect)
+                    if (i, j) in self.selected_cells:
+                        pygame.draw.rect(screen, (255, 255, 0), cell_rect, 5)
+            
+            pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
+            font = pygame.font.Font(None, 72)
+            text = font.render("Quitter", True, (255, 255, 255))
+            text_rect = text.get_rect(center=(width // 2, height + 50))
+            screen.blit(text, text_rect)
+            pygame.display.flip()
+            pygame.time.delay(1000)
+            
+            self.swap(swap[0],swap[1])
+            for i in range(self.m):
+                for j in range(self.n):
+                    cell_rect = pygame.Rect(j * 100, i * 100, 100, 100)
+                    pygame.draw.rect(screen, (255, 255, 255), cell_rect)
+                    font = pygame.font.Font(None, 72)
+                    text = font.render(str(self.state[i][j]), True, (0, 0, 0))
+                    text_rect = text.get_rect(center=cell_rect.center)
+                    screen.blit(text, text_rect)
+                    if (i, j) in self.selected_cells:
+                        pygame.draw.rect(screen, (255, 0, 255), cell_rect, 5)
+            
+            
+            pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
+            font = pygame.font.Font(None, 72)
+            text = font.render("Quitter", True, (255, 255, 255))
+            text_rect = text.get_rect(center=(width // 2, height + 50))
+            screen.blit(text, text_rect)
+            
+                        
+
+            
+            pygame.display.flip()
+        pygame.time.delay(1000)
+        
+        pygame.quit()
+        
+            
+            
+    
+            
+            
+            
+
+        
+    
+        
+        
+        
     
     
     
