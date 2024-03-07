@@ -151,6 +151,10 @@ class Game(Grid):
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
         input_text = ""
+        
+        # Load the background image
+        background_image = pygame.image.load(r"C:\Users\avner\OneDrive\Documents\GitHub\input\Fond_libre_droit_Pixabay.jpg")  # Change this to the path of your image
+        background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
 
         submit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 2, screen_width // 2.5, font_size + 20)
         quit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.6, screen_width // 2.5, font_size + 20)
@@ -177,6 +181,12 @@ class Game(Grid):
                 mouse_click = pygame.mouse.get_pressed()
 
                 screen.fill((0, 0, 0))
+                screen.blit(background_image, (0, 0))
+                pygame.display.flip()
+                pygame.time.delay(2000)
+                
+                screen.fill((0, 0, 0))
+                
 
                 # Message "Enter Level:"
                 text_surface = font.render("Grid Level", None, (255, 255, 255))
