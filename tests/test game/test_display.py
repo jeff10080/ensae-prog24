@@ -9,7 +9,7 @@ from game import Game
 
 class Test_Display(unittest.TestCase):
     def test_display(self):
-        g = Game(Grid.grid_from_file("input/grid1.in"))
+        g = Game(Grid(4,4))
         g.display()
         
         
