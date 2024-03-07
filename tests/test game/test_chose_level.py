@@ -17,7 +17,6 @@ class Test_Display(unittest.TestCase):
         s = Solver(grid1)
         swap_sol = s.get_solution_a_star(grid)
         print(swap_sol)
-        g.display()
         
         
 
