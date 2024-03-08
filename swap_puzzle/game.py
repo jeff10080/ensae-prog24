@@ -111,6 +111,8 @@ class Game(Grid):
     
 
     def Victory(self):
+        music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
+        self.music_player(music_path)
         
         pygame.display.quit()
         pygame.display.init()
@@ -140,7 +142,7 @@ class Game(Grid):
           # Update the display
         pygame.display.flip()
 
-        pygame.time.delay(2000)
+        pygame.time.delay(4000)
         
       
         # Quit Pygame
@@ -225,7 +227,7 @@ class Game(Grid):
     
 
     def welcome(self):
-        music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\input\\phantom-116107.mp3"
+        music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\phantom-116107.mp3"
         self.music_player(music_path)
         pygame.init()
 
@@ -238,7 +240,7 @@ class Game(Grid):
       
         
         # Load the background image
-        background_image = pygame.image.load(r"C:\Users\avner\OneDrive\Documents\GitHub\input\Fond_libre_droit_Pixabay.jpg")  
+        background_image = pygame.image.load("C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\Fond_libre_droit_Pixabay.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
         play_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.8, screen_width // 2.5, font_size + 20)
 
@@ -288,9 +290,9 @@ class Game(Grid):
         font = pygame.font.SysFont("Arial", 150)
         if swap_count == optimal_swap_count:
             text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 255, 255))
-        elif swap_count <= optimal_swap_count +2:
+        elif swap_count <= optimal_swap_count +5:
             text_surface = font.render(rd.choice(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 255, 255))
-        elif swap_count > optimal_swap_count + 15:
+        elif swap_count > optimal_swap_count + 25:
             text_surface = font.render(rd.choice(["...", "DISAPOINTING", "YOU'RE KIDDING?", " LEFT THE CHAT..."]),  True, (255, 255, 255))
         else:
             text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
@@ -308,7 +310,7 @@ class Game(Grid):
         
         # Define the font and text for the score information
         font_small = pygame.font.SysFont("Arial", 50)
-        text_small = font_small.render(f"Votre score est de {swap_count}. Le meilleur score possible est de {optimal_swap_count}", True, (255, 255, 255))
+        text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 255, 255))
 
         # Get the text size for the small phrase
         text_small_width, text_small_height = text_small.get_size()
@@ -326,7 +328,8 @@ class Game(Grid):
         screen.blit(text_small, (offset_x_small, offset_y_small))
           # Update the display
         pygame.display.flip()
-        pygame.time.delay(2000) 
+        pygame.time.delay(3500) 
+        
         
         pygame.display.quit()
         pygame.display.init()
@@ -379,10 +382,10 @@ class Game(Grid):
             text = font.render("Quitter", True, (255, 255, 255))
             text_rect = text.get_rect(center=(width // 2, height + 50))
             screen.blit(text, text_rect)
+            pygame.display.flip()
             pygame.time.delay(1500)
             
             
-            pygame.display.flip()
         pygame.time.delay(1500)
         # Stop the sound
         
