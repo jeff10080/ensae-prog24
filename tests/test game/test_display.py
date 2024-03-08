@@ -10,7 +10,7 @@ from game import Game
 
 class Test_Display(unittest.TestCase):
     def test_display(self):
-        g = Game(Grid(4,4))
+        g = Game(Grid(5,5))
         g.display()
         
         
