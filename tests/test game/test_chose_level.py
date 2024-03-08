@@ -8,15 +8,12 @@ from game import Game
 from solver import Solver
 
 
-class Test_Display(unittest.TestCase):
-    def test_display(self):
+class Test_Choose_Level(unittest.TestCase):
+    def test_choose_level(self):
         grid = Grid(4,4)
         g = Game(grid)
         g.choose_level()
-        grid1 = Grid(g.m,g.n,g.state)
-        s = Solver(grid1)
-        swap_sol = s.get_solution_a_star(grid)
-        print(swap_sol)
+        print(g.state)
         
         
 
