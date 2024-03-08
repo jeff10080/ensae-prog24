@@ -146,7 +146,6 @@ class Game(Grid):
         pygame.quit()
     
     def choose_level(self):
-        pygame.quit()
         pygame.init()
 
         screen_info = pygame.display.Info()
@@ -156,12 +155,10 @@ class Game(Grid):
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
         input_text = ""
-        
-    
+
         submit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 2, screen_width // 2.5, font_size + 20)
         quit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.6, screen_width // 2.5, font_size + 20)
-        screen.fill((0, 0, 0))
-        
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -171,58 +168,57 @@ class Game(Grid):
                     if event.key == pygame.K_RETURN:
                         try:
                             level = int(input_text)
-                            self.level_grid(level)
-                            return
+                            return 
                         except ValueError:
                             print("Invalid input. Please enter a valid integer.")
                     elif event.key == pygame.K_BACKSPACE:
                         input_text = input_text[:-1]
                     else:
                         input_text += event.unicode
-                
-            mouse_pos = pygame.mouse.get_pos()
-            mouse_click = pygame.mouse.get_pressed()
-             # Message "Enter Level:"
-            text_surface = font.render("Grid Level", None, (255, 255, 255))
-            text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 4))
-            screen.blit(text_surface, text_rect)
 
-            # Champ de saisie
-            input_surface = font.render(input_text, True, (255, 255, 255))
-            input_rect = pygame.Rect((screen_width - screen_width // 3) // 2, screen_height // 3, screen_width // 3, font_size + 10)
-            pygame.draw.rect(screen, (255, 255, 255), input_rect, 2)
-            screen.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_click = pygame.mouse.get_pressed()
 
-            # Bouton "Submit"
-            pygame.draw.rect(screen, (0, 255, 0), submit_button_rect)
-            text = font.render("Submit", True, (255, 255, 255))
-            text_rect = text.get_rect(center=submit_button_rect.center)
-            screen.blit(text, text_rect)
+                screen.fill((0, 0, 0))
 
-            # Bouton "Quitter"
-            pygame.draw.rect(screen, (255, 0, 0), quit_button_rect)
-            text = font.render("Leave", True, (255, 255, 255))
-            text_rect = text.get_rect(center=quit_button_rect.center)
-            screen.blit(text, text_rect)
-            screen.fill((0, 0, 0))
+                # Message "Enter Level:"
+                text_surface = font.render("Niveau de la Grille", None, (255, 255, 255))
+                text_rect = text_surface.get_rect(center=(screen_width // 2, screen_height // 4))
+                screen.blit(text_surface, text_rect)
 
-            # Vérifier si le clic est dans le rectangle du bouton "Valider"
-            if submit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
-                try:
-                    level = int(input_text)
-                    self.level_grid(level)
-                    return level
-                except ValueError:
-                    print("Invalid input. Please enter a valid integer.")
+                # Champ de saisie
+                input_surface = font.render(input_text, True, (255, 255, 255))
+                input_rect = pygame.Rect((screen_width - screen_width // 3) // 2, screen_height // 3, screen_width // 3, font_size + 10)
+                pygame.draw.rect(screen, (255, 255, 255), input_rect, 2)
+                screen.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
 
-            # Vérifier si le clic est dans le rectangle du bouton "Quitter"
-            elif quit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                # Bouton "Submit"
+                pygame.draw.rect(screen, (0, 255, 0), submit_button_rect)
+                text = font.render("Valider", True, (255, 255, 255))
+                text_rect = text.get_rect(center=submit_button_rect.center)
+                screen.blit(text, text_rect)
 
-                pygame.quit()
-                sys.exit()
-            clock.tick(30)
-            pygame.display.flip()
-        pygame.quit()
+                # Bouton "Quitter"
+                pygame.draw.rect(screen, (255, 0, 0), quit_button_rect)
+                text = font.render("Quitter", True, (255, 255, 255))
+                text_rect = text.get_rect(center=quit_button_rect.center)
+                screen.blit(text, text_rect)
+
+                # Vérifier si le clic est dans le rectangle du bouton "Valider"
+                if submit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    try:
+                        level = int(input_text)
+                        return 
+                    except ValueError:
+                        print("Invalid input. Please enter a valid integer.")
+
+                # Vérifier si le clic est dans le rectangle du bouton "Quitter"
+                elif quit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    pygame.quit()
+                    sys.exit()
+
+                pygame.display.flip()
+                clock.tick(30)
 
 
     
