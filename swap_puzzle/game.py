@@ -225,8 +225,8 @@ class Game(Grid):
     
 
     def welcome(self):
-        path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\input\\phantom-116107.mp3"
-        self.music_player(path)
+        music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\input\\phantom-116107.mp3"
+        self.music_player(music_path)
         pygame.init()
 
         screen_info = pygame.display.Info()
@@ -389,11 +389,17 @@ class Game(Grid):
         pygame.display.quit()
         
         
-    def music_player(self,path):
-        sound_file_path = path
+    def music_player(self, new_sound_file_path=None):
         pygame.mixer.init()
-        pygame.mixer.music.load(sound_file_path)
-        pygame.mixer.music.play(-1)
+
+        # Arrêter la musique actuelle
+        pygame.mixer.music.stop()
+
+        if new_sound_file_path:
+            # Charger et jouer la nouvelle musique
+            pygame.mixer.music.load(new_sound_file_path)
+            pygame.mixer.music.play(-1)
+            
   
 
 
