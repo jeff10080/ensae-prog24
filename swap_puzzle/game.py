@@ -36,7 +36,7 @@ class Game(Grid):
         clock = pygame.time.Clock()  # Créer une horloge pour gérer la vitesse de la boucle principale
         swap_count = 0
         
-        counter, timer_text = 60, 'Timer 1:00'
+        counter, timer_text = 5, 'Timer 1:00'
         pygame.time.set_timer(pygame.USEREVENT, 1000)
         font = pygame.font.SysFont('cambriamath', 30)
 
@@ -106,11 +106,9 @@ class Game(Grid):
         
 
 
-        if self.is_sorted():
-            # Créer une surface avec les dimensions du texte "YOU WIN"
-            self.Victory()
-            pygame.time.delay(2000)
-            self.BestSol(init_grid,swap_count)
+        
+        self.Result()
+        self.BestSol(init_grid,swap_count)
             
             
         for i in range(self.m):
@@ -128,9 +126,9 @@ class Game(Grid):
         pygame.quit()
     
 
-    def Victory(self):
-        music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
-        self.music_player(music_path)
+    def Result(self):
+        
+        
         
         pygame.display.quit()
         pygame.display.init()
@@ -143,7 +141,13 @@ class Game(Grid):
 
         # Define the font and text
         font = pygame.font.SysFont("Arial", 300)
-        text_surface = font.render("YOU WIN", True, (255, 255, 255))
+        if self.is_sorted():
+            music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
+            text_surface = font.render("YOU WIN", True, (255, 255, 255))
+        else:
+            music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\tears_withered-142384.mp3"
+            text_surface = font.render("GAME OVER", True, (255, 255, 255))
+        self.music_player(music_path)
 
         # Get the text size
         text_width, text_height = text_surface.get_size()
@@ -291,7 +295,8 @@ class Game(Grid):
 
     def BestSol(self,init_grid,swap_count):
         pygame.display.init()
-        
+        if not self.is_sorted():
+            swap_count=None
         self.state =init_grid.state
         grid1 = Grid(self.m,self.n,init_grid.state)
         s = Solver(grid1)
@@ -306,14 +311,19 @@ class Game(Grid):
 
         # Define the font and text
         font = pygame.font.SysFont("Arial", 150)
-        if swap_count == optimal_swap_count:
+        if swap_count == None:
+            font = pygame.font.SysFont("Arial", 50)
+            text_surface = font.render(rd.choice(["Too bad, but don't worry, you'll get it next time!"]), True, (255, 255, 255))
+        elif swap_count == optimal_swap_count:
             text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 255, 255))
         elif swap_count <= optimal_swap_count +5:
             text_surface = font.render(rd.choice(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 255, 255))
         elif swap_count > optimal_swap_count + 25:
-            text_surface = font.render(rd.choice(["...", "DISAPOINTING", "YOU'RE KIDDING?", " LEFT THE CHAT..."]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["...", "DISAPOINTING", "ARE YOU KIDDING?", " LEFT THE CHAT...","SERIOUSLY"]),  True, (255, 255, 255))
         else:
             text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
+        
+        
             
             
           
@@ -328,7 +338,11 @@ class Game(Grid):
         
         # Define the font and text for the score information
         font_small = pygame.font.SysFont("Arial", 50)
-        text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 255, 255))
+        if swap_count == None:
+            text_small = font_small.render(f"The best score is {optimal_swap_count}", True, (255, 255, 255))
+        else:
+            text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 255, 255))
+            
 
         # Get the text size for the small phrase
         text_small_width, text_small_height = text_small.get_size()
@@ -346,7 +360,7 @@ class Game(Grid):
         screen.blit(text_small, (offset_x_small, offset_y_small))
           # Update the display
         pygame.display.flip()
-        pygame.time.delay(3500) 
+        pygame.time.delay(4500) 
         
         
         pygame.display.quit()
