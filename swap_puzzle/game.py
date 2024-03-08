@@ -23,27 +23,37 @@ class Game(Grid):
         level = self.choose_level()
         self.level_grid(level)
         init_grid= self.copy()
+        pygame.display.quit()
         pygame.init()
+        
         
 
         width = self.n * 100
         height = self.m * 100
 
-        screen = pygame.display.set_mode((width, height + 100))  # Ajout de l'espace pour le bouton
+        screen = pygame.display.set_mode((width, height + 200))  # Ajout de l'espace pour le bouton
 
         clock = pygame.time.Clock()  # Créer une horloge pour gérer la vitesse de la boucle principale
         swap_count = 0
+        
+        counter, timer_text = 60, 'Timer 1:00'
+        pygame.time.set_timer(pygame.USEREVENT, 1000)
+        font = pygame.font.SysFont('cambriamath', 30)
 
         running = True
         while running:
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
+                if event.type == pygame.USEREVENT:
+                    counter -= 1
+                    timer_text = f"Timer {counter // 60} : {counter % 60:02d}" 
+                    
+                if event.type == pygame.QUIT or counter <=0:
                     running = False
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    if 0 < event.pos[0] < width and height < event.pos[1] < height + 100:
+                    if 0 < event.pos[0] < width and height +100< event.pos[1] < height + 200:
                         running = False
-                    clicked_row = event.pos[1] // 100
+                    clicked_row = (event.pos[1]-100) // 100
                     clicked_col = event.pos[0] // 100
                     if 0 <= clicked_row < self.m and 0 <= clicked_col < self.n:
                         clicked_cell = (clicked_row, clicked_col)
@@ -63,10 +73,10 @@ class Game(Grid):
                         else:
                             self.selected_cells.append(clicked_cell)
 
-            screen.fill((0, 0, 0))  # Effacer l'écran
-            for i in range(self.m):
+            
+            for i in range (self.m):
                 for j in range(self.n):
-                    cell_rect = pygame.Rect(j * 100, i * 100, 100, 100)
+                    cell_rect = pygame.Rect(j * 100, (i +1)* 100, 100, 100)
                     pygame.draw.rect(screen, (255, 255, 255), cell_rect)
                     font = pygame.font.Font(None, 72)
                     text = font.render(str(self.state[i][j]), True, (0, 0, 0))
@@ -74,11 +84,18 @@ class Game(Grid):
                     screen.blit(text, text_rect)
                     if (i, j) in self.selected_cells:
                         pygame.draw.rect(screen, (255, 255, 0), cell_rect, 5)
+            
+            pygame.draw.rect(screen, (152, 251, 152), (0, 0, width, 100))  # Rectangle rouge pour le bouton Quitter
+            font = pygame.font.Font(None, 72)
+            timer = font.render(timer_text, True, (255, 255, 255))
+            timer_text_rect = timer.get_rect(center=(width // 2, 50))
+            screen.blit(timer, timer_text_rect)
+                        
 
-            pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
+            pygame.draw.rect(screen, (255, 0, 0), (0, height + 100, width, 100))  # Rectangle rouge pour le bouton Quitter
             font = pygame.font.Font(None, 72)
             text = font.render("Leave", True, (255, 255, 255))
-            text_rect = text.get_rect(center=(width // 2, height + 50))
+            text_rect = text.get_rect(center=(width // 2, height + 150))
             screen.blit(text, text_rect)
             
 
@@ -92,8 +109,9 @@ class Game(Grid):
         if self.is_sorted():
             # Créer une surface avec les dimensions du texte "YOU WIN"
             self.Victory()
-            pygame.time.delay(200)
+            pygame.time.delay(2000)
             self.BestSol(init_grid,swap_count)
+            
             
         for i in range(self.m):
             for j in range(self.n):
