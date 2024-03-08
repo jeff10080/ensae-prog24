@@ -19,9 +19,9 @@ class Game(Grid):
     
 
     def display(self):
-        self.music_player()
-       
+        self.welcome()
         level = self.choose_level()
+        self.level_grid(level)
         init_grid= self.copy()
         pygame.init()
         
@@ -85,6 +85,7 @@ class Game(Grid):
             pygame.display.flip()  # Mettre à jour l'affichage
             clock.tick(30)  # Limiter la vitesse de la boucle principale à 30 images par seconde
             
+            
         
 
 
@@ -111,8 +112,8 @@ class Game(Grid):
 
     def Victory(self):
         
-        pygame.quit()
-        pygame.init()
+        pygame.display.quit()
+        pygame.display.init()
         
 
         # Set the screen size
@@ -143,10 +144,10 @@ class Game(Grid):
         
       
         # Quit Pygame
-        pygame.quit()
+        pygame.display.quit()
     
     def choose_level(self):
-        pygame.init()
+        pygame.display.init()
 
         screen_info = pygame.display.Info()
         screen_width, screen_height = screen_info.current_w, screen_info.current_h
@@ -168,7 +169,7 @@ class Game(Grid):
                     if event.key == pygame.K_RETURN:
                         try:
                             level = int(input_text)
-                            return 
+                            return level
                         except ValueError:
                             print("Invalid input. Please enter a valid integer.")
                     elif event.key == pygame.K_BACKSPACE:
@@ -208,7 +209,7 @@ class Game(Grid):
                 if submit_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     try:
                         level = int(input_text)
-                        return 
+                        return level
                     except ValueError:
                         print("Invalid input. Please enter a valid integer.")
 
@@ -224,6 +225,8 @@ class Game(Grid):
     
 
     def welcome(self):
+        path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\input\\phantom-116107.mp3"
+        self.music_player(path)
         pygame.init()
 
         screen_info = pygame.display.Info()
@@ -261,12 +264,13 @@ class Game(Grid):
                 
                 clock.tick(30)
                 pygame.display.flip()
-        pygame.quit()
+        pygame.time.delay(1000)
+        pygame.display.quit()
         
    
 
     def BestSol(self,init_grid,swap_count):
-        pygame.init()
+        pygame.display.init()
         
         self.state =init_grid.state
         grid1 = Grid(self.m,self.n,init_grid.state)
@@ -291,6 +295,7 @@ class Game(Grid):
         else:
             text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
             
+            
           
 
         # Get the text size
@@ -311,12 +316,6 @@ class Game(Grid):
         # Calculate the offset for centering the small phrase
         offset_x_small = screen_center[0] - text_small_width // 2
         offset_y_small = offset_y + text_height + 20  # Adjusted for spacing
-
-        # Fill the screen with black
-        screen.fill((0, 0, 0))
-
-        
-
         
         # Fill the screen with black
         screen.fill((0, 0, 0))
@@ -329,8 +328,8 @@ class Game(Grid):
         pygame.display.flip()
         pygame.time.delay(2000) 
         
-        pygame.quit()
-        pygame.init()
+        pygame.display.quit()
+        pygame.display.init()
 
         width = self.n * 100
         height = self.m * 100
@@ -340,7 +339,6 @@ class Game(Grid):
 
         for swap in swap_sol:
             self.selected_cells = [swap[0],swap[1]]
-            pygame.time.delay(1000)
             
             screen.fill((0, 0, 0))  # Effacer l'écran
             for i in range(self.m):
@@ -360,7 +358,7 @@ class Game(Grid):
             text_rect = text.get_rect(center=(width // 2, height + 50))
             screen.blit(text, text_rect)
             pygame.display.flip()
-            pygame.time.delay(1000)
+            pygame.time.delay(1500)
             
             
             self.swap(swap[0],swap[1])
@@ -381,20 +379,22 @@ class Game(Grid):
             text = font.render("Quitter", True, (255, 255, 255))
             text_rect = text.get_rect(center=(width // 2, height + 50))
             screen.blit(text, text_rect)
+            pygame.time.delay(1500)
+            
             
             pygame.display.flip()
-        pygame.time.delay(1000)
+        pygame.time.delay(1500)
         # Stop the sound
         
-        pygame.quit()
+        pygame.display.quit()
         
         
-    def music_player(self):
-        sound_file_path = "C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\input\\phantom-116107.mp3"
+    def music_player(self,path):
+        sound_file_path = path
         pygame.mixer.init()
         pygame.mixer.music.load(sound_file_path)
-        pygame.mixer.music.play()
-
+        pygame.mixer.music.play(-1)
+  
 
 
 
