@@ -271,7 +271,7 @@ class Graph:
             for i in range(current_grid.m):
                 for j in range(current_grid.n):
                     for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
-                        if 0 <= ni < current_grid.m and 0 <= nj < current_grid.n:
+                        if current_grid.test_valid_swap((i,j),(ni,nj)):
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
 
