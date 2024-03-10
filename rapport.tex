@@ -1,5 +1,353 @@
-\documentclass{article}
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+
+\documentclass[12pt]{article}
+\usepackage[french]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{dsfont}
+\usepackage{amsfonts}
+\usepackage[T1]{fontenc}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{listings}
+\usepackage{ragged2e}
+\usepackage{tikz} 
+\newcommand{\deriv}{\mathrm{d}}
+\lstset{
+    language=R,
+    basicstyle=\scriptsize\ttfamily,
+    commentstyle=\ttfamily\color{red},
+    numbers=left,
+    numberstyle=\ttfamily\color{blue}\footnotesize,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    title=\lstname,
+    escapeinside={},
+    keywordstyle={},
+    morekeywords={}
+    }
+
+\title{Rapport Final}
+
 \begin{document}
-First document. This is a simple example, with no 
-extra parameters or packages included.
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE ENSAE}\\[1.5cm] % Name of your university/college
+\includegraphics[scale=1.2]{ensae_logo_dev.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+\textsc{\Large Projet de programmation}\\[0.5cm] % Major heading such as course name
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Rapport final}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Auteurs:}\\
+Avner \textsc{EL BAZ}\\ % Your name
+Stanislas \textsc{Dekerle}\\ % Your name
+\end{flushleft}
+
+\end{minipage}\\[2cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[2cm] % Date, change the \today to a set date if you want to be precise
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\tableofcontents
+\vspace{3000pt}
+
+\begin{abstract}
+    Le rapport ci-dessous détaille les différentes méthodes que nous avons implémentées pour trier une grille de nombres en une grille triée par ordre croissant. Nous avons d'abord mis en place une méthode "gloutonne", puis plusieurs méthodes basées sur le parcours d'un graphe associé à la grille. Enfin nous avons implémenté une interface de jeu pour résoudre ces grilles.
+\end{abstract}
+
+\section{Présentation du problème}
+
+
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{|*{10}{c|}}
+        \hline
+        2 & 1 \\
+        \hline
+        3  & 4 \\
+        \hline
+    \end{tabular}
+    $\xrightarrow[]{}$
+    \begin{tabular}{|*{10}{c|}}
+        \hline
+         1  & 2 \\
+        \hline
+         3  & 4 \\
+        \hline
+    \end{tabular}
+    \caption{Résolution d'une grille 2x2}
+    \label{fig:enter-label}
+\end{figure}
+
+
+
+
+\justifying \paragraph{}
+Le cadre d'étude est une grille de m lignes et n colonnes. Chaque case de cette grille contient l'un des nombres compris entre 1 et m*n. Les mouvements autorisés sont les échanges entre cases voisines. \\
+Le problème consiste à trier cette grille pour que les cases contiennent les nombres par ordre croissant pour les lignes. On souhaite obtenir la plus courte liste d'échanges pour trier la liste.
+
+\section{Algorithme glouton}
+\subsection{Principe théorique}
+\paragraph{}
+La première méthode de résolution de la grille est une méthode naïve. On parcourt chaque case de la grille par ordre croissant. On commence par la première case. Si le nombre présent dans la case correspond à celui attendu, on passe à la suivante. Sinon, on localise la case où il se situe et on échange ces deux cases, en enchaînant plusieurs échanges consécutifs si besoin. Pour ne pas déranger les cases déjà parcourues, on aligne horizontalement la case du nombre avec sa destination, puis on échange verticalement les cases. Ainsi, la partie déjà parcourue est triée et on trie la partie à parcourir case à case.
+
+\hspace{1cm}
+\begin{figure}[h]
+    \centering
+    \begin{tabular}{ | l | l | l | l | l | }
+        \hline
+        \textbf{1}  & \textbf{2}  & \textbf{3}  & \textbf{4} \\
+        \hline
+        \textbf{5}  & \textbf{6}  & 8  & 9  \\
+        \hline
+        13  & 15  & 12  & \textbf{7} \\
+        \hline
+         12  & 14  & 10 & 11 \\
+        \hline
+    \end{tabular}
+    $\xrightarrow[]{}$
+    \begin{tabular}{ | l | l | l | l | l | }
+        \hline
+        \textbf{1}  & \textbf{2}  & \textbf{3}  & \textbf{4} \\
+        \hline
+        \textbf{5}  & \textbf{6}  & 8  & 9  \\
+        \hline
+        13  & 15  & \textbf{7} & 12 \\
+        \hline
+        12  & 14  & 10 & 11 \\
+        \hline
+    \end{tabular}
+    $\xrightarrow[]{}$
+    \begin{tabular}{ | l | l | l | l | l | }
+        \hline
+        \textbf{1}  & \textbf{2}  & \textbf{3}  & \textbf{4} \\
+        \hline
+        \textbf{5}  & \textbf{6}  & \textbf{7}  & 9 \\
+        \hline
+        13  & 15  & 8  & 12 \\
+        \hline
+        12  & 14  & 10 & 11 \\
+        \hline
+    \end{tabular}
+    \caption{Traitement de la case 7 avec la méthode gloutonne}
+    \label{fig:enter-label}
+\end{figure}
+
+
+\justifying \paragraph{}
+Cette méthode est efficace mais effectue des échanges superflus. Dans l'exemple précédent, le \textit{8} est éloigné de sa case. Il faudra ainsi plus d'échanges plus tard pour qu'il soit à sa case. Nous étudierons donc des méthodes plus rapides et plus efficaces par la suite.
+
+\subsection{Implémentation}
+\subsubsection{Classe Grid}
+
+\paragraph{}
+Pour implémenter cet algorithme, nous avons créé une classe \textbf{\textit{grid}}. Celle-ci est dotée des attributs suivants : deux variables numériques (\textit{self.m} et \textit{self.n}) contentant respectivement le nombre de lignes et le nombre de colonnes de la grille ; et une liste \textit{self.state} contenant l'état de la grille sous la forme d'une liste de listes. Ces variables permettent de caractériser la grille.
+
+\paragraph{}
+Ensuite, nous avons implémenté les fonctions nécessaires à la manipulation de la grille. Ces fonctions sont les suivantes :
+\begin{itemize}
+    \item swap : échanger les nombres de deux cases adjacentes \
+    \item test valid swap : vérifier la validité d'un échange lors de l'appel de la fonction \textit{swap} \
+    \item move seq : créer la séquence d'échanges nécessaires pour échanger les nombres de deux cases non nécessairement adjacentes (en suivant la méthode détaillée plus tôt, voire figure 2)\
+    \item swap seq : exécuter une séquence d'échanges\
+    \item is sorted : vérifier si une grille est triée \
+\end{itemize}
+
+\subsubsection{Classe Solver}
+
+\paragraph{}
+La résolution de la grille se fait à l'aide d'une classe \textbf{\textit{solver}} dédiée. Celle-ci se construit à partir de la grille à résoudre. Ses attributs sont les suivants : \textit{self.g} est une copie de la grille, \textit{self.state}, \textit{self.m} et \textit{self.n} correspondent aux variables homonymes de la classe \textit{grid}.
+
+\paragraph{}
+Nous implémentons également certaines fonctions nécessaires à la résolution.
+Celles-ci sont les suivantes :
+\begin{itemize}
+    \item find : trouver la case où se trouve le nombre correspondant à une certaine case
+    \item fetch : utiliser la fonction \textit{find} pour situer un nombre et utiliser la fonction \textit{move seq} pour retourner la séquence d'échanges à effectuer pour rapatrier le nombre à sa case
+\end{itemize}
+\paragraph{}
+Enfin, la fonction \textit{get solution} permet de résoudre la grille en utilisant toutes ces fonctions. Cette fonction parcourt chaque case de la grille par ordre croissant. Pour chaque case, nous appelons la fonction \textit{fetch} et nous obtenons la séquence d'échanges nécessaire pour rapatrier le nombre associé à cette case. Nous exécutons cette séquence sur la grille et nous ajoutons cette séquence à la liste \textit{solution}. Avant de passer à la case suivante, nous utilisons la fonction \textit{is sorted} pour nous assurer que la grille n'est pas triée pour pouvoir continuer. Si la grille est triée, nous sortons de la boucle et revoyons la liste \textit{solution}. 
+
+\paragraph{}
+Il est bon de noter que cette méthode de résolution a une compléxité élevée. En effet, la complexité de cet algorithme est en $O(m^2n^2).$
+Ainsi, la solution "gloutonne" fonctionne mais est lente, inefficace et effectue un grand nombre d'échanges inutiles voire contreproductifs.
+
+\section{Parcours de graphe}
+\subsection{Principe théorique et construction du graphe}
+\paragraph{}
+Le problème peut être vu comme un parcours de graphe entre le noeud représenté par la grille de départ et le noeud représenté par la grille triée de même dimension. Concrètement, nous partons de la grille de départ. Nous lui associons un hachage non mutable unique et nous effectuons tous les échanges possibles sur cette grille. A chacune de ces grilles, nous associons un hachage et créons un noeud associé à cette grille et une arête entre chacun de ces nouveaux noeuds et le noeud de départ. 
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance={25mm}, thick, main/.style = {draw, circle}]
+        \node[main] (1) {$Source$}; 
+        \node[main] (2) [above right of=1] {$voisin 1$}; 
+        \node[main] (3) [below right of=1] {$voisin 2$};
+        \node[main] (4) [above right of=2] {$voisin 1$};
+        \node[main] (5) [right of=2] {$voisin 2$};
+        \node[main] (6) [right of=3] {$voisin 1$};
+        \node[main] (7) [below right of=3] {$voisin 2$};
+        \node[main] at (11,1.8) (8) {$Dest$};
+        \draw[->] (1) -- (2); 
+        \draw[->] (1) -- (3); 
+        \draw[->] (2)--(4);
+        \draw[->] (2)--(5);
+        \draw[->] (3)--(6);
+        \draw[->] (3)--(7);
+        \draw[->] (5)--(8);
+    \end{tikzpicture}
+    \caption{Représentation sous forme de graphe}
+    \label{fig:enter-label}
+\end{figure}
+
+\paragraph{}
+En supposant que nous gardons en mémoire l'échange reliant deux noeuds, la résolution du problème consiste à trouver le chemin le plus court entre le noeud de départ associé à la grille initiale et le noeud d'arrivée associé à la grille triée. \\
+Ainsi, en associant un hachage unique à chaque grille, on peut construire un graphe connexe en reliant ensemble les noeuds partageant un échange valide.
+
+
+\subsection{Implémentation du graphe}
+\paragraph{}
+L'implémentation du graphe se fait dans la classe \textbf{Graph}. Il est important de noter que nous travaillons sur la branche \textbf{alt graph}. Cette classe est munie des attributs suivants :
+\begin{itemize}
+    \item nodes : liste des noeuds du graphe
+    \item graph : dictionnaire contenant la liste d'adjacence de chaque noeud
+    \item nb nodes : entier contenant le nombre de noeuds du graphe
+    \item nb edges : entier contenant le nombre d'arêtes du graphe
+    \item edges : liste des arêtes du graphe
+    \item vertices : dictionnaire contenant l'échange nécessaire pour passer d'un noeud à un autre
+\end{itemize}
+
+\paragraph{}
+Penchons-nous désormais sur les fonctions de cette classe. Pour construire le graphe, nous avons besoin de hacher chacune des grilles. Pour cela, nous implémentons la fonction \textit{hash} dans la classe \textbf{Grid}. De plus, nous implémentons la fonction \textit{add edge} qui permet d'ajouter rapidement une arête entre deux noeuds au graphe sans avoir à vérifier que ces noeuds sont dans le graphe ou si cette arête existe déjà. 
+
+\paragraph{}
+La construction du graphe se fait à l'aide de la fonction \textit{construct grid graph}. On lui fournit la grille initiale. \\
+Si \textit{self.graph} est vide, nous l'initialisons avec une liste vide pour la clé du hachage de la grille source. Nous fixons \textit{nb nodes} à 1 et ajoutons le hachage de la grille source à \textit{self.nodes}.\\
+Nous initialisons une file d’attente à double extrémité avec la grille initiale. \\
+Tant qu'elle est vide, nous effectuons tous les échanges possibles sur le premier élément de la file d'attente. Nous obtenons les voisins de la grille. Nous la hashons, l'ajoutons à la file d'attente si son hashage ne figure pas dans \textit{self.graph} et ajoutons les arêtes associées si elles ne figurent pas dans \textit{self.edges}, et leur valeur dans \textit{self.vertices}. 
+
+\paragraph{}
+Ainsi, on obtient un graphe constitué de noeuds ayant pour identifiant le hachage de leur grille, un dictionnaire contenant les arêtes et un dictionnaire contenant les échanges reliant ces noeuds. Ce dernier dictionnaire est nécessaire car nous ne pouvons pas retrouver une grille à partir de son hachage et donc nous ne pouvons pas connaître l'échange liant deux noeuds liés.
+
+
+\subsection{Implémentation du parcours de graphe}
+\subsubsection{Parcours en largeur}
+
+\paragraph{}
+Le premier algorithme de parcours de graphe implémenté est un simple parcours en profondeur. Le principe est simple : nous commençons au noeud source, puis nous visitons tous ses voisins. Et pour chacun de ces voisins, nous visitons chacun de ses voisins. Nous répétons le processus jusqu'à atteindre le noeud de destination.
+
+\paragraph{}
+Nous implémentons cet algorithme dans la classe \textbf{Solver}. Nous construisons d'abord le graphe, puis nous effectuons le parcours.
+
+\paragraph{}
+Seulement, nous créons l'intégralité du graphe alors que nous pourrions nous arrêter lorsque la grille est résolue. Pour cela, nous combinons la fonction \textit{construct grid graph} et la fonction \textit{bfs} pour obtenir la fonction \textit{construct grid graph bfs}. Ainsi, nous construisons le graphe à la volée et nous évitons de construire le graphe au-delà de la destination.
+
+
+\subsubsection{Algorithme A*}
+\paragraph{}
+L'algorithme A* est similaire à l'algorithme précédent. La différence principale est le tri de la file d'attente à chaque ajout selon une heuristique. Pour cela, nous utilisons une structure de \textit{heap} pour modifier la file d'attente tout en conservant une bonne complexité. L'heuristique que nous avons choisie est la distance de Manhattan.
+
+\paragraph{}
+Comme pour le parcours en largeur, nous avons d'abord implémenté la fonction \textit{a star} utilisée en tandem avec \textit{construct grid graph} puis la fonction \textit{construct a star}, qui construit le graphe à la volée. 
+
+\paragraph{}
+Cet algorithme est bien plus rapide et permet de prioriser les échanges les plus prometteurs. Ainsi, non seulement, nous nous arrêtons lorsque la grille est résolue, mais nous partons dans la bonne direction générale de résolution de la grille.
+
+\section{Interface graphique}
+\subsection{Affichage de la grille}
+\paragraph{}
+Pour l'affichage de la grille, nous avons créé la classe \textbf{Game}, héritée de la classe \textbf{Grid}, et utilisé le module \textit{PyGame} comme suggéré. La grille est composée de différentes cases prenant en paramètres les valeurs de la grille. Plusieurs interfaces ont été implémentées par la suite pour améliorer l'expérience de l'utilisateur.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=4cm]{interface.png} 
+    \caption{Affichage pour une grille 5x5}
+    \label{fig:enter-label}
+\end{figure}
+
+\paragraph{}
+Nous avons ainsi implémenté des affichages pour :  
+
+\begin{itemize}
+    \item L'accueil
+    \item Le choix du niveau de la grille
+    \item Le choix du niveau de jeu
+    \item Le système de victoire et de défaite
+    \item Le choix de recommencer
+\end{itemize}
+
+\subsection{Sélection du niveau de la grille}
+\paragraph{}
+Le choix du niveau de la grille est basé sur le calcul de son heuristique pour approximer, grâce à la distance de Manhattan, le minimum d'échange de case à effectuer pour trier la grille. La fonction \textit{grid level} permet de créer de manière itérative une grille d'heuristique choisie en effectuant des échanges dans une grille triée initialement jusqu'à obtenir cette heuristique.
+
+\paragraph{}
+La fonction \textit{choose level} donne la possibilité à l'utilisateur de choisir le niveau de la grille grâce à un champ de saisie.
+
+\subsection{Sélection du niveau du jeu}
+\paragraph{}
+Le choix du niveau du jeu est basé sur le temps accordé à l'utilisateur pour effectuer un swap. La fonction \textit{level grid} permet de créer une grille de manière itérative en effectuant des échanges dans une grille triée initialement jusqu'à obtenir l'heuristique choisie. Le temps par échange est de 10 secondes pour le niveau facile à 0.5 secondes pour les plus chevronnés. Ce choix est donné à l'utilisateur grâce à la fonction \textit{difficulty}. Un décompte est ensuite calculé comme la multiplication du niveau de la grille (nombres d'échanges réalisés par A*) et du temps accordé par échange.
+
+\subsection{Résultats}
+\paragraph{}
+Si le joueur parvient à trier la grille avant la fin du décompte. La fonction \textit{Results} informe au joueur de sa réussite. On lui indique par la suite le nombre optimal d'échanges et une résolution en temps réel de la grille grâce à la fonction \textit{BestSol}. Enfin grâce à la fonction \textit{retry} le joueur aura la possibilité de recommencer une partie.
+
+
+
+\subsection{Contraintes}
+\paragraph{}
+Une contrainte que nous pouvons imposer à la résolution est l'interdiction d'effectuer certains échanges. Il s'agirait de placer des obstacles entre différentes cases. Ainsi, il nous suffit de modifier la fonction \textit{test valid swap} pour inclure une condition de validité supplémentaire. Cette condition est contenue dans la variable \textit{self.barriers} de la classe \textbf{Grid}. 
+
+\paragraph{}
+Cependant, il est possible de rendre une grille impossible à résoudre en la séparant en plusieurs parties isolées par exemple. Dans ce cas-là, les algorithmes de résolution sont inefficaces et parcourent l'entièreté du graphe sans retourner la solution.
+
+\paragraph{}
+La résolution de ce problème a été traitée, par la fonction \textit{valid barriers}, en testant pour une grille donnée et une liste d'échanges interdits, la possibilité de parcourir toutes les cases de cette grille grâce à l'algorithme de recherche en largeur. Il est important de préciser que cet algorithme est appliqué sur une grille et non sur un graphe construit comme précédemment. Cela permet d'avoir un test très rapide, car le fait de créer un graphe est extrêmement coûteux en termes de mémoire, et cela même en utilisant l'algorithme \textit{a star}.
+
+
 \end{document}
