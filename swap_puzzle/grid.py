@@ -74,7 +74,7 @@ class Grid():
 
     
     def copy(self):
-        return Grid(self.m,self.n,copy.deepcopy(self.state)) #ne marchait pas avec copy
+        return Grid(self.m,self.n,copy.deepcopy(self.state),copy.deepcopy(self.barriers)) #ne marchait pas avec copy
     
     def __str__(self): 
         """
@@ -122,7 +122,7 @@ class Grid():
         i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
         cond1 = (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
         cond2 = ((cell1,cell2)  not in self.barriers) and ((cell2,cell1) not in self.barriers) # Pour avoir une barrière dans les 2 sens
-        cond3 = (0<=i1 <self.m) and (0<=i2 <self.m) and (0<=j1 <self.m) and (0<=j2 <self.m)
+        cond3 = (0<=i1 <self.m) and (0<=i2 <self.m) and (0<=j1 <self.n) and (0<=j2 <self.n)
         return cond1 and cond2 and cond3
     
     
@@ -228,12 +228,13 @@ class Grid():
     
     def add_barriers(self):
         # Le nombre de barrière maximal est de m*(n-1) +(m-1)*n donc pour ne pas en avoir trop nous allons diviser ce nombre par 3
-        count_barrier = (self.m*(self.n-1) + (self.m-1)*self.n)//3 
+        count_barrier = (self.m*(self.n-1) + (self.m-1)*self.n)//10 
         self.barriers = set()
         for _ in range(count_barrier):
                 i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
                 ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
                 self.barriers.add(((i, j), (ni, nj)))
+                self.barriers.add(((ni, nj),(i, j)))
         
         iteration = 0
         while iteration < 100:  # Limite le nombre d'itérations pour éviter une boucle infinie
