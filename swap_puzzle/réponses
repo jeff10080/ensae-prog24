@@ -3,3 +3,8 @@ Q3. Complexité : O(m²n²)
 Q7. 
 Nombre de noeuds : (m*n)! (nombre de permutations d'une liste de m*n éléments)
 Nombre d'arêtes : 0.5*log(m*n)
+
+Q  Pour une grille de taille 1*n, trier la grille revient à trier une
+liste où on ne peut échanger les cases voisines. Ceci se fait parfaitement grâce
+à l’algortihme de tri à bulle.
+
