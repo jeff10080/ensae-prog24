@@ -19,14 +19,17 @@ class Game(Grid):
     
 
     def display(self, Retry = None):
-        self.welcome()
+        music_path ="swap_puzzle\\input_medias\\phantom-116107.mp3"
+        self.music_player(music_path)
+        pygame.display.quit()
+        pygame.init()
+        if not Retry:
+            self.welcome()
         level = self.choose_level()
         self.level_grid(level)
         difficulty = self.difficulty()
         
         init_grid= self.copy()
-        pygame.display.quit()
-        pygame.init()
         
         
 
@@ -113,6 +116,8 @@ class Game(Grid):
         
         self.Result()
         self.BestSol(init_grid,swap_count)
+        self.retry()
+        
             
             
         for i in range(self.m):
@@ -256,9 +261,8 @@ class Game(Grid):
     
 
     def welcome(self):
-        music_path ="swap_puzzle\\input_medias\\phantom-116107.mp3"
-        self.music_player(music_path)
-        pygame.init()
+        
+        pygame.display.init()
 
         screen_info = pygame.display.Info()
         screen_width, screen_height = screen_info.current_w, screen_info.current_h
@@ -272,7 +276,7 @@ class Game(Grid):
       
         
         # Load the background image
-        background_image = pygame.image.load("swap_puzzle\\input_medias\\Fond_libre_droit_Pixabay.jpg")  
+        background_image = pygame.image.load("swap_puzzle\\input_medias\\retro-4237850_1280.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
         play_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.8, screen_width // 2.5, font_size + 20)
         
@@ -433,8 +437,20 @@ class Game(Grid):
             screen.blit(text, text_rect)
             pygame.display.flip()
             pygame.time.delay(1500)
+        
+        self.selected_cells = []
+        for i in range(self.m):
+                for j in range(self.n):
+                    cell_rect = pygame.Rect(j * 100, i * 100, 100, 100)
+                    pygame.draw.rect(screen, (255, 255, 255), cell_rect)
+                    font = pygame.font.Font(None, 72)
+                    text = font.render(str(self.state[i][j]), True, (0, 0, 0))
+                    text_rect = text.get_rect(center=cell_rect.center)
+                    screen.blit(text, text_rect)
+                    if (i, j) in self.selected_cells:
+                        pygame.draw.rect(screen, (255, 0, 255), cell_rect, 5)
             
-            
+        pygame.display.flip()  
         pygame.time.delay(1500)
         # Stop the sound
         
@@ -557,7 +573,62 @@ class Game(Grid):
                 pygame.display.flip()
                 clock.tick(30)
     def retry(self):
+        
+        pygame.display.init()
+
+        screen_info = pygame.display.Info()
+        screen_width, screen_height = screen_info.current_w, screen_info.current_h
+        screen = pygame.display.set_mode((screen_width, screen_height))
+        clock = pygame.time.Clock()
+        font_size = screen_height // 15
+        font = pygame.font.SysFont("cambriamath", font_size)
+        font_path = "swap_puzzle\\input_medias\\ka1.ttf"
+        
+        font_title = pygame.font.Font(font_path, font_size*2) #Création d'une police
+      
+        
+        # Load the background image
+        background_image = pygame.image.load("swap_puzzle\\input_medias\\Fond_libre_droit_Pixabay.jpg")  
+        background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
+        retry_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.8, screen_width // 2.5, font_size + 20)
+        
+        
+        
+
+        running = True
+
+        while running == True:
+            for event in pygame.event.get():
+                
+
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_click = pygame.mouse.get_pressed()
+                screen.fill((0, 0, 0))
+
+                
+                screen.blit(background_image, (0, 0))
+                 # Bouton "Play"
+                pygame.draw.rect(screen, (0, 0, 255), retry_button_rect)
+                text = font.render("Retry", True, (255, 255, 255))
+                text_rect = text.get_rect(center=retry_button_rect.center)
+                screen.blit(text, text_rect)
+                retry_surface = font_title.render("Retry ?", False, (255,127,0))
+                retry_rect = retry_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
+                screen.blit(retry_surface, retry_rect)
+                pygame.display.flip()
+                if retry_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    pygame.time.delay(1000)
+                    pygame.display.quit()
+                    self.display(True)
+                
+                clock.tick(30)
+                pygame.display.flip()
+        pygame.time.delay(1000)
+        pygame.display.quit()
         self.display(True)
+        
+   
+
 
 
     
