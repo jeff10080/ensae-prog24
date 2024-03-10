@@ -15,11 +15,11 @@ class Test_add_barriers(unittest.TestCase):
             self.assertEqual(grid.valid_barriers(), True)
 
         s= Solver(grid)
+        print(grid.barriers)
         swap_sol= s.get_solution_a_star(grid)
         
-        swap_set = set(swap_sol)
-        if  swap_set.intersection(grid.barriers):
-            AssertionError
+        for swap in swap_sol:
+            self.assertEqual(grid.test_valid_swap(swap[0],swap[1]), True)
         
        
         
