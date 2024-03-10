@@ -546,9 +546,9 @@ class Game(Grid):
                 text_rect = text.get_rect(center=hardcore_rect.center)
                 screen.blit(text, text_rect)
                 
-                # Bouton "Extreme"
+                # Bouton "Infernal"
                 pygame.draw.rect(screen, (148,0,211), infernal_rect)
-                text = font.render("Extreme", True, (255, 255, 255))
+                text = font.render("Infernal", True, (255, 255, 255))
                 text_rect = text.get_rect(center=infernal_rect.center)
                 screen.blit(text, text_rect)
                 
