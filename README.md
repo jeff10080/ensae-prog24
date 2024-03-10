@@ -16,6 +16,8 @@ Tout ce qui est en lien avec les algorithmes BFS, A* et les constructions de gra
 
 Tout ce qui est en lien avec l'affichage et les obstacles est dans la classe Game sauf grid_level, add_barriers et valid_barriers qui sont dans la classe Grid 
 
+Tous les médias importés sont libres de droit et importé des sites Pixabay ou datafont.
+
 Nous espérons que ce projet vous plaira.
 
 Stanislas Dekerle et Avner El Baz
