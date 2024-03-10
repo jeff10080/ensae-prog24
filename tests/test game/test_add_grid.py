@@ -19,6 +19,7 @@ class Test_add_barriers(unittest.TestCase):
         swap_sol= s.get_solution_a_star(grid)
         
         for swap in swap_sol:
+            print(swap)
             self.assertEqual(grid.test_valid_swap(swap[0],swap[1]), True)
         
        
