@@ -13,6 +13,13 @@ class Test_add_barriers(unittest.TestCase):
             grid.add_barriers()
             print(grid.barriers) 
             self.assertEqual(grid.valid_barriers(), True)
+
+        s= Solver(grid)
+        swap_sol= s.get_solution_a_star(grid)
+        
+        swap_set = set(swap_sol)
+        if  swap_set.intersection(grid.barriers):
+            AssertionError
         
        
         
