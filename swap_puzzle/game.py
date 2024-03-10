@@ -151,10 +151,10 @@ class Game(Grid):
         # Define the font and text
         font = pygame.font.SysFont("Arial", 300)
         if self.is_sorted():
-            music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
+            music_path ="swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
             text_surface = font.render("YOU WIN", True, (255, 255, 255))
         else:
-            music_path ="C:\\Users\\avner\\OneDrive\\Documents\\GitHub\\swap_puzzle\\input_medias\\tears_withered-142384.mp3"
+            music_path ="swap_puzzle\\input_medias\\tears_withered-142384.mp3"
             text_surface = font.render("GAME OVER", True, (255, 255, 255))
         self.music_player(music_path)
 
