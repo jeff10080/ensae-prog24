@@ -176,13 +176,13 @@ class Game(Grid):
         screen = pygame.display.set_mode((screen_width, screen_height))
 
         # Define the font and text
-        font = pygame.font.SysFont("Arial", 300)
+        font = pygame.font.Font("swap_puzzle\\input_medias\\BLADRMF_.ttf", 200)
         if self.is_sorted():
             music_path ="swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
-            text_surface = font.render("YOU WIN", True, (255, 255, 255))
+            text_surface = font.render("you win", True, (255, 127, 0))
         else:
             music_path ="swap_puzzle\\input_medias\\tears_withered-142384.mp3"
-            text_surface = font.render("GAME OVER", True, (255, 255, 255))
+            text_surface = font.render("game over", True, (255, 127, 0))
         self.music_player(music_path)
 
         # Get the text size
@@ -747,7 +747,7 @@ class Game(Grid):
                 leave_text = font.render("No", True, (255, 255, 255))
                 leave_rect = leave_text.get_rect(center=no_button_rect.center)
                 screen.blit(leave_text, leave_rect)
-                retry_surface = font_title.render("BARRIERS", False, (255,127,0))
+                retry_surface = font_title.render("barriers", False, (255,127,0))
                 retry_rect = retry_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
                 screen.blit(retry_surface, retry_rect)
                 pygame.display.flip()
