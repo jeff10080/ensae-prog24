@@ -446,10 +446,10 @@ class Game(Grid):
                 # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
                 if i1 == i2:#même ligne
                     j =max(j1,j2)
-                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j*100,i1*100 ), ( j*100,(i1+1)*100), 5)
                 else:
                     i =max(i1,i2)
-                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,i*100), ( (j1+1)*100,i*100), 5)
         
             
             pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
@@ -477,10 +477,10 @@ class Game(Grid):
                 # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
                 if i1 == i2:#même ligne
                     j =max(j1,j2)
-                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j*100,i1*100 ), ( j*100,(i1+1)*100), 5)
                 else:
                     i =max(i1,i2)
-                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,i*100), ( (j1+1)*100,i*100), 5)
         
             
             
@@ -508,10 +508,10 @@ class Game(Grid):
                 # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
                 if i1 == i2:#même ligne
                     j =max(j1,j2)
-                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j*100,i1*100 ), ( j*100,(i1+1)*100), 5)
                 else:
                     i =max(i1,i2)
-                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,i*100), ( (j1+1)*100,i*100), 5)
         
             
         pygame.display.flip()  
