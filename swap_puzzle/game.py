@@ -279,6 +279,8 @@ class Game(Grid):
         background_image = pygame.image.load("swap_puzzle\\input_medias\\retro-4237850_1280.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
         play_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.8, screen_width // 2.5, font_size + 20)
+        leave_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, play_button_rect.bottom + screen_height//20, screen_width // 2.5, font_size + 20)
+        
         
         
         
@@ -300,12 +302,19 @@ class Game(Grid):
                 text = font.render("Play", True, (255, 255, 255))
                 text_rect = text.get_rect(center=play_button_rect.center)
                 screen.blit(text, text_rect)
+                pygame.draw.rect(screen, (255, 0, 0), leave_button_rect)
+                leave_text = font.render("Leave", True, (255, 255, 255))
+                leave_rect = leave_text.get_rect(center=leave_button_rect.center)
+                screen.blit(leave_text, leave_rect)
                 title_surface = font_title.render("The Grid Master", False, (255,127,0))
                 title_rect = title_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
                 screen.blit(title_surface, title_rect)
                 pygame.display.flip()
                 if play_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     running = False
+                if leave_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    pygame.quit()
+                    sys.exit()
                 
                 clock.tick(30)
                 pygame.display.flip()
@@ -590,7 +599,8 @@ class Game(Grid):
         # Load the background image
         background_image = pygame.image.load("swap_puzzle\\input_medias\\Fond_libre_droit_Pixabay.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
-        retry_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.8, screen_width // 2.5, font_size + 20)
+        retry_button_rect = pygame.Rect(screen_width // 9, screen_height // 1.8, screen_width // 3, font_size + 20)
+        leave_button_rect = pygame.Rect(retry_button_rect.right + screen_width // 8, screen_height // 1.8, screen_width // 3, font_size + 20)
         
         
         
@@ -608,10 +618,15 @@ class Game(Grid):
                 
                 screen.blit(background_image, (0, 0))
                  # Bouton "Play"
-                pygame.draw.rect(screen, (0, 0, 255), retry_button_rect)
-                text = font.render("Retry", True, (255, 255, 255))
-                text_rect = text.get_rect(center=retry_button_rect.center)
-                screen.blit(text, text_rect)
+                pygame.draw.rect(screen, (0, 255, 0), retry_button_rect)
+                
+                yes_text = font.render("Yes", True, (255, 255, 255))
+                yes_rect = yes_text.get_rect(center=retry_button_rect.center)
+                screen.blit(yes_text, yes_rect)
+                pygame.draw.rect(screen, (255, 0, 0), leave_button_rect)
+                leave_text = font.render("No", True, (255, 255, 255))
+                leave_rect = leave_text.get_rect(center=leave_button_rect.center)
+                screen.blit(leave_text, leave_rect)
                 retry_surface = font_title.render("Retry ?", False, (255,127,0))
                 retry_rect = retry_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
                 screen.blit(retry_surface, retry_rect)
@@ -620,12 +635,17 @@ class Game(Grid):
                     pygame.time.delay(1000)
                     pygame.display.quit()
                     self.display(True)
+                if leave_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    pygame.time.delay(1000)
+                    pygame.display.quit()
+                    sys.exit()
+                    
                 
                 clock.tick(30)
                 pygame.display.flip()
         pygame.time.delay(1000)
         pygame.display.quit()
-        self.display(True)
+
         
    
 
