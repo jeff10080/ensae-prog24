@@ -176,13 +176,15 @@ class Game(Grid):
         screen = pygame.display.set_mode((screen_width, screen_height))
 
         # Define the font and text
-        font = pygame.font.Font("swap_puzzle\\input_medias\\BLADRMF_.ttf", 200)
+        
         if self.is_sorted():
+            font = pygame.font.Font("swap_puzzle\\input_medias\\BLADRMF_.ttf", 200)
             music_path ="swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
             text_surface = font.render("you win", True, (255, 127, 0))
         else:
+            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 150)
             music_path ="swap_puzzle\\input_medias\\tears_withered-142384.mp3"
-            text_surface = font.render("game over", True, (255, 127, 0))
+            text_surface = font.render("GAME OVER", True, (0, 128, 255))
         self.music_player(music_path)
 
         # Get the text size
@@ -215,7 +217,7 @@ class Game(Grid):
         clock = pygame.time.Clock()
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
-        font_path ="swap_puzzle\\input_medias\\Victoire.ttf"
+        font_path ="swap_puzzle\\input_medias\\BLADRMF_.ttf"
         font_choose = pygame.font.Font(font_path, font_size*3)
         input_text = ""
 
@@ -360,23 +362,24 @@ class Game(Grid):
         
 
         # Set the screen size
+        
         screen_info = pygame.display.Info()
         screen_width, screen_height = screen_info.current_w, screen_info.current_h
         screen = pygame.display.set_mode((screen_width, screen_height))
 
         # Define the font and text
-        font = pygame.font.SysFont("Arial", 150)
+        font = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 200)
         if swap_count == None:
-            font = pygame.font.SysFont("Arial", 50)
-            text_surface = font.render(rd.choice(["Too bad, but don't worry, you'll get it next time!"]), True, (255, 255, 255))
+            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 150)
+            text_surface = font.render(rd.choice(["Too bad, but don't worry, you'll get it next time!"]), True, (0, 128, 255))
         elif swap_count == optimal_swap_count:
-            text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 127, 0))
         elif swap_count <= optimal_swap_count +5:
-            text_surface = font.render(rd.choice(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 127, 0))
         elif swap_count > optimal_swap_count + 25:
-            text_surface = font.render(rd.choice(["...", "DISAPOINTING", "ARE YOU KIDDING?", " LEFT THE CHAT...","SERIOUSLY"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["...", "DISAPOINTING", "ARE YOU KIDDING?", " LEFT THE CHAT...","SERIOUSLY"]),  True, (255, 127, 0))
         else:
-            text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 127, 0))
         
         
             
@@ -392,11 +395,13 @@ class Game(Grid):
         offset_y = screen_center[1] - text_height // 2
         
         # Define the font and text for the score information
-        font_small = pygame.font.SysFont("Arial", 50)
+        
         if swap_count == None:
-            text_small = font_small.render(f"The best score possible is {optimal_swap_count}", True, (255, 255, 255))
+            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 50)
+            text_small = font_small.render(f"The best score possible is {optimal_swap_count}", True, (0, 128, 255))
         else:
-            text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 255, 255))
+            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 90)
+            text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 127, 0))
             
 
         # Get the text size for the small phrase
@@ -408,6 +413,7 @@ class Game(Grid):
         
         # Fill the screen with black
         screen.fill((0, 0, 0))
+
 
         # Blit the text to the screen
         screen.blit(text_surface, (offset_x, offset_y))
@@ -715,7 +721,7 @@ class Game(Grid):
         font = pygame.font.SysFont("cambriamath", font_size)
         font_path = "swap_puzzle\\input_medias\\BLADRMF_.ttf"
         
-        font_title = pygame.font.Font(font_path, font_size*2) #Création d'une police
+        font_title = pygame.font.Font(font_path, font_size*3) #Création d'une police
       
         
        
