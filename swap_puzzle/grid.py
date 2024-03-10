@@ -121,7 +121,7 @@ class Grid():
     def test_valid_swap(self,cell1,cell2):
         i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
         cond1 = (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
-        cond2 = (cell1,cell2) not in self.barriers
+        cond2 = ((cell1,cell2)  not in self.barriers) and ((cell2,cell1) not in self.barriers) # Pour avoir une barrière dans les 2 sens
         cond3 = (0<=i1 <self.m) and (0<=i2 <self.m) and (0<=j1 <self.m) and (0<=j2 <self.m)
         return cond1 and cond2 and cond3
     
