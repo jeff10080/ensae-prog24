@@ -271,15 +271,18 @@ class Graph:
             for i in range(current_grid.m):
                 for j in range(current_grid.n):
                     for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
-                        if current_grid.test_valid_swap((i,j),(ni,nj)):
+                        if current_grid.test_valid_swap((i,j),(ni,nj)) and current_grid.test_valid_swap((ni,nj),(i,j)):
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
+                            if not new_grid.test_valid_swap((i,j),(ni,nj)) or not new_grid.test_valid_swap((ni,nj),(i,j)):
+                                print("Error: Invalid swap in new_grid")
+                                continue
 
                             new_node = new_grid.__hash__()
                             self.add_edge(current_node, new_node)
                             # if (current_node,new_node) not in self.edges:
                             self.vertices[(current_node, new_node)] = (i,j),(ni,nj)
-                            self.vertices[(new_node, current_node)] = (i,j),(ni,nj)
+                            self.vertices[(new_node, current_node)] = (ni,nj),(i,j)
                             
                             
                             if new_node not in cost_so_far or new_cost < cost_so_far[new_node]:
