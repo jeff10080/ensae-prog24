@@ -673,6 +673,7 @@ class Game(Grid):
     def settle_barriers(self):
         
         pygame.init()
+        
 
         screen_info = pygame.display.Info()
         screen_width, screen_height = screen_info.current_w, screen_info.current_h
@@ -720,14 +721,14 @@ class Game(Grid):
                 pygame.display.flip()
                 if yes_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     pygame.time.delay(1000)
-                    pygame.display.quit()
+                    
                     self.add_barriers()
                     running = False
                     
                     
                 if no_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     pygame.time.delay(1000)
-                    pygame.display.quit()
+                    
                     running = False
                 
                     
