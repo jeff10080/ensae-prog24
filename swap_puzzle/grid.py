@@ -5,6 +5,7 @@ This is the grid module. It contains the Grid class and its associated methods.
 
 import random as rd
 import sys
+from collections import deque
 
 
 class Grid():
@@ -208,6 +209,25 @@ class Grid():
                 
             iteration += 1
         return self
+    
+    def valid_barriers(self):
+        initial_number = (0,0)
+
+
+    
+        deja_vu = [initial_number]
+        queue = deque([initial_number])
+        while queue:
+            if len(deja_vu) == self.m*self.n:
+                                return True
+            i,j = queue.popleft()
+            for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+                if self.test_valid_swap((i,j),(ni,nj)):       
+                    if (ni,nj) not in deja_vu:
+                        queue.append((ni,nj))
+                        deja_vu.append((ni,nj))
+        return None
+        
 
 
 
