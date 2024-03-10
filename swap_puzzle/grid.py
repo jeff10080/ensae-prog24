@@ -228,7 +228,7 @@ class Grid():
     
     def add_barriers(self):
         # Le nombre de barrière maximal est de m*(n-1) +(m-1)*n donc pour ne pas en avoir trop nous allons diviser ce nombre par 3
-        count_barrier = (self.m*(self.n-1) + (self.m-1)*self.n)//3 
+        count_barrier = (self.m*(self.n-1) + (self.m-1)*self.n)//10 
         self.barriers = set()
         for _ in range(count_barrier):
                 i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
