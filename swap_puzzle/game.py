@@ -372,8 +372,8 @@ class Game(Grid):
         # Define the font and text
         font = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 200)
         if swap_count == None:
-            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 35)
-            text_surface = font.render(rd.choice(["TOO BAD, BUT DON'T WORRY, YOU'LL GET IT NEXT TIME!"]), True, (0, 128, 255))
+            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 50)
+            text_surface = font.render(rd.choice(["DON'T WORRY, YOU'LL GET IT NEXT TIME"]), True, (0, 128, 255))
         elif swap_count == optimal_swap_count:
             text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 127, 0))
         elif swap_count <= optimal_swap_count +5:
@@ -399,7 +399,7 @@ class Game(Grid):
         # Define the font and text for the score information
         
         if swap_count == None:
-            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 35)
+            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 50)
             text_small = font_small.render(f"THE BEST SCORE POSSIBLE IS {optimal_swap_count}", True, (0, 128, 255))
         else:
             font_small = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 90)
