@@ -25,11 +25,19 @@ class Game(Grid):
         pygame.init()
         if not Retry:
             self.welcome()
-        level = self.choose_level()
-        self.level_grid(level)
+        grid_heuristic = self.choose_level()
+        self.level_grid(grid_heuristic)
+        self.settle_barriers()
         difficulty = self.difficulty()
-        
         init_grid= self.copy()
+        grid1 = Grid(self.m,self.n,init_grid.state)
+        s = Solver(grid1)
+        swap_sol = s.get_solution_a_star(init_grid)
+        level = len(swap_sol)
+        
+        
+        
+        
         
         
 
@@ -91,6 +99,16 @@ class Game(Grid):
                     screen.blit(text, text_rect)
                     if (i, j) in self.selected_cells:
                         pygame.draw.rect(screen, (255, 255, 0), cell_rect, 5)
+            for barrier in self.barriers:
+                (i1, j1), (i2, j2) = barrier
+                # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
+                if i1 == i2:#même ligne
+                    j =max(j1,j2)
+                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                else:
+                    i =max(i1,i2)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+
             
             pygame.draw.rect(screen, (152, 251, 152), (0, 0, width, 100))  # Rectangle rouge pour le bouton Quitter
             font = pygame.font.Font(None, 72)
@@ -115,7 +133,7 @@ class Game(Grid):
 
         
         self.Result()
-        self.BestSol(init_grid,swap_count)
+        self.BestSol(init_grid,swap_count,swap_sol)
         self.retry()
         
             
@@ -130,6 +148,15 @@ class Game(Grid):
                 screen.blit(text, text_rect)
                 if (i, j) in self.selected_cells:
                     pygame.draw.rect(screen, (255, 255, 0), cell_rect, 5) 
+        for barrier in self.barriers:
+                (i1, j1), (i2, j2) = barrier
+                # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
+                if i1 == i2:#même ligne
+                    j =max(j1,j2)
+                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                else:
+                    i =max(i1,i2)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
         
         
         pygame.quit()
@@ -323,14 +350,12 @@ class Game(Grid):
         
    
 
-    def BestSol(self,init_grid,swap_count):
+    def BestSol(self,init_grid,swap_count,swap_sol):
         pygame.display.init()
         if not self.is_sorted():
             swap_count=None
         self.state =init_grid.state
-        grid1 = Grid(self.m,self.n,init_grid.state)
-        s = Solver(grid1)
-        swap_sol = s.get_solution_a_star(init_grid)
+        
         optimal_swap_count = len(swap_sol)
         
 
@@ -416,6 +441,16 @@ class Game(Grid):
                     screen.blit(text, text_rect)
                     if (i, j) in self.selected_cells:
                         pygame.draw.rect(screen, (255, 255, 0), cell_rect, 5)
+            for barrier in self.barriers:
+                (i1, j1), (i2, j2) = barrier
+                # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
+                if i1 == i2:#même ligne
+                    j =max(j1,j2)
+                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                else:
+                    i =max(i1,i2)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+        
             
             pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
             font = pygame.font.Font(None, 72)
@@ -437,6 +472,16 @@ class Game(Grid):
                     screen.blit(text, text_rect)
                     if (i, j) in self.selected_cells:
                         pygame.draw.rect(screen, (255, 0, 255), cell_rect, 5)
+            for barrier in self.barriers:
+                (i1, j1), (i2, j2) = barrier
+                # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
+                if i1 == i2:#même ligne
+                    j =max(j1,j2)
+                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                else:
+                    i =max(i1,i2)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+        
             
             
             pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
@@ -458,6 +503,16 @@ class Game(Grid):
                     screen.blit(text, text_rect)
                     if (i, j) in self.selected_cells:
                         pygame.draw.rect(screen, (255, 0, 255), cell_rect, 5)
+        for barrier in self.barriers:
+                (i1, j1), (i2, j2) = barrier
+                # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
+                if i1 == i2:#même ligne
+                    j =max(j1,j2)
+                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                else:
+                    i =max(i1,i2)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+        
             
         pygame.display.flip()  
         pygame.time.delay(1500)
@@ -546,9 +601,9 @@ class Game(Grid):
                 text_rect = text.get_rect(center=hardcore_rect.center)
                 screen.blit(text, text_rect)
                 
-                # Bouton "Extreme"
+                # Bouton "Infernal"
                 pygame.draw.rect(screen, (148,0,211), infernal_rect)
-                text = font.render("Extreme", True, (255, 255, 255))
+                text = font.render("Infernal", True, (255, 255, 255))
                 text_rect = text.get_rect(center=infernal_rect.center)
                 screen.blit(text, text_rect)
                 
@@ -607,7 +662,7 @@ class Game(Grid):
 
         running = True
 
-        while running == True:
+        while running :
             for event in pygame.event.get():
                 
 
@@ -645,6 +700,81 @@ class Game(Grid):
                 pygame.display.flip()
         pygame.time.delay(1000)
         pygame.display.quit()
+    
+    
+    def settle_barriers(self):
+        
+        pygame.init()
+        
+
+        screen_info = pygame.display.Info()
+        screen_width, screen_height = screen_info.current_w, screen_info.current_h
+        screen = pygame.display.set_mode((screen_width, screen_height))
+        clock = pygame.time.Clock()
+        font_size = screen_height // 15
+        font = pygame.font.SysFont("cambriamath", font_size)
+        font_path = "swap_puzzle\\input_medias\\BLADRMF_.ttf"
+        
+        font_title = pygame.font.Font(font_path, font_size*2) #Création d'une police
+      
+        
+       
+        yes_button_rect = pygame.Rect(screen_width // 9, screen_height // 1.8, screen_width // 3, font_size + 20)
+        no_button_rect = pygame.Rect(yes_button_rect.right + screen_width // 8, screen_height // 1.8, screen_width // 3, font_size + 20)
+        
+        
+        
+
+        running = True
+
+        while running == True:
+            for event in pygame.event.get():
+                
+
+                mouse_pos = pygame.mouse.get_pos()
+                mouse_click = pygame.mouse.get_pressed()
+                screen.fill((0, 0, 0))
+
+                
+                
+                 # Bouton "Play"
+                pygame.draw.rect(screen, (0, 255, 0), yes_button_rect)
+                
+                yes_text = font.render("Yes", True, (255, 255, 255))
+                yes_rect = yes_text.get_rect(center=yes_button_rect.center)
+                screen.blit(yes_text, yes_rect)
+                pygame.draw.rect(screen, (255, 0, 0), no_button_rect)
+                leave_text = font.render("No", True, (255, 255, 255))
+                leave_rect = leave_text.get_rect(center=no_button_rect.center)
+                screen.blit(leave_text, leave_rect)
+                retry_surface = font_title.render("BARRIERS", False, (255,127,0))
+                retry_rect = retry_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
+                screen.blit(retry_surface, retry_rect)
+                pygame.display.flip()
+                if yes_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    pygame.time.delay(1000)
+                    
+                    self.add_barriers()
+                    running = False
+                    
+                    
+                if no_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
+                    pygame.time.delay(1000)
+                    
+                    running = False
+                
+                    
+                
+                clock.tick(30)
+                pygame.display.flip()
+                
+        
+        pygame.time.delay(1000)
+        pygame.display.quit()
+        
+        
+    
+    
 
         
    

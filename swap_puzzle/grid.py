@@ -5,6 +5,7 @@ This is the grid module. It contains the Grid class and its associated methods.
 
 import random as rd
 import sys
+from collections import deque
 
 
 class Grid():
@@ -22,7 +23,7 @@ class Grid():
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
-    def __init__(self, m, n, initial_state=None, barriers =[]):
+    def __init__(self, m, n, initial_state=None, barriers =set()):
         """
         Initializes the grid.
 
@@ -46,6 +47,7 @@ class Grid():
             initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
        
         self.state = initial_state
+        #Pour ne pas avoir des éléments en doubles
     
         self.barriers = barriers
            
@@ -119,7 +121,7 @@ class Grid():
     def test_valid_swap(self,cell1,cell2):
         i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
         cond1 = (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
-        cond2 = (cell1,cell2) not in self.barriers
+        cond2 = ((cell1,cell2)  not in self.barriers) and ((cell2,cell1) not in self.barriers) # Pour avoir une barrière dans les 2 sens
         cond3 = (0<=i1 <self.m) and (0<=i2 <self.m) and (0<=j1 <self.m) and (0<=j2 <self.m)
         return cond1 and cond2 and cond3
     
@@ -208,6 +210,56 @@ class Grid():
                 
             iteration += 1
         return self
+    
+    def valid_barriers(self):
+        initial_number = (0, 0)
+        deja_vu = [initial_number]
+        queue = deque([initial_number])
+        while queue:
+            i, j = queue.popleft()
+            for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+                if self.test_valid_swap((i, j), (ni, nj)):
+                    if (ni, nj) not in deja_vu:
+                        queue.append((ni, nj))
+                        deja_vu.append((ni, nj))
+                        if len(deja_vu) == self.m * self.n:
+                            return True
+        return None
+    
+    def add_barriers(self):
+        # Le nombre de barrière maximal est de m*(n-1) +(m-1)*n donc pour ne pas en avoir trop nous allons diviser ce nombre par 3
+        count_barrier = (self.m*(self.n-1) + (self.m-1)*self.n)//3 
+        self.barriers = set()
+        for _ in range(count_barrier):
+                i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
+                ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
+                self.barriers.add(((i, j), (ni, nj)))
+        
+        iteration = 0
+        while iteration < 100:  # Limite le nombre d'itérations pour éviter une boucle infinie
+            barriers = self.valid_barriers()
+            if barriers:  # Si la liste d'obstacles est valide, sort de la boucle
+                break
+            self.barriers = set()
+
+            # Regénère la liste d'obstacles
+            for _ in range(count_barrier):
+                i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
+                ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
+                self.barriers.add(((i, j), (ni, nj)))
+
+            iteration += 1
+
+        print(barriers, self.barriers)
+
+            
+        
+                
+                
+            
+        
+        
+        
 
 
 
