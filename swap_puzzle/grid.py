@@ -23,7 +23,7 @@ class Grid():
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
-    def __init__(self, m, n, initial_state=None, barriers =[]):
+    def __init__(self, m, n, initial_state=None, barriers =set()):
         """
         Initializes the grid.
 
@@ -47,6 +47,7 @@ class Grid():
             initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
        
         self.state = initial_state
+        #Pour ne pas avoir des éléments en doubles
     
         self.barriers = barriers
            
@@ -226,7 +227,32 @@ class Grid():
                     if (ni,nj) not in deja_vu:
                         queue.append((ni,nj))
                         deja_vu.append((ni,nj))
-        return None
+                
+        return [((i,j),(ni,nj)) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0<=ni <self.m) and (0<= nj <self.m) ]
+    
+    def add_barriers(self):
+        # Le nombre de barrière maximal est de m*(n-1) +(m-1)*n donc pour ne pas en avoir trop nous allons diviser ce nombre par 3
+        count_barrier = (self.m*(self.n-1) +(self.m-1)*self.n)//3
+        self.barriers = set()
+        for _ in range(count_barrier):
+            i,j = rd.randint(0, (self.m)-1 ), rd.randint(0, (self.n)-1 )
+            ni,nj = rd.choice ([(ni,nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0<=ni <self.m) and (0<= nj <self.m) ])
+            self.barriers.add(((i,j),(ni,nj)))
+        
+         
+        barriers = self.valid_barriers()
+        print(barriers,self.barriers)
+        while barriers  != True: # not l ne marcherait pas si on renvoie une liste
+            for swap in barriers:
+                if swap in self.barriers:
+                    self.barriers.remove(swap) # enlève des éléments sans avoir d'erreurs si la liste est vide
+            barriers = self.valid_barriers()
+        
+                
+                
+            
+        
+        
         
 
 
