@@ -234,6 +234,7 @@ class Grid():
                 i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
                 ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
                 self.barriers.add(((i, j), (ni, nj)))
+                self.barriers.add(((ni, nj),(ni, nj)))
         
         iteration = 0
         while iteration < 100:  # Limite le nombre d'itérations pour éviter une boucle infinie
