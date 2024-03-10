@@ -5,15 +5,16 @@ sys.path.append("swap_puzzle/")
 import unittest 
 from grid import Grid
 from game import Game 
-from solver import Solver
+import pygame
 
 
 class Test_Choose_Level(unittest.TestCase):
     def test_choose_level(self):
+        pygame.init()
         grid = Grid(4,4)
         g = Game(grid)
-        g.choose_level()
-        print(g.state)
+        l = g.choose_level()
+        print(l)
         
         
 
