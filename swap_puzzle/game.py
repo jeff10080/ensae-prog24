@@ -180,9 +180,9 @@ class Game(Grid):
         # Define the font and text
         
         if self.is_sorted():
-            font = pygame.font.Font("swap_puzzle\\input_medias\\BLADRMF_.ttf", 200)
+            font = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 300)
             music_path ="swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
-            text_surface = font.render("you win", True, (255, 127, 0))
+            text_surface = font.render("YOU WIN", True, (255, 127, 0))
         else:
             font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 150)
             music_path ="swap_puzzle\\input_medias\\tears_withered-142384.mp3"
@@ -656,12 +656,13 @@ class Game(Grid):
         font = pygame.font.SysFont("cambriamath", font_size)
         font_path = "swap_puzzle\\input_medias\\ka1.ttf"
         
-        font_title = pygame.font.Font(font_path, font_size*2) #Création d'une police
+        font_title = pygame.font.Font(font_path, font_size*3) #Création d'une police
       
         
         # Load the background image
-        background_image = pygame.image.load("swap_puzzle\\input_medias\\Fond_libre_droit_Pixabay.jpg")  
+        background_image = pygame.image.load("swap_puzzle\\input_medias\\drive-8493014_1920.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
+        background_image.set_alpha(200)
         retry_button_rect = pygame.Rect(screen_width // 9, screen_height // 1.8, screen_width // 3, font_size + 20)
         leave_button_rect = pygame.Rect(retry_button_rect.right + screen_width // 8, screen_height // 1.8, screen_width // 3, font_size + 20)
         
@@ -690,8 +691,8 @@ class Game(Grid):
                 leave_text = font.render("No", True, (255, 255, 255))
                 leave_rect = leave_text.get_rect(center=leave_button_rect.center)
                 screen.blit(leave_text, leave_rect)
-                retry_surface = font_title.render("Retry ?", False, (255,127,0))
-                retry_rect = retry_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
+                retry_surface = font_title.render("Retry ?", False, (255, 127, 0))
+                retry_rect = retry_surface.get_rect(center=(screen_width // 2 +10, screen_height // 3.5))
                 screen.blit(retry_surface, retry_rect)
                 pygame.display.flip()
                 if retry_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
