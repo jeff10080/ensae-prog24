@@ -7,9 +7,9 @@ from game import Game
 
 class Test_level_grid(unittest.TestCase):
     def test_display(self):
-        grid =Grid(5,5).level_grid(4)
-        #print(grid.heuristic())
-        Game(grid).display()
+        grid =Grid(5,5).level_grid(10)
+        # peut ne pas marcher à tous les coups 
+        self.assertEqual(grid.heuristic(), 10)
         
 if __name__ == '__main__':
     unittest.main()
