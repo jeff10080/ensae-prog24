@@ -193,7 +193,7 @@ class Game(Grid):
         input_text = ""
 
         submit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 2, screen_width // 2.5, font_size + 20)
-        quit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.6, screen_width // 2.5, font_size + 20)
+        quit_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, submit_button_rect.bottom +screen_height // 20, screen_width // 2.5, font_size + 20)
 
         while True:
             for event in pygame.event.get():
@@ -529,25 +529,25 @@ class Game(Grid):
                 screen.blit(text, text_rect)
                 
                 # Bouton "Medium"
-                pygame.draw.rect(screen, (0, 255, 0), medium_rect)
-                text = font.render("Medium", True, (255, 255, 255))
+                pygame.draw.rect(screen, (255, 255, 50), medium_rect)
+                text = font.render("Medium", True, (255 , 255 , 255))
                 text_rect = text.get_rect(center=medium_rect.center)
                 screen.blit(text, text_rect)
                 
                 # Bouton "Difficult"
-                pygame.draw.rect(screen, (0, 255, 0), difficult_rect)
+                pygame.draw.rect(screen, (255, 127, 0), difficult_rect)
                 text = font.render("Difficult", True, (255, 255, 255))
                 text_rect = text.get_rect(center=difficult_rect.center)
                 screen.blit(text, text_rect)
                 
                 # Bouton "Hardcore"
-                pygame.draw.rect(screen, (0, 255, 0), hardcore_rect)
+                pygame.draw.rect(screen, (86, 41, 0), hardcore_rect)
                 text = font.render("Hardcore", True, (255, 255, 255))
                 text_rect = text.get_rect(center=hardcore_rect.center)
                 screen.blit(text, text_rect)
                 
-                # Bouton "Hardcore"
-                pygame.draw.rect(screen, (0, 255, 0), infernal_rect)
+                # Bouton "Extreme"
+                pygame.draw.rect(screen, (148,0,211), infernal_rect)
                 text = font.render("Extreme", True, (255, 255, 255))
                 text_rect = text.get_rect(center=infernal_rect.center)
                 screen.blit(text, text_rect)
