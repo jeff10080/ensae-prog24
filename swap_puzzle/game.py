@@ -215,7 +215,7 @@ class Game(Grid):
         clock = pygame.time.Clock()
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
-        font_path ="swap_puzzle\\input_medias\\BLADRMF_.ttf"
+        font_path ="swap_puzzle\\input_medias\\Victoire.ttf"
         font_choose = pygame.font.Font(font_path, font_size*3)
         input_text = ""
 
