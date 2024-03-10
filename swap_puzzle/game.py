@@ -23,6 +23,7 @@ class Game(Grid):
         self.music_player(music_path)
         pygame.display.quit()
         pygame.init()
+        
         if not Retry:
             self.welcome()
         grid_heuristic = self.choose_level()
@@ -34,7 +35,8 @@ class Game(Grid):
         s = Solver(grid1)
         swap_sol = s.get_solution_a_star(init_grid)
         level = len(swap_sol)
-        
+        pygame.display.quit()
+        pygame.init()
         
         
         
