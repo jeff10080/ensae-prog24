@@ -274,7 +274,7 @@ class Graph:
                         if current_grid.test_valid_swap((i,j),(ni,nj)):
                             new_grid = current_grid.copy()
                             new_grid.swap((i, j), (ni, nj))
-                            if not current_grid.test_valid_swap((i,j),(ni,nj)) or not current_grid.test_valid_swap((ni,nj),(i,j)):
+                            if not current_grid.test_valid_swap((i,j),(ni,nj)) :
                                 print("Error: Invalid swap in new_grid")
                                 continue
 
