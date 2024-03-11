@@ -524,7 +524,7 @@ class Game(Grid):
             
         pygame.display.flip()  
         pygame.time.delay(1500)
-        # Stop the sound
+
         
         pygame.display.quit()
     
