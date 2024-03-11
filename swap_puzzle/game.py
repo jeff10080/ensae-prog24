@@ -31,7 +31,7 @@ class Game(Grid):
         self.settle_barriers()
         difficulty = self.difficulty()
         init_grid= self.copy()
-        grid1 = Grid(self.m,self.n,init_grid.state)
+        grid1 = Grid(self.m,self.n,init_grid.state,self.barriers)
         s = Solver(grid1)
         swap_sol = s.get_solution_a_star(init_grid)
         level = len(swap_sol)
@@ -769,6 +769,7 @@ class Game(Grid):
                     
                 if no_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     pygame.time.delay(1000)
+                    self.barriers= set()
                     
                     running = False
                 
