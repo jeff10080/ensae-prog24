@@ -632,9 +632,9 @@ class Game(Grid):
                 elif difficult_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     return 2.5
                 elif hardcore_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
-                    return 1
+                    return 1.5
                 elif infernal_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
-                    return 0.5
+                    return 0.8
                 
 
                 # Vérifier si le clic est dans le rectangle du bouton "Quitter"
