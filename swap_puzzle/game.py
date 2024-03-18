@@ -53,7 +53,7 @@ class Game(Grid):
         
         counter = int(difficulty *level*10)# la variable timer est utilisée plus tard il faut un entier
         timer_text =f"Timer {counter // 600} : {counter % 600:02d}" 
-        pygame.time.set_timer(pygame.USEREVENT, 100) # toutes les 0.5 secondes
+        pygame.time.set_timer(pygame.USEREVENT, 100) # toutes les 0.1 secondes
         font = pygame.font.SysFont('cambriamath', 30)
 
         running = True
@@ -119,7 +119,7 @@ class Game(Grid):
             screen.blit(timer, timer_text_rect)
                         
 
-            pygame.draw.rect(screen, (255, 0, 0), (0, height + 100, width, 100))  # Rectangle rouge pour le bouton Quitter
+            pygame.draw.rect(screen, (255, 0, 0), (0, height + 100, width, 100))  # Rectangle vert pour le chronomètre
             font = pygame.font.Font(None, 72)
             text = font.render("Leave", True, (255, 255, 255))
             text_rect = text.get_rect(center=(width // 2, height + 150))
