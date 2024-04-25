@@ -23,6 +23,7 @@ class Game(Grid):
         self.music_player(music_path)
         pygame.display.quit()
         pygame.init()
+        
         if not Retry:
             self.welcome()
         grid_heuristic = self.choose_level()
@@ -30,11 +31,12 @@ class Game(Grid):
         self.settle_barriers()
         difficulty = self.difficulty()
         init_grid= self.copy()
-        grid1 = Grid(self.m,self.n,init_grid.state)
+        grid1 = Grid(self.m,self.n,init_grid.state,self.barriers)
         s = Solver(grid1)
         swap_sol = s.get_solution_a_star(init_grid)
         level = len(swap_sol)
-        
+        pygame.display.quit()
+        pygame.init()
         
         
         
@@ -51,7 +53,7 @@ class Game(Grid):
         
         counter = int(difficulty *level*10)# la variable timer est utilisée plus tard il faut un entier
         timer_text =f"Timer {counter // 600} : {counter % 600:02d}" 
-        pygame.time.set_timer(pygame.USEREVENT, 100) # toutes les 0.5 secondes
+        pygame.time.set_timer(pygame.USEREVENT, 100) # toutes les 0.1 secondes
         font = pygame.font.SysFont('cambriamath', 30)
 
         running = True
@@ -117,7 +119,7 @@ class Game(Grid):
             screen.blit(timer, timer_text_rect)
                         
 
-            pygame.draw.rect(screen, (255, 0, 0), (0, height + 100, width, 100))  # Rectangle rouge pour le bouton Quitter
+            pygame.draw.rect(screen, (255, 0, 0), (0, height + 100, width, 100))  # Rectangle vert pour le chronomètre
             font = pygame.font.Font(None, 72)
             text = font.render("Leave", True, (255, 255, 255))
             text_rect = text.get_rect(center=(width // 2, height + 150))
@@ -176,13 +178,15 @@ class Game(Grid):
         screen = pygame.display.set_mode((screen_width, screen_height))
 
         # Define the font and text
-        font = pygame.font.SysFont("Arial", 300)
+        
         if self.is_sorted():
+            font = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 300)
             music_path ="swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
-            text_surface = font.render("YOU WIN", True, (255, 255, 255))
+            text_surface = font.render("YOU WIN", True, (255, 127, 0))
         else:
+            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 150)
             music_path ="swap_puzzle\\input_medias\\tears_withered-142384.mp3"
-            text_surface = font.render("GAME OVER", True, (255, 255, 255))
+            text_surface = font.render("GAME OVER", True, (0, 128, 255))
         self.music_player(music_path)
 
         # Get the text size
@@ -360,23 +364,24 @@ class Game(Grid):
         
 
         # Set the screen size
+        
         screen_info = pygame.display.Info()
         screen_width, screen_height = screen_info.current_w, screen_info.current_h
         screen = pygame.display.set_mode((screen_width, screen_height))
 
         # Define the font and text
-        font = pygame.font.SysFont("Arial", 150)
+        font = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 200)
         if swap_count == None:
-            font = pygame.font.SysFont("Arial", 50)
-            text_surface = font.render(rd.choice(["Too bad, but don't worry, you'll get it next time!"]), True, (255, 255, 255))
+            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 50)
+            text_surface = font.render(rd.choice(["DON'T WORRY, YOU'LL GET IT NEXT TIME"]), True, (0, 128, 255))
         elif swap_count == optimal_swap_count:
-            text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 127, 0))
         elif swap_count <= optimal_swap_count +5:
-            text_surface = font.render(rd.choice(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["SO CLOSE", "GREAT SCORE", "WELL PLAYED", "NOT BAD"]),  True, (255, 127, 0))
         elif swap_count > optimal_swap_count + 25:
-            text_surface = font.render(rd.choice(["...", "DISAPOINTING", "ARE YOU KIDDING?", " LEFT THE CHAT...","SERIOUSLY"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["...", "DISAPOINTING", "ARE YOU KIDDING?", " LEFT THE CHAT...","SERIOUSLY"]),  True, (255, 127, 0))
         else:
-            text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 255, 255))
+            text_surface = font.render(rd.choice(["TRY AGAIN", "NEXT TIME", "I BELIEVE IN YOU !","TOO BAD!"]),  True, (255, 127, 0))
         
         
             
@@ -392,11 +397,13 @@ class Game(Grid):
         offset_y = screen_center[1] - text_height // 2
         
         # Define the font and text for the score information
-        font_small = pygame.font.SysFont("Arial", 50)
+        
         if swap_count == None:
-            text_small = font_small.render(f"The best score possible is {optimal_swap_count}", True, (255, 255, 255))
+            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 50)
+            text_small = font_small.render(f"THE BEST SCORE POSSIBLE IS {optimal_swap_count}", True, (0, 128, 255))
         else:
-            text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 255, 255))
+            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 90)
+            text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 127, 0))
             
 
         # Get the text size for the small phrase
@@ -408,6 +415,7 @@ class Game(Grid):
         
         # Fill the screen with black
         screen.fill((0, 0, 0))
+
 
         # Blit the text to the screen
         screen.blit(text_surface, (offset_x, offset_y))
@@ -446,10 +454,10 @@ class Game(Grid):
                 # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
                 if i1 == i2:#même ligne
                     j =max(j1,j2)
-                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j*100,i1*100 ), ( j*100,(i1+1)*100), 5)
                 else:
                     i =max(i1,i2)
-                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,i*100), ( (j1+1)*100,i*100), 5)
         
             
             pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 100))  # Rectangle rouge pour le bouton Quitter
@@ -477,10 +485,10 @@ class Game(Grid):
                 # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
                 if i1 == i2:#même ligne
                     j =max(j1,j2)
-                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j*100,i1*100 ), ( j*100,(i1+1)*100), 5)
                 else:
                     i =max(i1,i2)
-                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,i*100), ( (j1+1)*100,i*100), 5)
         
             
             
@@ -508,15 +516,15 @@ class Game(Grid):
                 # Dessiner une ligne entre les cases (i1, j1) et (i2, j2)
                 if i1 == i2:#même ligne
                     j =max(j1,j2)
-                    pygame.draw.line(screen, (255,0,0), (j*100,(i1+1)*100 ), ( j*100,(i1+2)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j*100,i1*100 ), ( j*100,(i1+1)*100), 5)
                 else:
                     i =max(i1,i2)
-                    pygame.draw.line(screen, (255,0,0), (j1*100,(i+1)*100), ( (j1+1)*100,(i+1)*100), 5)
+                    pygame.draw.line(screen, (255,0,0), (j1*100,i*100), ( (j1+1)*100,i*100), 5)
         
             
         pygame.display.flip()  
         pygame.time.delay(1500)
-        # Stop the sound
+
         
         pygame.display.quit()
     
@@ -624,9 +632,9 @@ class Game(Grid):
                 elif difficult_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     return 2.5
                 elif hardcore_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
-                    return 1
+                    return 1.5
                 elif infernal_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
-                    return 0.5
+                    return 0.8
                 
 
                 # Vérifier si le clic est dans le rectangle du bouton "Quitter"
@@ -648,12 +656,13 @@ class Game(Grid):
         font = pygame.font.SysFont("cambriamath", font_size)
         font_path = "swap_puzzle\\input_medias\\ka1.ttf"
         
-        font_title = pygame.font.Font(font_path, font_size*2) #Création d'une police
+        font_title = pygame.font.Font(font_path, font_size*3) #Création d'une police
       
         
         # Load the background image
-        background_image = pygame.image.load("swap_puzzle\\input_medias\\Fond_libre_droit_Pixabay.jpg")  
+        background_image = pygame.image.load("swap_puzzle\\input_medias\\drive-8493014_1920.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
+        background_image.set_alpha(200)
         retry_button_rect = pygame.Rect(screen_width // 9, screen_height // 1.8, screen_width // 3, font_size + 20)
         leave_button_rect = pygame.Rect(retry_button_rect.right + screen_width // 8, screen_height // 1.8, screen_width // 3, font_size + 20)
         
@@ -682,8 +691,8 @@ class Game(Grid):
                 leave_text = font.render("No", True, (255, 255, 255))
                 leave_rect = leave_text.get_rect(center=leave_button_rect.center)
                 screen.blit(leave_text, leave_rect)
-                retry_surface = font_title.render("Retry ?", False, (255,127,0))
-                retry_rect = retry_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
+                retry_surface = font_title.render("Retry ?", False, (255, 127, 0))
+                retry_rect = retry_surface.get_rect(center=(screen_width // 2 +10, screen_height // 3.5))
                 screen.blit(retry_surface, retry_rect)
                 pygame.display.flip()
                 if retry_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
@@ -715,7 +724,7 @@ class Game(Grid):
         font = pygame.font.SysFont("cambriamath", font_size)
         font_path = "swap_puzzle\\input_medias\\BLADRMF_.ttf"
         
-        font_title = pygame.font.Font(font_path, font_size*2) #Création d'une police
+        font_title = pygame.font.Font(font_path, font_size*3) #Création d'une police
       
         
        
@@ -747,7 +756,7 @@ class Game(Grid):
                 leave_text = font.render("No", True, (255, 255, 255))
                 leave_rect = leave_text.get_rect(center=no_button_rect.center)
                 screen.blit(leave_text, leave_rect)
-                retry_surface = font_title.render("BARRIERS", False, (255,127,0))
+                retry_surface = font_title.render("barriers", False, (255,127,0))
                 retry_rect = retry_surface.get_rect(center=(screen_width // 2, screen_height // 3.5))
                 screen.blit(retry_surface, retry_rect)
                 pygame.display.flip()
@@ -760,6 +769,7 @@ class Game(Grid):
                     
                 if no_button_rect.collidepoint(mouse_pos) and mouse_click[0] == 1:
                     pygame.time.delay(1000)
+                    self.barriers= set()
                     
                     running = False
                 

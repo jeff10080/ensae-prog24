@@ -95,7 +95,7 @@ class Grid():
         """
         Checks is the current state of the grid is sorted and returns the answer as a boolean.
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
+        
 
         for i in range(self.m):
             for j in range(self.n):
@@ -121,7 +121,7 @@ class Grid():
     def test_valid_swap(self,cell1,cell2):
         i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
         cond1 = (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
-        cond2 = ((cell1,cell2)  not in self.barriers) and ((cell2,cell1) not in self.barriers) # Pour avoir une barrière dans les 2 sens
+        cond2 = ((cell1,cell2)  not in self.barriers)  # Pour avoir une barrière dans les 2 sens
         cond3 = (0<=i1 <self.m) and (0<=i2 <self.m) and (0<=j1 <self.n) and (0<=j2 <self.n)
         return cond1 and cond2 and cond3
     
@@ -178,11 +178,11 @@ class Grid():
         return heuristic//2
 
     
-    def compare_difficulty(self,other):
+    def compare_difficulty(self,other): #non utilisée
         print(self.heuristic(),other.heuristic())
         return self.heuristic() <= other.heuristic()
     
-    def level_grid(self,lvl= 1):
+    def level_grid(self,lvl= 1): # crée une grille d'heuristique choisie
         i1, j1 = 1,1
         i2, j2 =2,2
         iteration =0
@@ -211,7 +211,7 @@ class Grid():
             iteration += 1
         return self
     
-    def valid_barriers(self):
+    def valid_barriers(self): # teste si une grille est valide grâce à un bfs
         initial_number = (0, 0)
         deja_vu = [initial_number]
         queue = deque([initial_number])
@@ -230,17 +230,17 @@ class Grid():
         # Le nombre de barrière maximal est de m*(n-1) +(m-1)*n donc pour ne pas en avoir trop nous allons diviser ce nombre par 3
         count_barrier = (self.m*(self.n-1) + (self.m-1)*self.n)//10 
         self.barriers = set()
+        barriers = self.valid_barriers()
         for _ in range(count_barrier):
                 i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
                 ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
                 self.barriers.add(((i, j), (ni, nj)))
                 self.barriers.add(((ni, nj),(i, j)))
         
-        iteration = 0
-        while iteration < 100:  # Limite le nombre d'itérations pour éviter une boucle infinie
-            barriers = self.valid_barriers()
-            if barriers:  # Si la liste d'obstacles est valide, sort de la boucle
-                break
+        
+        while not barriers:  
+            
+
             self.barriers = set()
 
             # Regénère la liste d'obstacles
@@ -248,10 +248,11 @@ class Grid():
                 i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
                 ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
                 self.barriers.add(((i, j), (ni, nj)))
+            barriers = self.valid_barriers()
 
-            iteration += 1
+           
 
-        print(barriers, self.barriers)
+       
 
             
         
