@@ -2,9 +2,10 @@ import copy
 """
 This is the grid module. It contains the Grid class and its associated methods.
 """
-import pygame
-import random
+
+import random as rd
 import sys
+from collections import deque
 
 
 class Grid():
@@ -22,12 +23,14 @@ class Grid():
         Note: lines are numbered 0..m and columns are numbered 0..n.
     """
     
-    def __init__(self, m, n, initial_state=None):
+    def __init__(self, m, n, initial_state=None, barriers =set()):
         """
         Initializes the grid.
 
         Parameters:
         -----------
+        
+        
         m: int
             The number of rows in the grid
         n: int
@@ -42,58 +45,36 @@ class Grid():
         self.n = n
         if not initial_state:
             initial_state = [list(range(i * n + 1, (i + 1) * n + 1)) for i in range(m)]
+       
         self.state = initial_state
-
+        #Pour ne pas avoir des éléments en doubles
+    
+        self.barriers = barriers
+           
     
 
-    def display(self):
-        pygame.init()
-
-        width = self.n * 100
-        height = self.m * 100
-
-        screen = pygame.display.set_mode((width, height + 100))  # Ajout de l'espace pour le bouton
-
-        for i in range(self.m):
-            for j in range(self.n):
-                pygame.draw.rect(screen, (255, 255, 255), (j * 100, i * 100, 100, 100))
-                font = pygame.font.Font(None, 72)
-                text = font.render(str(self.state[i][j]), True, (0, 0, 0))
-                text_rect = text.get_rect(center=(j * 100 + 50, i * 100 + 50))
-                screen.blit(text, text_rect)
-
-        # Dessiner le bouton Quitter
-        pygame.draw.rect(screen, (255, 0, 0), (0, height, width, 200))  # Rectangle rouge pour le bouton Quitter
-        font = pygame.font.Font(None, 72)
-        text = font.render("Quitter", True, (255, 255, 255))
-        text_rect = text.get_rect(center=(width // 2, height + 50))
-        screen.blit(text, text_rect)
-
-        pygame.display.update()
-
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    return
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    # Vérifier si le clic de la souris est dans le rectangle du bouton Quitter
-                    if 0 < event.pos[0] < width and height < event.pos[1] < height + 100:
-                        pygame.quit()
-                        return
+    def rand_grid(self):
+        state= list(range(1,(self.m)*(self.n)+1))
+        rd.shuffle(state)
+        self.state = [[state[i] for i in range(i * (self.n) , (i + 1) * (self.n) )]for i in range(self.m)]
+        return self
+        
 
 
     def __hash__(self):
         state_tuple = tuple(tuple(self.state[i]) for i in range(self.m))
         return state_tuple #hash ne marche que sur un tuple
     def __eq__(self, other):
-       return other and self.m == other.m and self.n == other.n and self.state == other.state
+       return self.m == other.m and self.n == other.n and self.state == other.state
+   
+    def __lt__(self,other): #quand le coût est égal pour 2 différentes grilles, on les trie par ordre croissant
+        return True
+    
 
 
     
     def copy(self):
-        return Grid(self.m,self.n,copy.deepcopy(self.state)) #ne marchait pas avec copy
+        return Grid(self.m,self.n,copy.deepcopy(self.state),copy.deepcopy(self.barriers)) #ne marchait pas avec copy
     
     def __str__(self): 
         """
@@ -114,7 +95,7 @@ class Grid():
         """
         Checks is the current state of the grid is sorted and returns the answer as a boolean.
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
+        
 
         for i in range(self.m):
             for j in range(self.n):
@@ -139,7 +120,14 @@ class Grid():
 
     def test_valid_swap(self,cell1,cell2):
         i1,j1,i2,j2 = cell1[0],cell1[1],cell2[0],cell2[1]
-        return (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
+        cond1 = (abs(i1-i2) == 1 and abs(j1-j2) == 0) or (abs(i1-i2) == 0 and abs(j1-j2) == 1)
+        cond2 = ((cell1,cell2)  not in self.barriers)  # Pour avoir une barrière dans les 2 sens
+        cond3 = (0<=i1 <self.m) and (0<=i2 <self.m) and (0<=j1 <self.n) and (0<=j2 <self.n)
+        return cond1 and cond2 and cond3
+    
+    
+    
+    
 
 
 
@@ -153,12 +141,129 @@ class Grid():
             List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """ 
-        if len(cell_pair_list) < 2:
-            return None
+        if len(cell_pair_list) < 1:
+            raise ValueError(f"Invalid swap sequence")
         for i in range(len(cell_pair_list)):
             self.swap(cell_pair_list[i][0], cell_pair_list[i][1])
         # for swap_call in cell_pair_list:
         #     self.swap(swap_call[0], swap_call[1])
+
+    def move_seq(self, i1, i2, j1, j2):
+        swap_h, swap_v = [], []
+
+        if j2 - j1 > 0:
+            swap_h.extend(((i1, y), (i1, y + 1)) for y in range(j1, j2))
+
+        if j2 - j1 < 0:
+            swap_h.extend(((i1, y), (i1, y - 1)) for y in range(j1, j2, -1))
+
+        if i2 - i1 > 0:
+            swap_v.extend(((x, j2), (x + 1, j2)) for x in range(i1, i2))
+
+        if i2 - i1 < 0:
+            swap_v.extend(((x, j2), (x - 1, j2)) for x in range(i1, i2, -1))
+
+        swap_seq = swap_h + swap_v
+        return swap_seq
+    
+    
+    def heuristic(self):
+        heuristic = 0
+        pos_m,pos_n = 0,0
+        for i in range(self.m):
+            for j in range (self.n):
+                pos_m,pos_n = i,j
+                dest_m, dest_n = (self.state[i][j]-1)// self.n, (self.state[i][j]-1) %self.n #parce qu'on commence à 1
+                heuristic += abs(dest_m -pos_m) + abs(dest_n -pos_n)
+        return heuristic//2
+
+    
+    def compare_difficulty(self,other): #non utilisée
+        print(self.heuristic(),other.heuristic())
+        return self.heuristic() <= other.heuristic()
+    
+    def level_grid(self,lvl= 1): # crée une grille d'heuristique choisie
+        i1, j1 = 1,1
+        i2, j2 =2,2
+        iteration =0
+        current_heuristic = 0
+        new_heuristic = 0
+        while current_heuristic <lvl  and iteration < 5000:
+            i1, j1 = rd.randint(0, self.m - 1), rd.randint(0, self.n - 1)
+            i2, j2 = rd.choice([i1-1, i1+1]), rd.choice([j1-1, j1+1])
+
+            # Ensure the swap is valid and not in barriers
+            while not self.test_valid_swap((i1,j1), (i2,j2)):
+                i1, j1 = rd.randint(0, self.m - 1), rd.randint(0, self.n - 1)
+                i2, j2 = rd.choice([i1-1, i1, i1+1]), rd.choice([j1-1,j1, j1+1])
+                
+                # Ensure i2 and j2 are within bounds
+                i2 = max(0, min(self.m - 1, i2))
+                j2 = max(0, min(self.n - 1, j2))
+            
+            self.swap((i1,j1), (i2,j2))
+            new_heuristic = self.heuristic()
+            if current_heuristic <= new_heuristic:
+                current_heuristic = new_heuristic
+            else:
+                self.swap((i1,j1), (i2,j2)) #on revient en arrière car le swap était inutile
+                
+            iteration += 1
+        return self
+    
+    def valid_barriers(self): # teste si une grille est valide grâce à un bfs
+        initial_number = (0, 0)
+        deja_vu = [initial_number]
+        queue = deque([initial_number])
+        while queue:
+            i, j = queue.popleft()
+            for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]:
+                if self.test_valid_swap((i, j), (ni, nj)):
+                    if (ni, nj) not in deja_vu:
+                        queue.append((ni, nj))
+                        deja_vu.append((ni, nj))
+                        if len(deja_vu) == self.m * self.n:
+                            return True
+        return None
+    
+    def add_barriers(self):
+        # Le nombre de barrière maximal est de m*(n-1) +(m-1)*n donc pour ne pas en avoir trop nous allons diviser ce nombre par 3
+        count_barrier = (self.m*(self.n-1) + (self.m-1)*self.n)//10 
+        self.barriers = set()
+        barriers = self.valid_barriers()
+        for _ in range(count_barrier):
+                i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
+                ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
+                self.barriers.add(((i, j), (ni, nj)))
+                self.barriers.add(((ni, nj),(i, j)))
+        
+        
+        while not barriers:  
+            
+
+            self.barriers = set()
+
+            # Regénère la liste d'obstacles
+            for _ in range(count_barrier):
+                i, j = rd.randint(0, (self.m)-1), rd.randint(0, (self.n)-1)
+                ni, nj = rd.choice([(ni, nj) for ni, nj in [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)] if (0 <= ni < self.m) and (0 <= nj < self.m)])
+                self.barriers.add(((i, j), (ni, nj)))
+            barriers = self.valid_barriers()
+
+           
+
+       
+
+            
+        
+                
+                
+            
+        
+        
+        
+
+
 
     @classmethod
     def grid_from_file(cls, file_name): 

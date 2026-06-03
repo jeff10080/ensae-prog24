@@ -13,7 +13,7 @@ class Test_GetSolutions(unittest.TestCase):
         grid_sol = grid.copy()
         s = Solver(grid)
         self.assertEqual(grid.is_sorted(), False)
-        swap_sol = s.get_solution_bfs(grid)
+        swap_sol = s.get_solution_bfs_2(grid)
         print(swap_sol)
         graph = Graph()
         graph.construct_grid_graph(grid)

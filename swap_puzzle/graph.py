@@ -3,6 +3,8 @@ This is the graph module. It contains a minimalistic Graph class.
 """
 from grid import Grid
 from collections import deque
+from heapq import *
+import random
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 
@@ -38,6 +40,7 @@ class Graph:
         self.nb_edges = 0
         self.edges = []
         self.vertices = dict()
+        
     
     def __str__(self):
         """
@@ -124,7 +127,9 @@ class Graph:
     def bfs(self, src, dst):
         """
         Finds a shortest path from src to dst by BFS.
+        Finds a shortest path from src to dst by BFS.
 
+        Parameters:
         Parameters:
         -----------
         src: NodeType
@@ -133,17 +138,26 @@ class Graph:
             The destination node.
 
         Output:
+        Output:
         -------
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
+        """
         """
         deja_vu = []
         path = dict()
         path[src] = [src]
         queue = deque([src])
         while queue:
+        while queue:
             u = queue.popleft()
             for v in self.graph[u]:
+                if v not in deja_vu:
+                    if v == dst:
+                        return path[u] + [v]
+                    path[v] = path[u] + [v]
+                    queue.append(v)
+                    deja_vu.append(v)
                 if v not in deja_vu:
                     if v == dst:
                         return path[u] + [v]
