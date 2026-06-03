@@ -4,7 +4,7 @@ import copy
 sys.path.append("swap_puzzle/")
 
 import unittest 
-from grid import Grid
+from .grid import Grid
 
 class Test_Copy(unittest.TestCase):
     def test_grid1(self):

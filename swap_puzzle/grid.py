@@ -250,14 +250,6 @@ class Grid():
                 self.barriers.add(((i, j), (ni, nj)))
             barriers = self.valid_barriers()
 
-           
-
-       
-
-            
-        
-                
-                
             
         
         

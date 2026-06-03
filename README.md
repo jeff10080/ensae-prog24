@@ -6,36 +6,46 @@ The goal of the project is to transform an initial grid into a target configurat
 
 Because apparently humans looked at combinatorial explosion and thought: “this seems like a fun semester project.”
 
+---
+
+## Project Execution (IMPORTANT)
+
+To run the project correctly, you must be on **WSL (Windows Subsystem for Linux)** on your own computer.
+
+Then execute the following commands in the project directory:
+
+```bash
+uv sync
+```
+
+Then run the tests:
+
+```bash
+uv run -m "tests.test game.test_display"
+```
 
 ---
 
-Project Objectives
+## Project Objectives
 
 This project aims to:
 
-model a grid-based puzzle as a graph problem;
-
-implement tile swapping mechanics;
-
-design and analyze search algorithms;
-
-solve the puzzle using the A* algorithm;
-
-evaluate heuristic performance and complexity;
-
-apply software engineering best practices.
-
-
+* model a grid-based puzzle as a graph problem;
+* implement tile swapping mechanics;
+* design and analyze search algorithms;
+* solve the puzzle using the A* algorithm;
+* evaluate heuristic performance and complexity;
+* apply software engineering best practices.
 
 ---
 
-Puzzle Description
+## Puzzle Description
 
 The puzzle consists of a grid containing numbered tiles.
 
 A valid move swaps two adjacent cells. The objective is to transform the initial configuration into the target sorted configuration using the minimum number of swaps.
 
-Example
+### Example
 
 Initial grid:
 
@@ -44,6 +54,7 @@ Initial grid:
 4 5 6
 7 8 9
 ```
+
 Target grid:
 
 ```
@@ -52,29 +63,21 @@ Target grid:
 7 8 9
 ```
 
-
 ---
 
-A* Search Algorithm
+## A* Search Algorithm
 
 The main solving strategy relies on the A* search algorithm.
 
 The algorithm combines:
 
-the current path cost;
-
-a heuristic estimating the remaining distance to the goal.
-
+* the current path cost;
+* a heuristic estimating the remaining distance to the goal.
 
 Typical heuristics include:
 
-Manhattan distance;
-
-misplaced tiles count;
-
-custom grid evaluation metrics.
-
+* Manhattan distance;
+* misplaced tiles count;
+* custom grid evaluation metrics.
 
 This allows the solver to efficiently explore the search space while avoiding brute-force enumeration of every possible state. Which is fortunate, because entropy already has enough victories.
-
-

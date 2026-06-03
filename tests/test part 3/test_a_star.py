@@ -4,8 +4,8 @@ import sys
 sys.path.append("swap_puzzle/")
 
 import unittest 
-from graph import Graph
-from grid import Grid
+from .graph import Graph
+from .grid import Grid
 
 class Test_a_star(unittest.TestCase):
     def test_a_star(self):

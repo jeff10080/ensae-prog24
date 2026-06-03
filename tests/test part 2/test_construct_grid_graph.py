@@ -3,8 +3,8 @@ import sys
 sys.path.append("swap_puzzle/")
 
 import unittest 
-from graph import Graph
-from grid import Grid
+from .graph import Graph
+from .grid import Grid
 
 class Test_bfs(unittest.TestCase):
     def test_graph2(self):

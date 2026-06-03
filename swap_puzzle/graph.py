@@ -1,7 +1,7 @@
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
-from grid import Grid
+from .grid import Grid
 from collections import deque
 from heapq import *
 import random
@@ -143,12 +143,11 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """
-        """
+
         deja_vu = []
         path = dict()
         path[src] = [src]
         queue = deque([src])
-        while queue:
         while queue:
             u = queue.popleft()
             for v in self.graph[u]:
@@ -166,31 +165,28 @@ class Graph:
                     deja_vu.append(v)
         return None
 
-
-
-
-    
-
     @classmethod
     def graph_from_file(cls, file_name):
+
         """
-        Reads a text file and returns the graph as an object of the Graph class.
+            Reads a text file and returns the graph as an object of the Graph class.
 
-        The file should have the following format: 
-            The first line of the file is 'n m'
-            The next m lines have 'node1 node2'
-        The nodes (node1, node2) should be named 1..n
+            The file should have the following format: 
+                The first line of the file is 'n m'
+                The next m lines have 'node1 node2'
+            The nodes (node1, node2) should be named 1..n
 
-        Parameters: 
-        -----------
-        file_name: str
-            The name of the file
+            Parameters: 
+            -----------
+            file_name: str
+                The name of the file
 
-        Outputs: 
-        -----------
-        graph: Graph
-            An object of the class Graph with the graph from file_name.
+            Outputs: 
+            -----------
+            graph: Graph
+                An object of the class Graph with the graph from file_name.
         """
+
         with open(file_name, "r") as file:
             n, m = map(int, file.readline().split())
             graph = Graph(range(1, n+1))

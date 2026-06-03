@@ -3,8 +3,8 @@ import sys
 sys.path.append("swap_puzzle/")
 
 import unittest 
-from grid import Grid
-from  game import Game
+from .grid import Grid
+from .game import Game
 
 class Test_Swap(unittest.TestCase):
     def test_grid1(self):

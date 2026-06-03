@@ -1,7 +1,7 @@
-from grid import Grid
+from .grid import Grid
 import pygame
 import sys
-from solver import Solver
+from .solver import Solver
 import random as rd
 
 
@@ -19,7 +19,7 @@ class Game(Grid):
     
 
     def display(self, Retry = None):
-        music_path ="swap_puzzle\\input_medias\\phantom-116107.mp3"
+        music_path ="swap_puzzle/input_medias/phantom-116107.mp3"
         self.music_player(music_path)
         pygame.display.quit()
         pygame.init()
@@ -180,12 +180,12 @@ class Game(Grid):
         # Define the font and text
         
         if self.is_sorted():
-            font = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 300)
-            music_path ="swap_puzzle\\input_medias\\neon-gaming-128925.mp3"
+            font = pygame.font.Font("swap_puzzle/input_medias/Victoire.ttf", 300)
+            music_path ="swap_puzzle/input_medias/neon-gaming-128925.mp3"
             text_surface = font.render("YOU WIN", True, (255, 127, 0))
         else:
-            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 150)
-            music_path ="swap_puzzle\\input_medias\\tears_withered-142384.mp3"
+            font = pygame.font.Font("swap_puzzle/input_medias/Coalition_v2.ttf", 150)
+            music_path ="swap_puzzle/input_medias/tears_withered-142384.mp3"
             text_surface = font.render("GAME OVER", True, (0, 128, 255))
         self.music_player(music_path)
 
@@ -219,7 +219,7 @@ class Game(Grid):
         clock = pygame.time.Clock()
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
-        font_path ="swap_puzzle\\input_medias\\BLADRMF_.ttf"
+        font_path ="swap_puzzle/input_medias/BLADRMF_.ttf"
         font_choose = pygame.font.Font(font_path, font_size*3)
         input_text = ""
 
@@ -301,13 +301,13 @@ class Game(Grid):
         clock = pygame.time.Clock()
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
-        font_path = "swap_puzzle\\input_medias\\Game Of Squids.ttf"
+        font_path = "swap_puzzle/input_medias/Game Of Squids.ttf"
         
         font_title = pygame.font.Font(font_path, font_size*2) #Création d'une police
       
         
         # Load the background image
-        background_image = pygame.image.load("swap_puzzle\\input_medias\\retro-4237850_1280.jpg")  
+        background_image = pygame.image.load("swap_puzzle/input_medias/retro-4237850_1280.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
         play_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, screen_height // 1.8, screen_width // 2.5, font_size + 20)
         leave_button_rect = pygame.Rect((screen_width - screen_width // 2.5) // 2, play_button_rect.bottom + screen_height//20, screen_width // 2.5, font_size + 20)
@@ -370,9 +370,9 @@ class Game(Grid):
         screen = pygame.display.set_mode((screen_width, screen_height))
 
         # Define the font and text
-        font = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 200)
+        font = pygame.font.Font("swap_puzzle/input_medias/Victoire.ttf", 200)
         if swap_count == None:
-            font = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 50)
+            font = pygame.font.Font("swap_puzzle/input_medias/Coalition_v2.ttf", 50)
             text_surface = font.render(rd.choice(["DON'T WORRY, YOU'LL GET IT NEXT TIME"]), True, (0, 128, 255))
         elif swap_count == optimal_swap_count:
             text_surface = font.render(rd.choice(["PERFECT SCORE", "GENIUS", "EXCELLENT","CONGRATULATION"]), True, (255, 127, 0))
@@ -399,10 +399,10 @@ class Game(Grid):
         # Define the font and text for the score information
         
         if swap_count == None:
-            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Coalition_v2.ttf", 50)
+            font_small = pygame.font.Font("swap_puzzle/input_medias/Coalition_v2.ttf", 50)
             text_small = font_small.render(f"THE BEST SCORE POSSIBLE IS {optimal_swap_count}", True, (0, 128, 255))
         else:
-            font_small = pygame.font.Font("swap_puzzle\\input_medias\\Victoire.ttf", 90)
+            font_small = pygame.font.Font("swap_puzzle/input_medias/Victoire.ttf", 90)
             text_small = font_small.render(f"Your score is {swap_count}. The best score is {optimal_swap_count}", True, (255, 127, 0))
             
 
@@ -537,7 +537,7 @@ class Game(Grid):
         clock = pygame.time.Clock()
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
-        font_path ="swap_puzzle\\input_medias\\BLADRMF_.ttf"
+        font_path ="swap_puzzle/input_medias/BLADRMF_.ttf"
         font_dif = pygame.font.Font(font_path, font_size*3)
         input_text = ""
 
@@ -654,13 +654,13 @@ class Game(Grid):
         clock = pygame.time.Clock()
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
-        font_path = "swap_puzzle\\input_medias\\ka1.ttf"
+        font_path = "swap_puzzle/input_medias/ka1.ttf"
         
         font_title = pygame.font.Font(font_path, font_size*3) #Création d'une police
       
         
         # Load the background image
-        background_image = pygame.image.load("swap_puzzle\\input_medias\\drive-8493014_1920.jpg")  
+        background_image = pygame.image.load("swap_puzzle/input_medias/drive-8493014_1920.jpg")  
         background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
         background_image.set_alpha(200)
         retry_button_rect = pygame.Rect(screen_width // 9, screen_height // 1.8, screen_width // 3, font_size + 20)
@@ -722,7 +722,7 @@ class Game(Grid):
         clock = pygame.time.Clock()
         font_size = screen_height // 15
         font = pygame.font.SysFont("cambriamath", font_size)
-        font_path = "swap_puzzle\\input_medias\\BLADRMF_.ttf"
+        font_path = "swap_puzzle/input_medias/BLADRMF_.ttf"
         
         font_title = pygame.font.Font(font_path, font_size*3) #Création d'une police
       
@@ -781,28 +781,20 @@ class Game(Grid):
         
         pygame.time.delay(1000)
         pygame.display.quit()
-        
-        
-    
-    
-
-        
-   
-
-
 
     
     def music_player(self, new_sound_file_path=None):
-        pygame.mixer.init()
+        try:
+            pygame.mixer.init()
+        except pygame.error:
+            return
 
-        # Arrêter la musique actuelle
         pygame.mixer.music.stop()
 
         if new_sound_file_path:
-            # Charger et jouer la nouvelle musique
             pygame.mixer.music.load(new_sound_file_path)
             pygame.mixer.music.play(-1)
-            
+                
   
 
 

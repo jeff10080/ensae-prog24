@@ -3,7 +3,7 @@ import sys
 sys.path.append("swap_puzzle/")
 
 import unittest 
-from graph import Graph
+from .graph import Graph
 
 class Test_GraphLoading(unittest.TestCase):
     def test_Graph1(self):

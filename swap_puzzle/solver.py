@@ -1,5 +1,5 @@
-from grid import Grid
-from graph import Graph
+from .grid import Grid
+from .graph import Graph
 
 class Solver(): 
     """
