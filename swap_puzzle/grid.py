@@ -4,7 +4,6 @@ This is the grid module. It contains the Grid class and its associated methods.
 """
 
 import random as rd
-import sys
 from collections import deque
 
 
@@ -80,7 +79,7 @@ class Grid():
         """
         Prints the state of the grid as text.
         """
-        output = f"The grid is in the following state:\n"
+        output = "The grid is in the following state:\n"
         for i in range(self.m): 
             output += f"{self.state[i]}\n"
         return output
@@ -142,7 +141,7 @@ class Grid():
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """ 
         if len(cell_pair_list) < 1:
-            raise ValueError(f"Invalid swap sequence")
+            raise ValueError("Invalid swap sequence")
         for i in range(len(cell_pair_list)):
             self.swap(cell_pair_list[i][0], cell_pair_list[i][1])
         # for swap_call in cell_pair_list:

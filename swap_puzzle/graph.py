@@ -1,10 +1,8 @@
 """
 This is the graph module. It contains a minimalistic Graph class.
 """
-from .grid import Grid
 from collections import deque
 from heapq import *
-import random
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 

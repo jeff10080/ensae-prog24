@@ -1,12 +1,12 @@
 from swap_puzzle.grid import Grid
+from swap_puzzle.game import Game
 
-g = Grid(2, 3)
-print(g)
 
-data_path = "input/"
-file_name = data_path + "grid0.in"
+def main():
+    grid = Grid(5, 5)
+    game = Game(grid)
+    game.display()
 
-print(file_name)
 
-g = Grid.grid_from_file(file_name)
-print(g)
+if __name__ == "__main__":
+    main()

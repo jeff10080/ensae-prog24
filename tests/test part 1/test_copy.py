@@ -1,6 +1,5 @@
 # This will work if ran from the root folder ensae-prog24
 import sys 
-import copy
 sys.path.append("swap_puzzle/")
 
 import unittest 
