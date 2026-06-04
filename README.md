@@ -10,7 +10,7 @@ Because apparently humans looked at combinatorial explosion and thought: “this
 
 ## Project Execution (IMPORTANT)
 
-To run the project correctly, you must be on **WSL (Windows Subsystem for Linux)** on your own computer.
+To run the project correctly, you must be  on your own computer.
 
 Then execute the following commands in the project directory:
 
